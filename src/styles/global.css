@@ -1,0 +1,121 @@
+@import "tailwindcss";
+
+:root {
+  --ink: #1a2547;
+  --link: #2c3a55;
+  --brand: #1565d8;
+  --brand-hover: #1d4ed8;
+  --highlight: #3b6be4;
+  --brand-dark: #1a2547;
+  --brand-gray: #f5f6f8;
+  --muted: #4b5563;
+  --line: #e5e7eb;
+  --focus: #f59e0b;
+}
+
+html {
+  background: white;
+  color: #333;
+  font-family: 'DM Sans', ui-sans-serif, system-ui, sans-serif;
+  scroll-behavior: smooth;
+}
+
+body { margin: 0; }
+
+@layer base {
+  h1, h2, h3, h4, h5, h6 { font-family: 'Wix Madefor Display', ui-sans-serif, system-ui, sans-serif; font-weight: 700; }
+  a { color: inherit; text-decoration-thickness: from-font; text-underline-offset: .15em; }
+  summary::-webkit-details-marker { display: none; }
+}
+
+:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
+
+.skip-link {
+  background: var(--ink);
+  color: white;
+  left: 1rem;
+  padding: .75rem 1rem;
+  position: fixed;
+  top: -5rem;
+  z-index: 30;
+}
+.skip-link:focus { top: 1rem; }
+
+.container { margin-inline: auto; padding-inline: 2rem; max-width: 80rem; }
+
+/* Reference buttons */
+.btn {
+  align-items: center;
+  border-radius: 999px;
+  display: inline-flex;
+  font-size: 1rem;
+  font-weight: 500;
+  gap: .5rem;
+  justify-content: center;
+  line-height: 1.5rem;
+  padding: .75rem 1.5rem;
+  text-decoration: none;
+  transition: background-color .15s cubic-bezier(.4, 0, .2, 1), opacity .15s cubic-bezier(.4, 0, .2, 1), color .15s cubic-bezier(.4, 0, .2, 1);
+}
+.btn--primary { background: var(--link); color: white; }
+.btn--primary:hover { opacity: .9; }
+.btn--secondary { background: white; color: var(--brand-dark); }
+.btn--secondary:hover { background: #f3f4f6; }
+.btn--header { background: var(--brand); color: white; }
+.btn--header:hover { background: var(--brand-hover); }
+.btn__badge {
+  align-items: center;
+  background: white;
+  border-radius: 999px;
+  color: var(--link);
+  display: inline-flex;
+  flex: none;
+  height: 1.5rem;
+  justify-content: center;
+  width: 1.5rem;
+}
+.btn__badge svg { height: .75rem; width: .75rem; }
+
+/* Reference eyebrows */
+.eyebrow {
+  display: inline-block;
+  margin: 0 0 1rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--brand);
+  font-size: .75rem;
+  font-weight: 600;
+  letter-spacing: .05em;
+  padding: .375rem 1rem;
+  text-transform: uppercase;
+}
+
+.section-title { color: var(--brand-dark); font-size: 2.25rem; font-weight: 700; line-height: 1.25; margin-bottom: 1rem; text-wrap: balance; }
+.media-frame { border-radius: .625rem; }
+
+/* Hero */
+.home-hero { background-position: center; background-size: cover; }
+.camera-corner { border-color: rgb(255 255 255 / .7); height: 2.5rem; pointer-events: none; position: absolute; width: 2.5rem; }
+.camera-corner--tl { border-left-width: 3px; border-top-width: 3px; left: 1.25rem; top: 1.25rem; }
+.camera-corner--tr { border-right-width: 3px; border-top-width: 3px; right: 1.25rem; top: 1.25rem; }
+.camera-corner--bl { border-bottom-width: 3px; border-left-width: 3px; bottom: 1.25rem; left: 1.25rem; }
+.camera-corner--br { border-bottom-width: 3px; border-right-width: 3px; bottom: 1.25rem; right: 1.25rem; }
+
+.contact-card { border: 1px solid rgb(255 255 255 / .1); border-radius: .625rem; background: rgb(0 0 0 / .3); color: white; display: flex; align-items: center; gap: 1rem; padding: 1.5rem; text-decoration: none; backdrop-filter: blur(12px); }
+.contact-card:hover { background: rgb(0 0 0 / .42); }
+.contact-card__icon { align-items: center; border: 1px solid rgb(255 255 255 / .2); border-radius: 999px; display: flex; flex: none; height: 3rem; justify-content: center; width: 3rem; }
+.contact-card__icon svg { height: 1.25rem; width: 1.25rem; }
+.contact-card__label { color: rgb(209 213 219); font-size: .875rem; line-height: 1.25rem; }
+
+/* Service/news overlays */
+.service-card-overlay { background: linear-gradient(to top, rgb(0 0 0 / .8) 0%, rgb(0 0 0 / 0) 100%); }
+
+/* Floating WhatsApp */
+.whatsapp-btn { align-items: center; background: #25d366; border-radius: 999px; bottom: 1.25rem; color: white; display: flex; height: 3.75rem; justify-content: center; position: fixed; right: 1.25rem; width: 3.75rem; z-index: 40; }
+.whatsapp-btn:hover { background: #128c7e; }
+.whatsapp-btn svg { height: 1.875rem; width: 1.875rem; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: .01ms !important; }
+}

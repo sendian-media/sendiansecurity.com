@@ -1,0 +1,22 @@
+---
+import ArrowIcon from './ArrowIcon.astro';
+
+interface Props {
+  href: string;
+  variant?: 'primary' | 'secondary' | 'header';
+  badge?: boolean;
+  class?: string;
+}
+
+const { href, variant = 'primary', badge = false, class: className = '' } = Astro.props;
+const variantClass = variant === 'primary' ? 'btn--primary' : variant === 'secondary' ? 'btn--secondary' : 'btn--header';
+---
+
+<a class:list={["btn", variantClass, className]} href={href}>
+  <slot />
+  {badge && (
+    <span class="btn__badge" aria-hidden="true">
+      <ArrowIcon />
+    </span>
+  )}
+</a>

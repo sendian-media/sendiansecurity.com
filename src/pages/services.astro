@@ -1,0 +1,118 @@
+---
+import FloatingWhatsApp from '@/components/ui/FloatingWhatsApp.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { servicesPage } from '@/data/services';
+---
+
+<BaseLayout title="Services | Sendian Integrated Security Services" description="Integrated security solutions: CCTV, networking, smart parking, communication, automation, audio-visual, and maintenance services in Qatar.">
+  <section class="service-hero relative flex h-[350px] w-full items-center overflow-hidden rounded-b-[30px] shadow-lg md:h-[400px]" aria-label="Services banner">
+    <div class="relative z-10 mx-auto w-full max-w-7xl px-6 md:px-20">
+      <h1 class="text-5xl font-bold leading-tight text-white md:text-[68px]">{servicesPage.hero.title}</h1>
+    </div>
+  </section>
+
+  <nav class="mb-20 w-full bg-[#F9FAFB] px-6 py-4 md:px-20" aria-label="Breadcrumb">
+    <div class="mx-auto max-w-7xl text-sm">
+      <a class="font-medium text-[#ef3e4a] hover:underline" href="/">Home</a>
+      <span class="mx-2 text-gray-400" aria-hidden="true">/</span>
+      <span class="text-gray-600" aria-current="page">Services</span>
+    </div>
+  </nav>
+
+  <main class="mx-auto mb-24 max-w-7xl px-6 md:px-12">
+    <div class="mb-16 flex flex-col items-center text-center">
+      <p class="mb-6"><span class="badge-outline-gray">// Our Services</span></p>
+      <h2 class="max-w-2xl text-4xl font-bold leading-tight text-[#1E293B] md:text-[46px]">
+        Integrated <span class="text-[#3B82F6]">Security</span><br />Solutions
+      </h2>
+    </div>
+
+    <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+      {servicesPage.cards.map((card) => (
+        <a class="service-card group block" href={card.href}>
+          <img class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" src={card.image} alt={card.alt} width="800" height="533" loading="lazy" decoding="async" />
+          <h3 class="service-card-title">
+            {card.titleLines.map((line, index) => (
+              <>{index > 0 && <br />}{line}</>
+            ))}
+          </h3>
+        </a>
+      ))}
+    </div>
+  </main>
+
+  <section class="w-full bg-[#F8F9FA] px-6 py-20">
+    <div class="mx-auto grid max-w-6xl grid-cols-1 gap-12 text-center md:grid-cols-2 md:text-left lg:grid-cols-4">
+      {servicesPage.stats.map((stat) => (
+        <div>
+          <div class="mb-2 text-[46px] font-semibold text-[#1E293B]">
+            {stat.value}<span class="text-[#3B82F6]">{stat.suffix}</span>
+          </div>
+          <p class="text-[17px] font-semibold text-[#1E293B]">{stat.label}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <FloatingWhatsApp />
+</BaseLayout>
+
+<style is:global>
+  .service-hero {
+    background-color: #2c3a55;
+    background-image:
+      url('/images/home/hero.webp'),
+      radial-gradient(circle at 70% 50%, rgb(255 255 255 / 0.05) 0%, transparent 50%),
+      radial-gradient(circle at 30% 80%, rgb(255 255 255 / 0.03) 0%, transparent 40%);
+    background-blend-mode: overlay, normal, normal;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+  .service-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgb(44 58 85 / 0.92);
+  }
+  .badge-outline-gray {
+    border: 1px solid #d1d5db;
+    border-radius: 9999px;
+    color: #6b7280;
+    display: inline-block;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    padding: 0.375rem 1rem;
+    text-transform: uppercase;
+  }
+  .service-card {
+    aspect-ratio: 16 / 10;
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
+    isolation: isolate;
+  }
+  .service-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60%;
+    background: linear-gradient(to top, rgb(0 0 0 / 0.8) 0%, transparent 100%);
+    z-index: 1;
+  }
+  .service-card-title {
+    color: white;
+    font-family: 'Wix Madefor Display', sans-serif;
+    font-size: 24px;
+    font-weight: 600;
+    left: 20px;
+    bottom: 20px;
+    line-height: 1.2;
+    position: absolute;
+    right: 20px;
+    z-index: 2;
+  }
+</style>

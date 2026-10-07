@@ -1,0 +1,43 @@
+---
+import { home } from '@/data/home';
+import { site } from '@/data/site';
+import ActionLink from '@/components/ui/ActionLink.astro';
+import PhoneIcon from '@/components/ui/PhoneIcon.astro';
+import MailIcon from '@/components/ui/MailIcon.astro';
+---
+
+<section class="home-hero cam-corners relative flex h-[640px] min-h-[600px] w-full items-center text-white" style={`background-image: url(${home.hero.image})`}>
+  <div class="absolute inset-0 bg-black/40" aria-hidden="true"></div>
+  <div class="camera-corner camera-corner--tl" aria-hidden="true"></div>
+  <div class="camera-corner camera-corner--tr" aria-hidden="true"></div>
+  <div class="camera-corner camera-corner--bl" aria-hidden="true"></div>
+  <div class="camera-corner camera-corner--br" aria-hidden="true"></div>
+
+  <p class="absolute left-10 top-10 m-0 hidden items-center gap-2 font-mono text-sm md:flex" aria-hidden="true">
+    <span class="size-3 animate-pulse rounded-full bg-red-500"></span>Rec
+  </p>
+  <p class="absolute right-10 top-10 m-0 hidden font-mono text-sm md:block" aria-hidden="true">19:20:00</p>
+
+  <div class="container relative z-10 mx-auto mt-12 flex items-center justify-between px-10">
+    <div class="max-w-2xl">
+      <p class="mb-6 inline-block rounded-full border border-white/30 bg-black/10 px-4 py-1.5 text-sm uppercase tracking-wider backdrop-blur-sm m-0">{home.hero.eyebrow}</p>
+      <h1 class="mb-6 text-[2.5rem] font-bold uppercase leading-tight tracking-normal sm:text-[49px]">{home.hero.title}</h1>
+      <p class="mb-8 text-lg leading-relaxed text-gray-200">{home.hero.description}</p>
+      <div class="flex flex-wrap gap-4">
+        <ActionLink href="/contact" badge>Request a consultation</ActionLink>
+        <ActionLink href="#services" variant="secondary" class="!px-8">Explore our solutions</ActionLink>
+      </div>
+    </div>
+
+    <div class="hidden flex-col gap-4 lg:flex">
+      <a class="contact-card w-80" href={`tel:${site.phone.replaceAll(' ', '')}`}>
+        <span class="contact-card__icon"><PhoneIcon /></span>
+        <span><span class="contact-card__label block">Call Us</span><b class="font-semibold">{site.phone}</b></span>
+      </a>
+      <a class="contact-card w-80" href={`mailto:${site.email}`}>
+        <span class="contact-card__icon"><MailIcon /></span>
+        <span><span class="contact-card__label block">Email</span><b class="font-semibold">{site.email}</b></span>
+      </a>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,54 @@
+---
+import FloatingWhatsApp from '@/components/ui/FloatingWhatsApp.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { projectSummaries } from '@/data/projects';
+---
+
+<BaseLayout title="Projects | Sendian Integrated Security Services" description="Security projects delivered by SISS across towers, commercial, residential, healthcare, education, retail, showrooms, and industrial sectors in Qatar.">
+  <section class="projects-hero relative flex h-[320px] w-full items-center overflow-hidden" aria-label="Projects banner">
+    <div class="absolute inset-0 flex items-center justify-center opacity-10" aria-hidden="true">
+      <div class="grid grid-cols-4 gap-8">
+        <div class="flex h-24 w-24 items-center justify-center rounded-xl border-2 border-white"></div>
+        <div class="flex h-24 w-24 items-center justify-center rounded-xl border-2 border-white"></div>
+        <div class="flex h-24 w-24 items-center justify-center rounded-full border-2 border-white"></div>
+      </div>
+    </div>
+
+    <div class="relative z-10 mx-auto mt-12 w-full max-w-7xl pl-6 md:pl-24">
+      <h1 class="text-5xl font-bold tracking-tight text-white md:text-[68px]">Projects</h1>
+    </div>
+  </section>
+
+  <nav class="w-full border-b border-gray-200 bg-[#F5F5F5] px-6 py-3 md:px-12" aria-label="Breadcrumb">
+    <div class="mx-auto max-w-7xl pl-6 text-sm md:pl-24">
+      <a class="font-medium text-[#ef3e4a] hover:underline" href="/">Home</a>
+      <span class="mx-2 text-gray-500" aria-hidden="true">/</span>
+      <span class="text-gray-700" aria-current="page">Projects</span>
+    </div>
+  </nav>
+
+  <main class="mx-auto w-full max-w-[1400px] flex-grow px-6 py-16 md:px-12">
+    <div class="grid grid-cols-1 gap-x-8 gap-y-12 pl-6 pr-4 md:grid-cols-2 md:pl-24 md:pr-12 lg:grid-cols-3">
+      {projectSummaries.map((project) => (
+        <a class="group flex flex-col" href={`/projects/${project.slug}`}>
+          <div class="h-[280px] w-full overflow-hidden rounded-xl">
+            <img class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" src={project.image} alt={project.alt} width="1000" height="650" loading="lazy" decoding="async" />
+          </div>
+          <h3 class="mt-5 text-[28px] font-medium text-gray-800">{project.title}</h3>
+        </a>
+      ))}
+    </div>
+  </main>
+
+  <FloatingWhatsApp />
+</BaseLayout>
+
+<style is:global>
+  .projects-hero {
+    background-color: #1c263c;
+    background-image:
+      radial-gradient(circle at 75% 50%, rgb(255 255 255 / 0.03) 0%, rgb(255 255 255 / 0.03) 30%, transparent 31%),
+      radial-gradient(circle at 25% 60%, rgb(255 255 255 / 0.02) 0%, rgb(255 255 255 / 0.02) 20%, transparent 21%);
+    position: relative;
+  }
+</style>

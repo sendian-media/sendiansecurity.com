@@ -1,0 +1,24 @@
+---
+const action = import.meta.env.PUBLIC_CONTACT_FORM_ACTION;
+---
+
+{action ? (
+  <form action={action} method="post" class="grid max-w-2xl gap-5 rounded-lg border border-[var(--line)] bg-[var(--paper)] p-6">
+    <div>
+      <label class="mb-1 block font-semibold" for="name">Name</label>
+      <input class="w-full rounded border border-[var(--line)] p-3" id="name" name="name" autocomplete="name" required />
+    </div>
+    <div>
+      <label class="mb-1 block font-semibold" for="email">Work email</label>
+      <input class="w-full rounded border border-[var(--line)] p-3" id="email" name="email" type="email" autocomplete="email" inputmode="email" required />
+    </div>
+    <div>
+      <label class="mb-1 block font-semibold" for="message">How can we help?</label>
+      <textarea class="w-full rounded border border-[var(--line)] p-3" id="message" name="message" rows="6" required></textarea>
+    </div>
+    <input name="_gotcha" tabindex="-1" autocomplete="off" class="sr-only" aria-hidden="true" />
+    <button class="button w-fit" type="submit">Send enquiry</button>
+  </form>
+) : (
+  <p class="rounded-lg border border-[var(--line)] bg-[var(--paper)] p-6" role="status">The contact form will be enabled when its hosted endpoint is configured.</p>
+)}

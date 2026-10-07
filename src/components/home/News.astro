@@ -1,0 +1,24 @@
+---
+import { home } from '@/data/home';
+import Eyebrow from './Eyebrow.astro';
+---
+
+<section id="news" class="scroll-mt-20 bg-white py-20">
+  <div class="container mx-auto px-8 text-center">
+    <Eyebrow>Latest news</Eyebrow>
+    <h2 class="section-title">Ongoing <span class="text-[var(--brand)]">Projects and updates</span></h2>
+  </div>
+
+  <div class="container mx-auto grid grid-cols-1 gap-8 px-8 md:grid-cols-3">
+    {home.news.map((article) => (
+      <article class="group">
+        <div class="relative mb-6 aspect-video overflow-hidden rounded-[10px]">
+          <img class={article.image.endsWith('.jpeg') ? 'size-full object-contain transition duration-500 group-hover:scale-105 motion-reduce:transition-none' : 'size-full object-cover transition duration-500 group-hover:scale-105 motion-reduce:transition-none'} src={article.image} alt={article.alt} width="768" height="432" loading="lazy" decoding="async" />
+          <p class="absolute right-4 top-4 m-0 rounded-full border border-gray-200 bg-white/90 px-3 py-1 text-xs font-medium backdrop-blur-sm">{article.category}</p>
+        </div>
+        <h3 class="mb-3 text-xl font-bold leading-snug text-[var(--brand-dark)] transition group-hover:text-[var(--brand)]">{article.title}</h3>
+        <p class="m-0 text-sm text-gray-500">{article.date}</p>
+      </article>
+    ))}
+  </div>
+</section>

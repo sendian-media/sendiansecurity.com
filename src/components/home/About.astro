@@ -1,0 +1,21 @@
+---
+import { home } from '@/data/home';
+import Eyebrow from './Eyebrow.astro';
+import ActionLink from '@/components/ui/ActionLink.astro';
+---
+
+<section id="about" class="scroll-mt-20 bg-white py-24">
+  <div class="container mx-auto flex flex-col items-center gap-16 px-8 md:flex-row">
+    <div class="w-full md:w-1/2">
+      <img class="media-frame w-full shadow-lg" src={home.about.image} alt="Security systems specialist at work" width="800" height="1000" loading="lazy" decoding="async" />
+    </div>
+    <div class="w-full md:w-1/2">
+      <Eyebrow>About us</Eyebrow>
+      <h2 class="section-title">{home.about.title}</h2>
+      <div class="mb-8 grid gap-6 text-gray-600 leading-relaxed">
+        {home.about.paragraphs.map((paragraph) => <p class="m-0">{paragraph}</p>)}
+      </div>
+      <ActionLink href="/contact" badge>Learn more</ActionLink>
+    </div>
+  </div>
+</section>

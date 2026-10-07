@@ -1,0 +1,25 @@
+---
+import { home } from '@/data/home';
+import Eyebrow from './Eyebrow.astro';
+import ActionLink from '@/components/ui/ActionLink.astro';
+---
+
+<section id="projects" class="scroll-mt-20 bg-white py-20">
+  <div class="container mx-auto px-8 text-center">
+    <Eyebrow>Our work</Eyebrow>
+    <h2 class="section-title">Our portfolio of <span class="text-[var(--brand)]">Excellence</span><br />In Security</h2>
+  </div>
+
+  <div class="container mx-auto mt-12 grid grid-cols-2 gap-4 px-8 md:grid-cols-4">
+    {home.projects.map((project) => (
+      <article class="group text-center">
+        <div class="mb-4 aspect-[3/2] overflow-hidden rounded-[10px]">
+          <img class="size-full object-cover transition duration-500 group-hover:scale-110 motion-reduce:transition-none" src={project.image} alt={project.alt} width="1000" height="650" loading="lazy" decoding="async" />
+        </div>
+        <h3 class="text-sm font-medium text-gray-800">{project.title}</h3>
+      </article>
+    ))}
+  </div>
+
+  <p class="mt-12 text-center"><ActionLink href="/projects" badge>View all projects</ActionLink></p>
+</section>

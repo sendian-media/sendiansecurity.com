@@ -1,0 +1,76 @@
+---
+import { site } from '@/data/site';
+import FacebookIcon from '@/components/ui/FacebookIcon.astro';
+import InstagramIcon from '@/components/ui/InstagramIcon.astro';
+import LinkedInIcon from '@/components/ui/LinkedInIcon.astro';
+import MailIcon from '@/components/ui/MailIcon.astro';
+import ChevronIcon from '@/components/ui/ChevronIcon.astro';
+
+const year = new Date().getFullYear();
+const quickLinks = [
+  { href: '/about', label: 'About us' },
+  { href: '/services', label: 'Services' },
+  { href: '/projects', label: 'Projects' },
+];
+const moreLinks = [
+  { href: '/#news', label: 'News' },
+  { href: '/contact', label: 'Vendor registration' },
+  { href: '/contact', label: 'Contact' },
+];
+---
+
+<footer class="relative z-10 border-b-8 border-[#2e3c5b] bg-[#1c243b] pb-6 pt-20 text-white">
+  <div class="container mx-auto mb-16 grid grid-cols-1 gap-12 px-8 md:grid-cols-2 lg:grid-cols-4">
+    <section>
+      <img class="mb-6 h-12 w-auto" src="/images/home/brand-logo.png" alt={site.name} width="1080" height="1080" loading="lazy" decoding="async" />
+      <p class="mb-6 text-sm leading-relaxed text-gray-400">Ministry of Interior-approved security solutions provider. Protecting Qatar’s infrastructure with cutting-edge CCTV, access control, and enterprise security systems for more than a decade.</p>
+      <div class="flex gap-3">
+        <a class="flex h-8 w-8 items-center justify-center rounded-full bg-white text-[#1c243b] transition hover:bg-gray-200" href="https://www.facebook.com/" rel="noopener" aria-label="Facebook"><FacebookIcon class="h-3.5 w-3.5" /></a>
+        <a class="flex h-8 w-8 items-center justify-center rounded-full bg-white text-[#1c243b] transition hover:bg-gray-200" href="https://www.instagram.com/" rel="noopener" aria-label="Instagram"><InstagramIcon class="h-3.5 w-3.5" /></a>
+        <a class="flex h-8 w-8 items-center justify-center rounded-full bg-white text-[#1c243b] transition hover:bg-gray-200" href="https://www.linkedin.com/" rel="noopener" aria-label="LinkedIn"><LinkedInIcon class="h-3.5 w-3.5" /></a>
+      </div>
+    </section>
+
+    <nav aria-label="Footer quick links">
+      <h2 class="mb-6 text-lg font-bold">Quick Links</h2>
+      <ul class="m-0 grid list-none gap-4 p-0 text-sm text-gray-300">
+        {quickLinks.map(({ href, label }) => (
+          <li><a class="flex items-center gap-2 transition hover:text-white" href={href}><ChevronIcon class="h-2.5 w-2.5 rotate-[-90deg]" />{label}</a></li>
+        ))}
+      </ul>
+    </nav>
+
+    <nav aria-label="Footer more links">
+      <h2 class="mb-6 text-lg font-bold">Links</h2>
+      <ul class="m-0 grid list-none gap-4 p-0 text-sm text-gray-300">
+        {moreLinks.map(({ href, label }) => (
+          <li><a class="flex items-center gap-2 transition hover:text-white" href={href}><ChevronIcon class="h-2.5 w-2.5 rotate-[-90deg]" />{label}</a></li>
+        ))}
+      </ul>
+    </nav>
+
+    <section>
+      <div class="mb-6">
+        <h2 class="mb-2 text-sm font-semibold text-gray-300">E-Mail:</h2>
+        <a class="flex items-center gap-3 text-sm text-white transition hover:text-gray-300" href={`mailto:${site.email}`}>
+          <MailIcon class="h-4 w-4" />{site.email}
+        </a>
+      </div>
+      <div>
+        <h2 class="mb-2 text-sm font-semibold text-gray-300">Address:</h2>
+        <p class="m-0 text-sm leading-relaxed text-white">
+          {site.address.map((line) => <span class="block">{line}</span>)}
+        </p>
+      </div>
+    </section>
+  </div>
+
+  <div class="container mx-auto flex flex-col items-center justify-between border-t border-gray-700/50 px-8 pt-6 text-xs text-gray-400 md:flex-row">
+    <p class="m-0">© Copyright {year} Sendian Security</p>
+    <div class="mt-4 flex gap-4 md:mt-0">
+      <a class="transition hover:text-white" href="/terms">Terms and Conditions</a>
+      <a class="transition hover:text-white" href="/privacy">Privacy policy</a>
+      <a class="transition hover:text-white" href="/contact">Help</a>
+    </div>
+  </div>
+</footer>

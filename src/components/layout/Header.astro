@@ -1,0 +1,29 @@
+---
+import { navigation, site } from '@/data/site';
+import ChevronIcon from '@/components/ui/ChevronIcon.astro';
+import ActionLink from '@/components/ui/ActionLink.astro';
+const currentPath = Astro.url.pathname;
+---
+
+<header class="sticky top-0 z-50 flex w-full items-center justify-between bg-white px-8 py-4 shadow-sm">
+  <a class="block" href="/" aria-label={`${site.name} home`}>
+    <img class="h-12 w-auto" src="/images/home/brand-logo.png" alt="" width="1080" height="1080" />
+  </a>
+  <nav class="hidden md:block" aria-label="Primary navigation">
+    <ul class="m-0 flex list-none items-center gap-8 p-0">
+      {navigation.map(({ href, label }) => (
+        <li>
+          <a
+            class:list={["flex items-center text-[15px] font-medium", currentPath === href ? 'text-[var(--brand)]' : 'text-gray-700 hover:text-[var(--brand)]']}
+            aria-current={currentPath === href ? 'page' : undefined}
+            href={href}
+          >
+            {label}
+            {href === '/services' && <ChevronIcon class="ml-1 h-3 w-3" />}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </nav>
+  <ActionLink variant="header" href="/contact">Vendor registration</ActionLink>
+</header>

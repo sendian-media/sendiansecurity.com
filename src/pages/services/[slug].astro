@@ -1,0 +1,101 @@
+---
+import FloatingWhatsApp from '@/components/ui/FloatingWhatsApp.astro';
+import ChevronIcon from '@/components/ui/ChevronIcon.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { serviceDetails } from '@/data/service-details';
+
+export async function getStaticPaths() {
+  return serviceDetails.map((service) => ({
+    params: { slug: service.slug },
+    props: { service },
+  }));
+}
+
+const { service } = Astro.props;
+---
+
+<BaseLayout title={`${service.heroTitle} | Sendian Integrated Security Services`} description={service.introParagraphs[0]}>
+  <div class="px-4 pt-4">
+    <section class="detail-hero relative rounded-3xl px-6 pb-32 pt-24 text-white md:px-8" aria-label={`${service.heroTitle} banner`}>
+      <div class="relative z-10 mx-auto max-w-7xl">
+        <h1 class="mb-4 text-5xl font-bold leading-tight md:text-[68px]">{service.heroTitle}</h1>
+      </div>
+    </section>
+  </div>
+
+  <div class="relative z-20 -mt-6 mx-4 rounded-b-3xl border border-gray-100 bg-gray-50 px-6 py-4 text-sm shadow-sm md:px-8">
+    <div class="mx-auto max-w-7xl">
+      <a class="font-medium text-[#ef3e4a] hover:underline" href="/">Home</a>
+      <span class="mx-2 text-gray-400" aria-hidden="true">/</span>
+      <a class="font-medium text-[#ef3e4a] hover:underline" href="/services">Services</a>
+      <span class="mx-2 text-gray-400" aria-hidden="true">/</span>
+      <span class="text-gray-700" aria-current="page">{service.heroTitle}</span>
+    </div>
+  </div>
+
+  <main class="mx-auto w-full max-w-7xl flex-grow px-6 py-16 md:px-8">
+    <!-- Intro -->
+    <section class="mb-24">
+      <h2 class="mb-6 text-3xl font-bold md:text-[36px]">
+        {service.introHeading} <span class="text-[#4b7cd3]">{service.introHighlight}</span>
+      </h2>
+      <div class="max-w-4xl space-y-6 text-lg leading-relaxed text-gray-500">
+        {service.introParagraphs.map((paragraph) => <p>{paragraph}</p>)}
+      </div>
+    </section>
+
+    <!-- Categories with accordions -->
+    <div class="space-y-32">
+      {service.categories.map((category) => (
+        <section class="grid grid-cols-1 items-start gap-12 lg:grid-cols-12">
+          <div class="lg:sticky lg:top-24 lg:col-span-4">
+            <h3 class="mb-4 text-3xl font-bold text-[#2C3A55]">{category.name}</h3>
+            <p class="text-sm leading-relaxed text-gray-500">{category.blurb}</p>
+          </div>
+
+          <div class="space-y-4 lg:col-span-8">
+            {category.subServices.map((subService, index) => (
+              <details class="detail-item group overflow-hidden rounded-[10px] border border-gray-100 bg-gray-50 shadow-sm" open={index === 0}>
+                <summary class="flex cursor-pointer list-none items-center justify-between p-5 text-left text-lg font-semibold text-gray-800 transition-colors hover:bg-gray-100 group-open:bg-[#4b7cd3] group-open:text-white">
+                  <span>{subService.title}</span>
+                  <ChevronIcon class="h-4 w-4 shrink-0 text-gray-500 transition-transform group-open:rotate-180 group-open:text-white" />
+                </summary>
+                <div class="flex flex-col items-start gap-6 border-t border-gray-100 bg-white p-6 md:flex-row">
+                  <p class="flex-1 text-sm leading-relaxed text-gray-600">{subService.description}</p>
+                  <div class="w-full shrink-0 md:w-48">
+                    <img class="h-auto w-full rounded-lg object-cover" src={subService.image} alt={subService.alt} width="640" height="360" loading="lazy" decoding="async" />
+                  </div>
+                </div>
+              </details>
+            ))}
+          </div>
+        </section>
+      ))}
+    </div>
+  </main>
+
+  <FloatingWhatsApp />
+</BaseLayout>
+
+<style is:global>
+  .detail-hero {
+    background: linear-gradient(135deg, #1b263b 0%, #172a45 100%);
+    overflow: hidden;
+    position: relative;
+  }
+  .detail-hero::before {
+    background-image: radial-gradient(circle at 70% 50%, rgb(255 255 255 / 0.05) 0%, transparent 50%);
+    content: '';
+    inset: 0;
+    pointer-events: none;
+    position: absolute;
+  }
+  .detail-hero::after {
+    background-image: url("data:image/svg+xml,%3Csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0,0 L100,100 M100,0 L0,100' stroke='%23fff' stroke-width='1'/%3E%3C/svg%3E");
+    content: '';
+    inset: 0;
+    opacity: 0.1;
+    pointer-events: none;
+    position: absolute;
+  }
+</style>
