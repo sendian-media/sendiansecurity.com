@@ -1,0 +1,97 @@
+---
+const articles = [
+  {
+    title: 'CCTV Surveillance System Installation at Qatar Finland International School',
+    href: 'https://sendiansecurity.com/security/ongoing-project-cctv-surveillance-system-installation-at-qatar-finland-international-school/',
+    external: true,
+    category: 'Ongoing',
+    date: 'January 12, 2026',
+    image: '/sites/sendian-news/images/news-school-cctv.png',
+    alt: 'CCTV surveillance system installation at Qatar Finland International School',
+    excerpt: 'Sendian Integrated Security Services (SISS) is currently executing the installation of a comprehensive CCTV surveillance system at Qatar Finland International School, supporting the school’s infrastructure and security enhancement program. This ongoing project includes the deployment of high-definition IP cameras, centralized video recording systems, and supporting ELV network infrastructure across the site.',
+  },
+  {
+    title: 'MOI-Regulated CCTV System Deployment at Kreeq Sports Club, Al Wakra',
+    href: 'https://sendiansecurity.com/security/ongoing-project-moi-regulated-cctv-system-deployment-at-kreeq-sports-club-al-wakra/',
+    external: true,
+    category: 'Ongoing',
+    date: 'January 10, 2026',
+    image: '/sites/sendian-news/images/news-kreeq-cctv.png',
+    alt: 'MOI-regulated CCTV system deployment at Kreeq Sports Club in Al Wakra',
+    excerpt: 'Sendian Integrated Security Services (SISS) is currently undertaking the deployment of a fully MOI-regulated CCTV system at Kreeq Sports Club, a modern sports and activities facility located in Al Wakra, Qatar. The project is being executed as part of the club’s infrastructure development to ensure full compliance with regulatory requirements.',
+  },
+  {
+    title: 'Sendian Integrated Security Services (SISS) Becomes Cisco Registered Partner',
+    href: 'https://sendiansecurity.com/security/sendian-integrated-security-services-siss-becomes-cisco-registered-partner/',
+    external: true,
+    category: 'Security',
+    date: 'April 14, 2025',
+    image: '/sites/sendian-news/images/news-cisco-partner.jpeg',
+    alt: 'SISS becomes a Cisco Registered Partner',
+    excerpt: 'Sendian Integrated Security Services (SISS), a specialized division of Sendian Group, is proud to announce its new status as an official Cisco Registered Partner. This collaboration marks a significant step forward in enhancing our capabilities in network and cybersecurity solutions, allowing us to leverage Cisco’s globally recognized technologies to better serve our clients.',
+  },
+  {
+    title: 'AI-Powered Security Solutions Transform Qatar’s Infrastructure Protection',
+    href: 'https://sendiansecurity.com/security/ai-security-solutions-qatar/',
+    external: true,
+    category: 'Security',
+    date: 'November 14, 2021',
+    image: '/sites/sendian-news/images/news-ai-security.png',
+    alt: 'AI-powered security solutions transforming infrastructure protection in Qatar',
+    excerpt: 'AI security solutions in Qatar are redefining how critical infrastructure is protected in 2026. Sendian Integrated Security Services (SISS), a Ministry of Interior-approved provider, is leading this transformation — combining decade-long expertise in physical security with emerging AI-driven technologies to deliver proactive, intelligent protection across government, commercial, and industrial sectors.',
+  },
+  {
+    title: 'Sendian Integrated Security Services Partners with Shenzhen Carsafe Technology Development Co., Ltd',
+    href: 'https://sendiansecurity.com/technology/partners-with-shenzhen-carsafe-technology/',
+    external: true,
+    category: 'Technology',
+    date: 'September 24, 2025',
+    image: '/sites/sendian-news/images/news-carsafe-partner.png',
+    alt: 'SISS partners with Shenzhen Carsafe Technology Development Co., Ltd',
+    excerpt: 'At Sendian Integrated Security Services (SISS), we are proud to announce our exclusive partnership with Shenzhen Carsafe Technology Development Co., Ltd, a reputable manufacturer of advanced parking systems and turnstile products. This strategic alliance enhances our ability to deliver world-class smart parking and access-management solutions in Qatar.',
+  },
+];
+---
+
+<main class="mx-auto mb-24 max-w-7xl px-6 md:px-12">
+  <div class="mb-16 flex flex-col items-center text-center">
+    <p class="mb-6"><span class="badge-outline-gray">// Latest news</span></p>
+    <h2 class="max-w-2xl text-4xl font-bold leading-tight text-[#1E293B] md:text-[46px]">
+      News and <span class="text-[#3B82F6]">Updates</span>
+    </h2>
+  </div>
+
+  <div class="news-grid">
+    {articles.map((article, index) => (
+      <article class:list={['news-card fade-up', `news-card--${index + 1}`]}>
+        <div class="relative mb-6 aspect-video overflow-hidden rounded-[10px]">
+          <img class="size-full object-cover transition duration-500 group-hover:scale-105 motion-reduce:transition-none" src={article.image} alt={article.alt} width="1024" height="576" loading="lazy" decoding="async" />
+          <p class="absolute right-4 top-4 m-0 rounded-full border border-gray-200 bg-white/90 px-3 py-1 text-xs font-medium backdrop-blur-sm">{article.category}</p>
+        </div>
+        <h3 class="mb-3 text-xl font-bold leading-snug text-[var(--brand-dark)]">
+          <a class="transition hover:text-[var(--brand)]" href={article.href} rel="noopener">{article.title}</a>
+        </h3>
+        <p class="mb-3 text-sm text-gray-500">{article.date} · External article</p>
+        <p class="m-0 text-[15px] leading-relaxed text-[#8f91ab]">{article.excerpt}</p>
+      </article>
+    ))}
+  </div>
+</main>
+
+<style>
+  .news-grid { display: grid; gap: 2.5rem 2rem; grid-template-columns: 1fr; }
+  .news-card h3 a { text-decoration: none; }
+  @media (min-width: 768px) { .news-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (min-width: 1024px) { .news-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  @media (prefers-reduced-motion: no-preference) {
+    .fade-up { animation: news-fade-up 2s ease both; }
+    .news-card--2 { animation-delay: 200ms; }
+    .news-card--3 { animation-delay: 300ms; }
+    .news-card--4 { animation-delay: 400ms; }
+    .news-card--5 { animation-delay: 500ms; }
+  }
+  @keyframes news-fade-up {
+    from { opacity: 0; transform: translateY(3rem); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>

@@ -1,0 +1,42 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import NewsPage from '@/components/sites/sendian-news/NewsPage.astro';
+---
+
+<BaseLayout title="News and Updates | Sendian Integrated Security Services" description="Latest news and updates from Sendian Integrated Security Services: ongoing projects, partnerships, and security technology in Qatar.">
+  <section class="news-hero relative flex h-[350px] w-full items-center overflow-hidden rounded-b-[30px] shadow-lg md:h-[400px]" aria-label="News banner">
+    <div class="relative z-10 mx-auto w-full max-w-7xl px-6 md:px-20">
+      <h1 class="text-5xl font-bold leading-tight text-white md:text-[68px]">News</h1>
+    </div>
+  </section>
+
+  <nav class="mb-20 w-full bg-[#F9FAFB] px-6 py-4 md:px-20" aria-label="Breadcrumb">
+    <div class="mx-auto max-w-7xl text-sm">
+      <a class="font-medium text-[#ef3e4a] hover:underline" href="/">Home</a>
+      <span class="mx-2 text-gray-400" aria-hidden="true">/</span>
+      <span class="text-gray-600" aria-current="page">News</span>
+    </div>
+  </nav>
+
+  <NewsPage />
+</BaseLayout>
+
+<style is:global>
+  .news-hero {
+    background-color: #2c3a55;
+    background-image:
+      url('/images/home/hero.webp'),
+      radial-gradient(circle at 70% 50%, rgb(255 255 255 / 0.05) 0%, transparent 50%),
+      radial-gradient(circle at 30% 80%, rgb(255 255 255 / 0.03) 0%, transparent 40%);
+    background-blend-mode: overlay, normal, normal;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+  .news-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgb(44 58 85 / 0.92);
+  }
+</style>
