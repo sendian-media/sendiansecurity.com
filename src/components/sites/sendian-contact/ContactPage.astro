@@ -1,71 +1,63 @@
-<main id="contact-main">
-  <div class="contact-breadcrumb"><div><a href="/">Home</a><span aria-hidden="true">/</span><strong>Contact</strong></div></div>
-  <section class="contact-section" aria-labelledby="contact-title">
-    <div class="contact-grid">
-      <div class="contact-information">
-        <p class="contact-eyebrow fade-up">Contact us now!</p>
-        <h1 class="fade-up" id="contact-title">Have questions? <span>Get in touch!</span></h1>
-        <p class="contact-intro fade-up">We are here to assist you with all your inquiries.</p>
-        <section class="contact-office fade-up" aria-labelledby="office-title">
-          <h2 id="office-title">Head office</h2>
-          <p>P.O. Box 1805, 60 Makkah St., Doha, Qatar</p>
-          <p>+974 44866766</p>
-          <p>+974 74720643</p>
-          <p>info@sendiansecurity.com</p>
-        </section>
-      </div>
-      <section class="contact-card fade-up" aria-labelledby="form-title">
-        <p class="contact-eyebrow">Get in touch</p>
-        <h2 id="form-title">Ready to get started?</h2>
-        <p class="contact-preview-note" id="preview-note">Local preview only. Messages cannot be sent.</p>
-        <fieldset aria-describedby="preview-note">
-          <legend class="sr-only">Contact details</legend>
-          <div class="contact-name-fields">
-            <label>First Name*<input autocomplete="given-name" maxlength="400" aria-required="true" /></label>
-            <label>Last Name*<input autocomplete="family-name" maxlength="400" aria-required="true" /></label>
-          </div>
-          <label>Email*<input type="email" autocomplete="email" maxlength="400" aria-required="true" /></label>
-          <label>Phone*<input type="tel" autocomplete="tel" maxlength="400" aria-required="true" /></label>
-          <label>Message<textarea rows="4" maxlength="2000"></textarea></label>
-          <button type="button" disabled>Send Message — unavailable</button>
-        </fieldset>
+<section class="contact-section" aria-labelledby="contact-title">
+  <div class="contact-grid">
+    <div class="contact-information">
+      <p class="contact-eyebrow fade-up">Contact us now!</p>
+      <h2 class="contact-heading fade-up" id="contact-title">Have questions? <span>Get in touch!</span></h2>
+      <p class="contact-intro fade-up">We are here to assist you with all your inquiries.</p>
+      <section class="contact-office fade-up" aria-labelledby="office-title">
+        <h3 id="office-title">Head office</h3>
+        <p>P.O. Box 1805, 60 Makkah St., Doha, Qatar</p>
+        <p>+974 44866766</p>
+        <p>+974 74720643</p>
+        <p>info@sendiansecurity.com</p>
       </section>
     </div>
-  </section>
-  <section class="contact-map-section" aria-labelledby="location-title">
-    <div class="contact-map fade-up">
-      <div>
-        <p class="contact-eyebrow">Our location</p>
-        <h2 id="location-title">Visit our head office</h2>
-        <p>Sendian Group building 60, zone 52, street 850, Doha, Qatar</p>
-        <p class="contact-map-note">Map unavailable in this local preview.</p>
-      </div>
+    <section class="contact-form-card fade-up" aria-labelledby="form-title">
+      <p class="contact-eyebrow">Get in touch</p>
+      <h2 id="form-title">Ready to get started?</h2>
+      <p class="contact-preview-note" id="preview-note">Local preview only. Messages cannot be sent.</p>
+      <fieldset aria-describedby="preview-note">
+        <legend class="sr-only">Contact details</legend>
+        <div class="contact-name-fields">
+          <label>First Name*<input autocomplete="given-name" maxlength="400" aria-required="true" /></label>
+          <label>Last Name*<input autocomplete="family-name" maxlength="400" aria-required="true" /></label>
+        </div>
+        <label>Email*<input type="email" autocomplete="email" maxlength="400" aria-required="true" /></label>
+        <label>Phone*<input type="tel" autocomplete="tel" maxlength="400" aria-required="true" /></label>
+        <label>Message<textarea rows="4" maxlength="2000"></textarea></label>
+        <button type="button" disabled>Send Message — unavailable</button>
+      </fieldset>
+    </section>
+  </div>
+</section>
+<section class="contact-map-section" aria-labelledby="location-title">
+  <div class="contact-map fade-up">
+    <div>
+      <p class="contact-eyebrow">Our location</p>
+      <h2 id="location-title">Visit our head office</h2>
+      <p>Sendian Group building 60, zone 52, street 850, Doha, Qatar</p>
+      <p class="contact-map-note">Map unavailable in this local preview.</p>
     </div>
-  </section>
-</main>
+  </div>
+</section>
 
 <style>
-  #contact-main { background: #fff; overflow: clip; }
-  .contact-breadcrumb { margin: 24px 50px 0; min-height: 55px; border-radius: 20px; background: #f7f7fa; display: grid; place-items: center; }
-  .contact-breadcrumb div { display: flex; gap: .55rem; align-items: center; font: 600 .82rem/1.2 "DM Sans", ui-sans-serif, system-ui, sans-serif; letter-spacing: .04em; text-transform: uppercase; }
-  .contact-breadcrumb a { color: #1a2547; text-decoration: none; }
-  .contact-section { margin: auto; max-width: 1530px; padding: 120px 50px; }
+  .contact-section { margin: auto; max-width: 1530px; padding: 0 50px 120px; }
   .contact-grid { display: grid; gap: 24px; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
   .contact-information { align-self: start; padding: 1rem 7% 1rem 0; position: sticky; top: 120px; }
-  .contact-eyebrow { border: 1px solid #427dd5; border-radius: 999px; color: #427dd5; display: inline-block; font: 700 .72rem/1.2 "DM Sans", ui-sans-serif, system-ui, sans-serif; letter-spacing: .12em; margin: 0 0 1.2rem; padding: 7px 19px; text-transform: uppercase; }
-  h1, h2 { color: #1a2547; font-family: "Wix Madefor Display", "DM Sans", ui-sans-serif, system-ui, sans-serif; }
-  h1 { font-size: clamp(2.5rem, 3.65vw, 3.25rem); line-height: 1.19; margin: 0; max-width: 12ch; }
-  h1 span { background: linear-gradient(216deg, #1c2e4a, #427dd5); background-clip: text; -webkit-background-clip: text; color: transparent; }
+  .contact-eyebrow { border: 1px solid var(--highlight); border-radius: 999px; color: var(--highlight); display: inline-block; font: 700 .72rem/1.2 "DM Sans", ui-sans-serif, system-ui, sans-serif; letter-spacing: .12em; margin: 0 0 1.2rem; padding: 7px 19px; text-transform: uppercase; }
+  .contact-heading { font-size: clamp(2.5rem, 3.65vw, 3.25rem); line-height: 1.19; margin: 0; max-width: 12ch; }
+  .contact-heading span { background: linear-gradient(216deg, #1c2e4a, #427dd5); background-clip: text; -webkit-background-clip: text; color: transparent; }
   .contact-intro { color: #596174; font: 400 1.125rem/1.67 "DM Sans", ui-sans-serif, system-ui, sans-serif; margin: 1.5rem 0 3rem; max-width: 38ch; }
-  .contact-office { border-left: 3px solid #427dd5; padding-left: 1.25rem; }
-  .contact-office h2 { font-size: 1.25rem; margin: 0 0 .75rem; }
+  .contact-office { border-left: 3px solid var(--highlight); padding-left: 1.25rem; }
+  .contact-office h3 { color: var(--brand-dark); font-family: "Wix Madefor Display", ui-sans-serif, system-ui, sans-serif; font-size: 1.25rem; margin: 0 0 .75rem; }
   .contact-office p { color: #596174; font: 400 1rem/1.7 "DM Sans", ui-sans-serif, system-ui, sans-serif; margin: .15rem 0; }
-  .contact-card { background: #f7f7fa; border-radius: 30px; padding: 50px 60px; }
-  .contact-card h2 { font-size: clamp(1.75rem, 3vw, 2.625rem); line-height: 1.25; margin: 0 0 .75rem; }
+  .contact-form-card { background: #f7f7fa; border-radius: 30px; padding: 50px 60px; }
+  .contact-form-card h2 { color: var(--brand-dark); font-family: "Wix Madefor Display", ui-sans-serif, system-ui, sans-serif; font-size: clamp(1.75rem, 3vw, 2.625rem); line-height: 1.25; margin: 0 0 .75rem; }
   .contact-preview-note { color: #596174; font: 400 .95rem/1.55 "DM Sans", ui-sans-serif, system-ui, sans-serif; margin: 0 0 1.5rem; }
   fieldset { border: 0; margin: 0; min-inline-size: 0; padding: 0; }
-  label { color: #1a2547; display: grid; font: 600 .9rem/1.4 "DM Sans", ui-sans-serif, system-ui, sans-serif; gap: .45rem; margin-bottom: 1.25rem; }
-  input, textarea { background: #fff; border: 1px solid transparent; border-radius: 6px; color: #1a2547; font: 400 1rem/1.5 "DM Sans", ui-sans-serif, system-ui, sans-serif; min-width: 0; padding: 15px 20px; resize: vertical; }
+  label { color: var(--brand-dark); display: grid; font: 600 .9rem/1.4 "DM Sans", ui-sans-serif, system-ui, sans-serif; gap: .45rem; margin-bottom: 1.25rem; }
+  input, textarea { background: #fff; border: 1px solid transparent; border-radius: 6px; color: var(--brand-dark); font: 400 1rem/1.5 "DM Sans", ui-sans-serif, system-ui, sans-serif; min-width: 0; padding: 15px 20px; resize: vertical; }
   input:focus, textarea:focus { border-color: #0078d4; outline: 3px solid rgb(0 120 212 / 24%); outline-offset: 2px; }
   .contact-name-fields { display: grid; gap: 1rem; grid-template-columns: 1fr 1fr; }
   button { background: linear-gradient(90deg, #2a3f5f, #3e4a5c); border: 0; border-radius: 999px; color: #fff; cursor: not-allowed; font: 700 .9rem/1.2 "DM Sans", ui-sans-serif, system-ui, sans-serif; opacity: .65; padding: 1rem 1.5rem; width: 100%; }
@@ -73,13 +65,13 @@
   .contact-map { align-items: center; background: linear-gradient(135deg, #d9dce3, #f2f3f6); border-radius: 20px; display: grid; min-height: 549px; overflow: hidden; padding: clamp(2rem, 6vw, 7rem); position: relative; }
   .contact-map::after { background-image: linear-gradient(90deg, rgb(26 37 71 / 8%) 1px, transparent 1px), linear-gradient(rgb(26 37 71 / 8%) 1px, transparent 1px); background-size: 45px 45px; content: ""; inset: 0; position: absolute; }
   .contact-map > div { background: rgb(255 255 255 / 90%); border-radius: 18px; max-width: 500px; padding: 2rem; position: relative; z-index: 1; }
-  .contact-map h2 { font-size: clamp(1.75rem, 3vw, 2.625rem); margin: 0 0 1rem; }
+  .contact-map h2 { color: var(--brand-dark); font-family: "Wix Madefor Display", ui-sans-serif, system-ui, sans-serif; font-size: clamp(1.75rem, 3vw, 2.625rem); margin: 0 0 1rem; }
   .contact-map p:not(.contact-eyebrow) { color: #596174; font: 400 1rem/1.7 "DM Sans", ui-sans-serif, system-ui, sans-serif; margin: 0; }
   .contact-map-note { font-weight: 700 !important; margin-top: 1rem !important; }
   .sr-only { height: 1px; margin: -1px; overflow: hidden; position: absolute; width: 1px; clip: rect(0, 0, 0, 0); }
-  @media (prefers-reduced-motion: no-preference) { .fade-up { animation: contact-fade-up 2s ease both; } .contact-information > .fade-up:nth-of-type(2) { animation-delay: 200ms; } .contact-information > .fade-up:nth-of-type(3) { animation-delay: 200ms; } .contact-information > .fade-up:nth-of-type(4) { animation-delay: 200ms; } .contact-card { animation-delay: 300ms; } }
+  @media (prefers-reduced-motion: no-preference) { .fade-up { animation: contact-fade-up 2s ease both; } .contact-information > .fade-up:nth-of-type(2) { animation-delay: 200ms; } .contact-information > .fade-up:nth-of-type(3) { animation-delay: 200ms; } .contact-information > .fade-up:nth-of-type(4) { animation-delay: 200ms; } .contact-form-card { animation-delay: 300ms; } .contact-hero h1 { animation: contact-fade-up 2s ease both; } }
   @keyframes contact-fade-up { from { opacity: 0; transform: translateY(3rem); } to { opacity: 1; transform: translateY(0); } }
   @media (max-width: 1400px) { .contact-section { padding-block: 100px; } }
-  @media (max-width: 1024px) { .contact-breadcrumb { margin-inline: 30px; } .contact-section { padding: 70px 30px; } .contact-grid { grid-template-columns: 1fr; } .contact-information { padding-right: 0; position: static; } .contact-card { margin-top: 50px; padding: 40px; } .contact-map-section { padding: 0 30px 70px; } .contact-map { min-height: 350px; } }
-  @media (max-width: 767px) { .contact-breadcrumb { margin: 15px 15px 0; } .contact-section { padding: 60px 15px; } .contact-card { padding: 25px; } .contact-name-fields { grid-template-columns: 1fr; } .contact-map-section { padding: 0 15px 60px; } .contact-map { min-height: 250px; padding: 1.5rem; } .contact-map > div { padding: 1.5rem; } }
+  @media (max-width: 1024px) { .contact-section { padding: 0 30px 70px; } .contact-grid { grid-template-columns: 1fr; } .contact-information { padding-right: 0; position: static; } .contact-form-card { margin-top: 50px; padding: 40px; } .contact-map-section { padding: 0 30px 70px; } .contact-map { min-height: 350px; } }
+  @media (max-width: 767px) { .contact-section { padding: 0 15px 60px; } .contact-form-card { padding: 25px; } .contact-name-fields { grid-template-columns: 1fr; } .contact-map-section { padding: 0 15px 60px; } .contact-map { min-height: 250px; padding: 1.5rem; } .contact-map > div { padding: 1.5rem; } }
 </style>
