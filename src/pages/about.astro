@@ -5,87 +5,137 @@ import { about } from '@/data/about';
 ---
 
 <BaseLayout title="About Us | Sendian Integrated Security Services" description="Sendian Integrated Security Services (SISS) is a Qatar-based systems integrator delivering integrated security, ELV, ICT, and automation solutions.">
-  <div class="px-4 pt-6 lg:px-8">
-    <div class="mb-16 flex flex-col overflow-hidden rounded-[32px] border border-gray-100 shadow-sm">
-      <div class="about-hero relative flex h-[360px] w-full items-center">
-        <div class="absolute right-[20%] top-[10%] size-[300px] rounded-full border border-white opacity-10" aria-hidden="true"></div>
-        <div class="absolute right-[15%] top-[5%] size-[400px] rounded-full border border-white opacity-5" aria-hidden="true"></div>
-        <div class="absolute bottom-[10%] left-[10%] grid gap-4 opacity-20" aria-hidden="true">
-          <div class="h-4 w-24 rounded bg-white/20"></div>
-          <div class="h-4 w-32 rounded bg-white/20"></div>
-          <div class="h-4 w-16 rounded bg-white/20"></div>
-        </div>
-        <div class="container relative z-10 mx-auto px-8 lg:px-16">
-          <h1 class="text-[2.5rem] font-bold leading-tight text-white sm:text-[68px]">{about.hero.title}</h1>
-        </div>
-      </div>
-      <nav class="bg-[#F8F9FA] px-8 py-5 text-[15px] lg:px-16" aria-label="Breadcrumb">
-        <a class="text-[#ef3e4a] hover:underline" href="/">{about.hero.breadcrumb === 'About us' ? 'Home' : about.hero.breadcrumb}</a>
-        <span class="mx-2 text-gray-400" aria-hidden="true">/</span>
-        <span class="text-[#3E4A5C]" aria-current="page">About us</span>
-      </nav>
+  <section class="about-hero relative flex h-[350px] w-full items-center overflow-hidden rounded-b-[30px] shadow-lg md:h-[400px]" aria-label="About banner">
+    <div class="relative z-10 mx-auto w-full max-w-7xl px-6 md:px-20">
+      <h1 class="text-5xl font-bold leading-tight text-white md:text-[68px]">{about.hero.title}</h1>
     </div>
-  </div>
+  </section>
 
-  <section class="mx-auto max-w-7xl px-6 py-12 lg:px-16">
-    <div class="flex flex-col items-start gap-16 lg:flex-row">
-      <div class="relative w-full pb-12 lg:w-5/12">
-        <img class="relative z-10 h-[600px] w-[90%] rounded-[32px] object-cover shadow-sm" src={about.intro.mainImage} alt={about.intro.mainAlt} width="1024" height="1536" loading="lazy" decoding="async" />
-        <img class="absolute -bottom-6 right-0 z-20 h-[280px] w-[70%] rounded-[32px] border-[12px] border-white object-cover shadow-md" src={about.intro.secondaryImage} alt={about.intro.secondaryAlt} width="850" height="930" loading="lazy" decoding="async" />
-      </div>
+  <nav class="mb-20 w-full bg-[#F9FAFB] px-6 py-4 md:px-20" aria-label="Breadcrumb">
+    <div class="mx-auto max-w-7xl text-sm">
+      <a class="font-medium text-[#ef3e4a] hover:underline" href="/">Home</a>
+      <span class="mx-2 text-gray-400" aria-hidden="true">/</span>
+      <span class="text-gray-600" aria-current="page">{about.hero.breadcrumb}</span>
+    </div>
+  </nav>
 
-      <div class="w-full pt-4 lg:w-7/12">
-        <p class="mb-6"><span class="badge-outline uppercase">// {about.intro.badge}</span></p>
-        <h2 class="mb-8 text-4xl font-bold leading-[1.1] text-[var(--link)] sm:text-[52px]" set:html={about.intro.title} />
-        <div class="mb-8 text-[17px] leading-relaxed text-[#8f91ab]">
-          {about.intro.paragraphs.map((paragraph) => <p class="mb-6 last:mb-0">{paragraph}</p>)}
+  <main>
+    <!-- Intro: image left / text right -->
+    <section class="mx-auto mb-24 max-w-7xl px-6 md:px-12">
+      <div class="flex flex-col items-stretch gap-16 lg:flex-row">
+        <div class="w-full lg:w-5/12">
+          <img class="fade-up d1 h-auto w-full rounded-[16px] object-cover" src={about.intro.mainImage} alt={about.intro.mainAlt} width="1024" height="1536" loading="lazy" decoding="async" />
         </div>
+        <div class="w-full lg:w-7/12">
+          <p class="mb-6 fade-up d3"><span class="badge-outline uppercase">// {about.intro.badge}</span></p>
+          <h2 class="mb-8 text-4xl font-bold leading-[1.1] text-[var(--link)] sm:text-[52px] fade-up d3" set:html={about.intro.title} />
+          <div class="mb-8 text-[17px] leading-relaxed text-[#8f91ab] fade-up d4">
+            {about.intro.paragraphs.map((paragraph) => <p class="mb-6 last:mb-0">{paragraph}</p>)}
+          </div>
+        </div>
+      </div>
+    </section>
 
-        <div class="mt-12 grid grid-cols-2 gap-6 md:grid-cols-4">
-          {about.intro.features.map((feature) => (
-            <div class="text-center">
-              <div class="feature-icon-box"><img class="size-12" src={feature.icon} alt="" width="48" height="48" loading="lazy" decoding="async" /></div>
-              <h3 class="text-sm font-semibold text-[#3E4A5C]">{feature.title}</h3>
+    <!-- Our approach: three highlight cards -->
+    <section class="mb-24 bg-[#F8F9FA] px-6 py-20 md:px-12">
+      <div class="mx-auto max-w-7xl">
+        <div class="mb-16 text-center">
+          <h2 class="mx-auto max-w-3xl text-4xl font-bold leading-tight text-[var(--link)] fade-up d1" set:html={about.approach.title} />
+        </div>
+        <div class="grid grid-cols-1 gap-8 md:grid-cols-3">
+          {about.approach.highlights.map((highlight) => (
+            <div class="approach-card fade-up d3">
+              <h3 class="text-lg font-bold text-[var(--link)]">{highlight.title}</h3>
+              <span class="approach-divider" aria-hidden="true"></span>
+              <p class="m-0 text-[15px] leading-relaxed text-[#8f91ab]">{highlight.caption}</p>
             </div>
           ))}
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section class="mt-12 bg-gray-50 py-20">
-    <div class="mx-auto flex max-w-7xl flex-col-reverse items-center gap-16 px-6 lg:flex-row lg:px-16">
-      <div class="w-full lg:w-1/2">
-        <p class="mb-6"><span class="badge-outline">// {about.technology.badge}</span></p>
-        <h2 class="mb-6 text-4xl font-bold text-[var(--link)]">{about.technology.title}</h2>
-        <p class="mb-8 text-lg leading-relaxed text-[#8f91ab]">{about.technology.description}</p>
-        <div class="mt-8 flex flex-wrap gap-6">
-          {about.technology.highlights.map((highlight) => (
-            <div class="flex items-start gap-4">
-              <div class="rounded-xl bg-white p-3 shadow-sm"><img class="size-10" src={highlight.icon} alt="" width="40" height="40" loading="lazy" decoding="async" /></div>
-              <div>
-                <h3 class="font-bold text-[#3E4A5C]">{highlight.title}</h3>
-                <p class="mt-1 text-sm text-[#8f91ab]">{highlight.caption}</p>
+    <!-- Vision & mission -->
+    <section class="mx-auto mb-24 max-w-7xl px-6 md:px-12">
+      <div class="flex flex-col items-center gap-16 lg:flex-row">
+        <div class="w-full lg:w-1/2">
+          <img class="fade-up d2 mx-auto w-full max-w-md rounded-[16px] object-cover" src={about.visionMission.image} alt={about.visionMission.imageAlt} width="850" height="930" loading="lazy" decoding="async" />
+        </div>
+        <div class="grid w-full gap-10 lg:w-1/2">
+          <div class="flex items-start gap-6 fade-up d8">
+            <img class="size-14 shrink-0" src={about.visionMission.vision.icon} alt="" width="200" height="200" loading="lazy" decoding="async" />
+            <div>
+              <h3 class="mb-2 text-2xl font-bold text-[var(--link)]">{about.visionMission.vision.title}</h3>
+              <p class="m-0 text-[15px] leading-relaxed text-[#8f91ab]">{about.visionMission.vision.caption}</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-6 fade-up d6">
+            <img class="size-14 shrink-0" src={about.visionMission.mission.icon} alt="" width="200" height="200" loading="lazy" decoding="async" />
+            <div>
+              <h3 class="mb-2 text-2xl font-bold text-[var(--link)]">{about.visionMission.mission.title}</h3>
+              <p class="m-0 text-[15px] leading-relaxed text-[#8f91ab]">{about.visionMission.mission.caption}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Integrated capability framework -->
+    <section class="mb-24 px-6 md:px-12">
+      <div class="mx-auto max-w-7xl">
+        <div class="mb-16 text-center">
+          <p class="mb-6 fade-up d1"><span class="badge-outline uppercase">// {about.capability.badge}</span></p>
+          <h2 class="mx-auto max-w-3xl text-4xl font-bold leading-tight text-[var(--link)] fade-up d1" set:html={about.capability.title} />
+        </div>
+
+        <div class="grid grid-cols-1 items-center gap-10 lg:grid-cols-3 lg:gap-8">
+          <div class="grid gap-10">
+            {about.capability.cards.slice(0, 3).map((card) => (
+              <div class="capability-card fade-up-left d3">
+                <img class="size-12 wobble-skew" src={card.icon} alt="" width="60" height="60" loading="lazy" decoding="async" />
+                <h3 class="mb-2 mt-4 text-lg font-bold text-[var(--link)]">{card.title}</h3>
+                <p class="m-0 text-[15px] leading-relaxed text-[#8f91ab]">{card.caption}</p>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
+
+          <div class="order-first flex items-center justify-center lg:order-none">
+            <img class="fade-up-slide mx-auto w-full max-w-xs object-contain" src={about.capability.image} alt={about.capability.imageAlt} width="688" height="713" loading="lazy" decoding="async" />
+          </div>
+
+          <div class="grid gap-10">
+            {about.capability.cards.slice(3).map((card) => (
+              <div class="capability-card fade-up-left d3">
+                <img class="size-12 wobble-skew" src={card.icon} alt="" width="60" height="60" loading="lazy" decoding="async" />
+                <h3 class="mb-2 mt-4 text-lg font-bold text-[var(--link)]">{card.title}</h3>
+                <p class="m-0 text-[15px] leading-relaxed text-[#8f91ab]">{card.caption}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
-      <div class="w-full lg:w-1/2">
-        <img class="mx-auto w-full max-w-md object-contain" src={about.technology.image} alt={about.technology.imageAlt} width="688" height="713" loading="lazy" decoding="async" />
-      </div>
-    </div>
-  </section>
+    </section>
+  </main>
 
   <FloatingWhatsApp />
 </BaseLayout>
 
 <style is:global>
   .about-hero {
-    background-color: #1a2235;
+    background-color: #2c3a55;
     background-image:
-      radial-gradient(circle at right center, rgb(255 255 255 / 0.05) 0%, transparent 40%),
-      radial-gradient(circle at left center, rgb(255 255 255 / 0.03) 0%, transparent 50%);
+      url('/images/home/hero.webp'),
+      radial-gradient(circle at 70% 50%, rgb(255 255 255 / 0.05) 0%, transparent 50%),
+      radial-gradient(circle at 30% 80%, rgb(255 255 255 / 0.03) 0%, transparent 40%);
+    background-blend-mode: overlay, normal, normal;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+  .about-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgb(44 58 85 / 0.92);
   }
   .badge-outline {
     border: 1px solid var(--highlight);
@@ -97,13 +147,41 @@ import { about } from '@/data/about';
     letter-spacing: 0.05em;
     padding: 0.5rem 1.25rem;
   }
-  .feature-icon-box {
-    align-items: center;
-    background: #f8f9fa;
-    border-radius: 0.75rem;
-    display: inline-flex;
-    justify-content: center;
-    margin-bottom: 0.9375rem;
-    padding: 1.25rem;
+  .approach-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 2rem;
   }
+  .approach-divider {
+    background: var(--highlight);
+    display: inline-block;
+    height: 3px;
+    width: 3rem;
+    margin: 0.9rem 0 1rem;
+    border-radius: 999px;
+  }
+  .capability-card { text-align: left; }
+
+  /* Source animations: card icons wobble on hover */
+  @keyframes wobble-skew {
+    16.65% { transform: skew(-12deg); }
+    33.3% { transform: skew(10deg); }
+    49.95% { transform: skew(-6deg); }
+    66.6% { transform: skew(4deg); }
+    83.25% { transform: skew(-2deg); }
+    100% { transform: skew(0); }
+  }
+  .wobble-skew:hover { animation: wobble-skew 1s ease-in-out; }
+
+  @keyframes fade-up-left {
+    from { opacity: 0; transform: translateX(-2rem); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+  .fade-up-left { animation: fade-up-left 2s ease both; }
+
+  @keyframes fade-up-slide {
+    from { opacity: 0; transform: translateY(4rem); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .fade-up-slide { animation: fade-up-slide 2s ease both; }
 </style>

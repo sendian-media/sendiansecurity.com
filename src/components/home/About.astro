@@ -10,12 +10,12 @@ import ActionLink from '@/components/ui/ActionLink.astro';
       <img class="media-frame w-full shadow-lg" src={home.about.image} alt="Security systems specialist at work" width="800" height="1000" loading="lazy" decoding="async" />
     </div>
     <div class="w-full md:w-1/2">
-      <Eyebrow>About us</Eyebrow>
-      <h2 class="section-title">{home.about.title}</h2>
-      <div class="mb-8 grid gap-6 text-gray-600 leading-relaxed">
+      <Eyebrow class="fade-up d1">About us</Eyebrow>
+      <h2 class="section-title fade-up d2">{home.about.title}</h2>
+      <div class="mb-8 grid gap-6 text-gray-600 leading-relaxed fade-up d3">
         {home.about.paragraphs.map((paragraph) => <p class="m-0">{paragraph}</p>)}
       </div>
-      <ActionLink href="/contact" badge>Learn more</ActionLink>
+      <ActionLink href="/about" badge class="fade-up d8">Learn more</ActionLink>
     </div>
   </div>
 </section>

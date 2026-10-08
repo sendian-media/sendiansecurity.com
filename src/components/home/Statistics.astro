@@ -1,17 +1,68 @@
 ---
-import { home } from '@/data/home';
+const counters = [
+  { to: '250', delimiter: '', suffix: '+', label: 'Projects delivered' },
+  { to: '10000', delimiter: ',', suffix: '+', label: 'Devices deployed' },
+  { to: '24', delimiter: '', suffix: '/7', label: 'Operational support' },
+  { to: '750', delimiter: '', suffix: 'M+', label: 'QAR value delivered' },
+];
+const format = (value: string, delimiter: string) => (delimiter ? Number(value).toLocaleString('en-US') : value);
 ---
 
 <section class="border-y border-[var(--line)] bg-[#f9fafb] py-16">
   <div class="container mx-auto grid grid-cols-2 gap-8 px-8 text-center md:grid-cols-4">
-    {home.stats.map((stat) => (
-      <div>
+    {counters.map((stat) => (
+      <div class="fade-up d2">
         <p class="m-0 flex items-baseline justify-center text-[2.5rem] font-bold text-[var(--brand-dark)] sm:text-[49px]">
-          {stat.value}
-          {stat.suffix && <span class="text-[2rem] text-[var(--brand)] sm:text-4xl">{stat.suffix}</span>}
+          <span class="stat-counter" data-to={stat.to} data-delimiter={stat.delimiter}>{format(stat.to, stat.delimiter)}</span>
+          {stat.suffix && <span class="stat-suffix text-[2rem] sm:text-4xl">{stat.suffix}</span>}
         </p>
         <p class="mt-2 text-sm font-bold uppercase text-gray-800">{stat.label}</p>
       </div>
     ))}
   </div>
 </section>
+
+<script>
+  const counters = document.querySelectorAll<HTMLElement>('.stat-counter');
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const render = (el: HTMLElement, value: number, delimiter: string) => {
+    el.textContent = delimiter ? value.toLocaleString('en-US') : String(value);
+  };
+
+  const animate = (el: HTMLElement) => {
+    const to = Number(el.dataset.to ?? '0');
+    const delimiter = el.dataset.delimiter ?? '';
+    if (reduced || !Number.isFinite(to)) {
+      render(el, to, delimiter);
+      return;
+    }
+    const duration = 2000;
+    const start = performance.now();
+    el.textContent = '0';
+    const step = (now: number) => {
+      const progress = Math.min((now - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      render(el, Math.round(to * eased), delimiter);
+      if (progress < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  };
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      for (const entry of entries) {
+        if (entry.isIntersecting) {
+          observer.unobserve(entry.target);
+          animate(entry.target as HTMLElement);
+        }
+      }
+    },
+    { threshold: 0.4 },
+  );
+  counters.forEach((el) => observer.observe(el));
+</script>
+
+<style>
+  .stat-suffix { background: linear-gradient(216deg, #1c2e4a, #427dd5); background-clip: text; -webkit-background-clip: text; color: transparent; }
+</style>

@@ -6,13 +6,13 @@ import ActionLink from '@/components/ui/ActionLink.astro';
 
 <section id="projects" class="scroll-mt-20 bg-white py-20">
   <div class="container mx-auto px-8 text-center">
-    <Eyebrow>Our work</Eyebrow>
-    <h2 class="section-title">Our portfolio of <span class="text-[var(--brand)]">Excellence</span><br />In Security</h2>
+    <Eyebrow class="fade-up d1">Our work</Eyebrow>
+    <h2 class="section-title fade-up d2">Our portfolio of <span class="text-[var(--brand)]">Excellence</span><br />In Security</h2>
   </div>
 
   <div class="container mx-auto mt-12 grid grid-cols-2 gap-4 px-8 md:grid-cols-4">
-    {home.projects.map((project) => (
-      <article class="group text-center">
+    {home.projects.map((project, index) => (
+      <article class:list={['group text-center', 'fade-up', `d${(index % 4) + 3}`]}>
         <div class="mb-4 aspect-[3/2] overflow-hidden rounded-[10px]">
           <img class="size-full object-cover transition duration-500 group-hover:scale-110 motion-reduce:transition-none" src={project.image} alt={project.alt} width="1000" height="650" loading="lazy" decoding="async" />
         </div>
@@ -21,5 +21,5 @@ import ActionLink from '@/components/ui/ActionLink.astro';
     ))}
   </div>
 
-  <p class="mt-12 text-center"><ActionLink href="/projects" badge>View all projects</ActionLink></p>
+  <p class="mt-12 text-center fade-up d8"><ActionLink href="/projects" badge>View all projects</ActionLink></p>
 </section>

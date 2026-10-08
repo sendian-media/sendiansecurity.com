@@ -14,27 +14,27 @@ import MailIcon from '@/components/ui/MailIcon.astro';
   <div class="camera-corner camera-corner--br" aria-hidden="true"></div>
 
   <p class="absolute left-10 top-10 m-0 hidden items-center gap-2 font-mono text-sm md:flex" aria-hidden="true">
-    <span class="size-3 animate-pulse rounded-full bg-red-500"></span>Rec
+    <span class="rec-dot size-3 rounded-full bg-red-500"></span>Rec
   </p>
   <p class="absolute right-10 top-10 m-0 hidden font-mono text-sm md:block" aria-hidden="true">19:20:00</p>
 
   <div class="container relative z-10 mx-auto mt-12 flex items-center justify-between px-10">
     <div class="max-w-2xl">
-      <p class="mb-6 inline-block rounded-full border border-white/30 bg-black/10 px-4 py-1.5 text-sm uppercase tracking-wider backdrop-blur-sm m-0">{home.hero.eyebrow}</p>
-      <h1 class="mb-6 text-[2.5rem] font-bold uppercase leading-tight tracking-normal sm:text-[49px]">{home.hero.title}</h1>
-      <p class="mb-8 text-lg leading-relaxed text-gray-200">{home.hero.description}</p>
-      <div class="flex flex-wrap gap-4">
-        <ActionLink href="/contact" badge>Request a consultation</ActionLink>
-        <ActionLink href="#services" variant="secondary" class="!px-8">Explore our solutions</ActionLink>
+      <p class="mb-6 inline-block rounded-full border border-white/30 bg-black/10 px-4 py-1.5 text-sm uppercase tracking-wider backdrop-blur-sm m-0 fade-up d1">{home.hero.eyebrow}</p>
+      <h1 class="mb-6 text-[2.5rem] font-bold uppercase leading-tight tracking-normal sm:text-[49px] fade-up">{home.hero.title}</h1>
+      <p class="mb-8 text-lg leading-relaxed text-gray-200 fade-up d6">{home.hero.description}</p>
+      <div class="flex flex-wrap gap-4 fade-up d8">
+        <ActionLink href="/about" badge>Request a consultation</ActionLink>
+        <ActionLink href="/services" variant="secondary">Explore our solutions</ActionLink>
       </div>
     </div>
 
     <div class="hidden flex-col gap-4 lg:flex">
-      <a class="contact-card w-80" href={`tel:${site.phone.replaceAll(' ', '')}`}>
+      <a class="contact-card fade-right d5 w-80" href={`tel:${site.phone.replaceAll(' ', '')}`}>
         <span class="contact-card__icon"><PhoneIcon /></span>
         <span><span class="contact-card__label block">Call Us</span><b class="font-semibold">{site.phone}</b></span>
       </a>
-      <a class="contact-card w-80" href={`mailto:${site.email}`}>
+      <a class="contact-card fade-right d7 w-80" href={`mailto:${site.email}`}>
         <span class="contact-card__icon"><MailIcon /></span>
         <span><span class="contact-card__label block">Email</span><b class="font-semibold">{site.email}</b></span>
       </a>

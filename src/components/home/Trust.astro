@@ -7,13 +7,13 @@ import Eyebrow from './Eyebrow.astro';
   <div class="container mx-auto max-w-6xl px-8">
     <div class="relative overflow-hidden rounded-[20px] bg-[var(--brand-gray)] p-12">
       <header class="relative z-10 mb-12 text-center">
-        <Eyebrow>Our feature</Eyebrow>
-        <h2 class="section-title">Built on <span class="text-[var(--brand)]">Trusted</span><br />Foundations</h2>
+        <Eyebrow class="fade-up d1">Our feature</Eyebrow>
+        <h2 class="section-title fade-up d2">Built on <span class="text-[var(--brand)]">Trusted</span><br />Foundations</h2>
       </header>
 
       <div class="relative z-10 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
-        {home.trust.map((item) => (
-          <article class="rounded-[10px] border border-gray-100 bg-white p-6 text-center shadow-sm">
+        {home.trust.map((item, index) => (
+          <article class:list={['rounded-[10px] border border-gray-100 bg-white p-6 text-center shadow-sm', `fade-up d${index + 3}`]}>
             <img class="mx-auto mb-6 h-20 w-auto object-contain" src={item.image} alt={item.alt} width="600" height="360" loading="lazy" decoding="async" />
             <h3 class="mb-2 text-sm font-bold text-[var(--brand-dark)]">{item.title}</h3>
             <p class="text-xs leading-relaxed text-gray-500">{item.description}</p>
