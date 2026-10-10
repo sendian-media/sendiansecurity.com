@@ -2,28 +2,214 @@
 import { navigation, site } from '@/data/site';
 import ChevronIcon from '@/components/ui/ChevronIcon.astro';
 import ActionLink from '@/components/ui/ActionLink.astro';
+
 const currentPath = Astro.url.pathname;
+const isActive = (href: string) =>
+  href === '/' ? currentPath === '/' : currentPath === href || currentPath.startsWith(`${href}/`);
 ---
 
-<header class="sticky top-0 z-50 flex w-full items-center justify-between bg-white px-8 py-4 shadow-sm">
-  <a class="block" href="/" aria-label={`${site.name} home`}>
-    <img class="h-12 w-auto" src="/images/home/brand-logo.png" alt="" width="1080" height="1080" />
+<header class="header sticky top-0 z-50 flex w-full items-center justify-between bg-white px-6 shadow-sm md:px-8">
+  <a class="flex shrink-0 items-center py-5" href="/" aria-label={`${site.name} home`}>
+    <img
+      class="h-9 w-auto md:h-[52px]"
+      src="/images/home/logo-header.png"
+      alt=""
+      width="864"
+      height="291"
+      decoding="async"
+    />
   </a>
-  <nav class="hidden md:block" aria-label="Primary navigation">
-    <ul class="m-0 flex list-none items-center gap-8 p-0">
-      {navigation.map(({ href, label }) => (
-        <li>
+  <nav class="hidden self-stretch md:block" aria-label="Primary navigation">
+    <ul class="m-0 flex h-full list-none items-center gap-8 p-0 xl:gap-10">
+      {navigation.map(({ href, label, submenu }) => (
+        <li class:list={["header-nav-item relative", submenu && "header-nav-item--parent"]}>
           <a
-            class:list={["flex items-center text-[15px] font-medium", currentPath === href ? 'text-[var(--brand)]' : 'text-gray-700 hover:text-[var(--brand)]']}
-            aria-current={currentPath === href ? 'page' : undefined}
+            class:list={["flex items-center text-[18px] font-medium", isActive(href) ? 'text-[var(--brand)]' : 'text-[#3e4a5c] hover:text-[var(--brand)]']}
+            aria-current={isActive(href) ? 'page' : undefined}
+            aria-haspopup={submenu ? 'true' : undefined}
+            aria-expanded={submenu ? 'false' : undefined}
             href={href}
           >
             {label}
-            {href === '/services' && <ChevronIcon class="ml-1 h-3 w-3" />}
+            {submenu && <ChevronIcon class="submenu-chevron ml-1.5 h-3 w-3" />}
           </a>
+          {submenu && (
+            <ul class="header-dropdown" aria-label={`${label} submenu`}>
+              {submenu.map(({ href: subHref, label: subLabel }) => (
+                <li>
+                  <a
+                    class:list={["header-dropdown-link", isActive(subHref) && 'is-current']}
+                    aria-current={isActive(subHref) ? 'page' : undefined}
+                    href={subHref}
+                  >
+                    {subLabel}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          )}
         </li>
       ))}
     </ul>
   </nav>
-  <ActionLink variant="header" href="/contact">Vendor registration</ActionLink>
+  <ActionLink variant="header" badge class="header-cta" href="/contact">Vendor registration</ActionLink>
 </header>
+
+<style>
+  /* Menu items stretch the full header height (source: .navbar-nav height:100%),
+     so the dropdown panel opens flush with the bar's bottom edge. */
+  .header-nav-item {
+    align-self: stretch;
+    display: flex;
+    align-items: center;
+  }
+
+  /* Header CTA: same gradient pill + white arrow chip as the home buttons,
+     sized down 10px from the shared .btn base (owner request);
+     a.btn--header out-specifies the shared .btn base regardless of load order */
+  :global(a.btn--header) {
+    background: linear-gradient(88deg, #2a3f5f 0%, #427dd5 100%);
+    color: white;
+    font-size: 1rem;
+    line-height: 1.375rem;
+    padding: 7px 7px 7px 25px;
+  }
+
+  :global(a.btn--header .btn__badge) {
+    height: 2.25rem;
+    width: 2.25rem;
+  }
+
+  :global(a.btn--header:hover) {
+    background: linear-gradient(88deg, #2a3f5f 0%, #427dd5 100%);
+    opacity: 0.92;
+  }
+
+  /* Below sm the oversized CTA and logo do not share a 360–480px row (the
+     source shows a logo-only bar with an offcanvas hamburger there). */
+  @media (max-width: 39.9375rem) {
+    :global(a.btn.header-cta) {
+      display: none;
+    }
+  }
+
+  /* Invisible bridge so hover survives the gap between the link and the panel */
+  .header-nav-item--parent::after {
+    content: '';
+    position: absolute;
+    inset: 100% 0 auto 0;
+    height: 15px;
+  }
+
+  /* Source (sendiansecurity.com PGS theme): white panel, radius 7, soft shadow,
+     min-width 260, slides down from under the link on hover/focus */
+  .header-dropdown {
+    position: absolute;
+    left: -20px;
+    top: 100%;
+    z-index: 30;
+    background: #fff;
+    border-radius: 7px;
+    box-shadow: 0 10px 50px rgb(0 0 0 / 0.1);
+    list-style-type: none;
+    margin: 15px 0 0;
+    min-width: 260px;
+    padding: 20px 0;
+    visibility: hidden;
+    opacity: 0;
+    transition: all 0.3s ease-in-out;
+  }
+
+  .header-nav-item:hover > .header-dropdown,
+  .header-nav-item:focus-within > .header-dropdown,
+  .header-nav-item.is-open > .header-dropdown {
+    visibility: visible;
+    opacity: 1;
+    margin-top: 0;
+  }
+
+  .header-nav-item:hover > :is(a) > .submenu-chevron,
+  .header-nav-item.is-open > :is(a) > .submenu-chevron {
+    transform: rotate(180deg);
+  }
+
+  .submenu-chevron {
+    transition: transform 0.3s ease-in-out;
+  }
+
+  .header-dropdown-link {
+    color: #3e4a5c;
+    display: flex;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 28px;
+    padding: 5px 25px;
+    position: relative;
+    transition: all 0.3s ease-in-out;
+    white-space: nowrap;
+  }
+
+  /* Source hover: link tucks right, colour deepens, 50px rule grows underneath */
+  .header-dropdown-link::before {
+    content: '';
+    position: absolute;
+    left: 25px;
+    bottom: 2px;
+    height: 1px;
+    width: 0;
+    background-color: #005a9e;
+    transition: width 0.3s ease-in-out;
+  }
+
+  .header-dropdown li:hover > .header-dropdown-link,
+  .header-dropdown-link:focus-visible,
+  .header-dropdown-link.is-current {
+    color: #005a9e;
+    padding-left: 35px;
+  }
+
+  .header-dropdown li:hover > .header-dropdown-link::before,
+  .header-dropdown-link:focus-visible::before,
+  .header-dropdown-link.is-current::before {
+    width: 50px;
+  }
+</style>
+
+<script>
+  // Touch devices have no hover: toggle the panel on tap. Also close on
+  // outside tap and Escape so keyboard users can dismiss it.
+  document.querySelectorAll<HTMLAnchorElement>('[aria-haspopup="true"]').forEach((trigger) => {
+    const item = trigger.closest('li');
+    if (!item) return;
+    const setOpen = (open: boolean) => {
+      item.classList.toggle('is-open', open);
+      trigger.setAttribute('aria-expanded', String(open));
+    };
+    trigger.addEventListener('click', (event) => {
+      // Let real navigation through on devices with hover support.
+      if (window.matchMedia('(hover: hover)').matches) return;
+      event.preventDefault();
+      setOpen(!item.classList.contains('is-open'));
+    });
+  });
+
+  const parentItems = Array.from(document.querySelectorAll('.header-nav-item--parent'));
+  document.addEventListener('click', (event) => {
+    if (!(event.target instanceof Node)) return;
+    parentItems.forEach((item) => {
+      if (!item.contains(event.target as Node)) {
+        item.classList.remove('is-open');
+        item.querySelector('[aria-haspopup="true"]')?.setAttribute('aria-expanded', 'false');
+      }
+    });
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key !== 'Escape') return;
+    const openItem = document.querySelector('.header-nav-item.is-open');
+    if (!openItem) return;
+    openItem.classList.remove('is-open');
+    openItem.querySelector('[aria-haspopup="true"]')?.setAttribute('aria-expanded', 'false');
+    (openItem.querySelector('a') as HTMLElement | null)?.focus();
+  });
+</script>

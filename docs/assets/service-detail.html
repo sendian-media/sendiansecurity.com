@@ -1,0 +1,695 @@
+<html lang="en"><head><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM%20Sans:wght@100;200;300;400;500;600;700;800;900&amp;display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Wix%20Madefor%20Display:wght@100;200;300;400;500;600;700;800;900&amp;display=swap"><script>window.__AIFX_MAX_DPR__=1.25;window.__AIFX_FPS_CAP__=30;</script>
+        <script>
+            (function() {
+                function tuneImage(img) {
+                    try {
+                        img.loading = 'lazy';
+                        img.decoding = 'async';
+                        img.fetchPriority = 'low';
+                    } catch (_) {}
+                }
+                function tuneAllImages() {
+                    document.querySelectorAll('img').forEach(tuneImage);
+                }
+                if (document.readyState === 'loading') {
+                    document.addEventListener('DOMContentLoaded', tuneAllImages, { once: true });
+                } else {
+                    tuneAllImages();
+                }
+            })();
+        </script>
+       
+        <script>
+            (function() {
+                const OriginalIntersectionObserver = window.IntersectionObserver;
+                if (!OriginalIntersectionObserver) return;
+                window.__editor_force_intersection_enabled = false;
+                function shouldForceIntersection() {
+                    return window.__editor_force_intersection_enabled === true;
+                }
+                window.IntersectionObserver = function(callback, options) {
+                    const observer = new OriginalIntersectionObserver(function(entries, obs) {
+                        if (!shouldForceIntersection()) {
+                            callback(entries, obs);
+                            return;
+                        }
+                        // Force all entries to appear as intersecting
+                        const modifiedEntries = entries.map(entry => ({
+                            target: entry.target,
+                            isIntersecting: true,
+                            intersectionRatio: 1,
+                            boundingClientRect: entry.boundingClientRect,
+                            intersectionRect: entry.intersectionRect,
+                            rootBounds: entry.rootBounds,
+                            time: entry.time,
+                        }));
+                        callback(modifiedEntries, obs);
+                    }, options);
+
+                    // Also immediately trigger for any observed element
+                    const originalObserve = observer.observe.bind(observer);
+                    observer.observe = function(target) {
+                        originalObserve(target);
+                        // Trigger callback immediately with the element as intersecting
+                        setTimeout(() => {
+                            if (!shouldForceIntersection()) return;
+                            callback([{
+                                target: target,
+                                isIntersecting: true,
+                                intersectionRatio: 1,
+                                boundingClientRect: target.getBoundingClientRect(),
+                                intersectionRect: target.getBoundingClientRect(),
+                                rootBounds: null,
+                                time: performance.now(),
+                            }], observer);
+                        }, 0);
+                    };
+
+                    return observer;
+                };
+                window.IntersectionObserver.prototype = OriginalIntersectionObserver.prototype;
+            })();
+        </script>
+       
+        <script>
+            (function() {
+                function hasTailwindScript() {
+                    return !!document.querySelector('script[src*="cdn.tailwindcss.com"], script[src*="@tailwindcss/browser"]');
+                }
+                function hasTailwindConfig() {
+                    return /tailwind\s*\.\s*config/i.test(document.documentElement.innerHTML);
+                }
+                function hasLikelyTailwindClasses() {
+                    var matches = 0;
+                    var classAttrs = document.querySelectorAll('[class]');
+                    for (var i = 0; i < classAttrs.length; i++) {
+                        var tokens = String(classAttrs[i].getAttribute('class') || '').split(/\s+/);
+                        for (var j = 0; j < tokens.length; j++) {
+                            var token = tokens[j].split(':').pop().replace(/^!/, '');
+                            if (
+                                /^(flex|grid|block|inline-block|inline-flex|hidden|relative|absolute|fixed|sticky|container|sr-only|antialiased|isolate)$/.test(token) ||
+                                /^-?(m|p)([trblxy])?-(\d|px|auto|\[)/.test(token) ||
+                                /^(text|bg|border|rounded|shadow|ring|divide|outline|decoration|underline|font|leading|tracking|w|h|min-w|max-w|min-h|max-h|size|z|top|right|bottom|left|inset|translate|scale|rotate|skew|origin|opacity|overflow|object|aspect|gap|space|items|justify|content|self|place|col|row|order|duration|delay|ease|animate|backdrop|blur|brightness|contrast|drop-shadow|grayscale|hue-rotate|invert|saturate|sepia|from|via|to|prose)-/.test(token)
+                            ) {
+                                matches++;
+                                if (matches >= 3) return true;
+                            }
+                        }
+                    }
+                    return false;
+                }
+                function ensureTailwind() {
+                    if (hasTailwindScript() || document.getElementById('__editor_tailwind_fallback')) return;
+                    if (!hasTailwindConfig() && !hasLikelyTailwindClasses()) return;
+                    var script = document.createElement('script');
+                    script.id = '__editor_tailwind_fallback';
+                    script.src = 'https://cdn.tailwindcss.com';
+                    document.head.appendChild(script);
+                }
+                if (document.readyState === 'loading') {
+                    document.addEventListener('DOMContentLoaded', ensureTailwind, { once: true });
+                } else {
+                    ensureTailwind();
+                }
+            })();
+        </script>
+       
+        <script>
+            (function() {
+                // console.log("[Iframe] Script injected and running");
+                document.addEventListener('error', function(e) {
+                    // console.log("[Iframe] Error event captured:", e);
+                    if (e.target && e.target.tagName) {
+                         // console.log("[Iframe] Target tag:", e.target.tagName);
+                    }
+                    
+                    if (e.target && e.target.tagName.toLowerCase() === 'img') {
+                        // console.log("[Iframe] Image error detected:", e.target.src);
+                        const img = e.target;
+                        const alt = img.alt;
+                        if (alt && !img.dataset.retried) {
+                            // console.log("[Iframe] Posting IMAGE_ERROR for:", alt);
+                            img.dataset.retried = 'true';
+                            window.parent.postMessage({
+                                type: 'IMAGE_ERROR',
+                                pageId: "ba4d7b1b-a468-4015-a58c-83481fa9ee8b",
+                                alt: alt,
+                                src: img.src
+                            }, '*');
+                        } else {
+                            // console.log("[Iframe] Skipping IMAGE_ERROR (no alt or already retried):", { alt, retried: img.dataset.retried });
+                        }
+                    }
+                }, true);
+
+                window.addEventListener('message', function(e) {
+                    if (e.data?.type === 'IMAGE_REPLACED' && e.data?.newSrc) {
+                        // console.log("[Iframe] Received IMAGE_REPLACED:", e.data);
+                        const images = document.getElementsByTagName('img');
+                        for (let img of images) {
+                            if (img.src === e.data.originalSrc || (img.dataset.retried === 'true' && !img.complete)) {
+                                // Stash the original src so the stream-end
+                                // body-innerHTML swap can replay this rewrite
+                                // onto the freshly-parsed <img> nodes. Without
+                                // this, the swap drops our Serper-replaced src
+                                // and the image re-requests on parse, causing
+                                // duplicate Serper calls and visible flicker.
+                                if (!img.dataset.originalSrc) {
+                                    img.dataset.originalSrc = e.data.originalSrc;
+                                }
+                                img.src = e.data.newSrc;
+                            }
+                        }
+                    }
+                });
+            })();
+        </script>
+       
+        <script>
+            (function() {
+                window.__image_debug_v1 = true;
+                if (window.__tailwind_warn_suppressed) return;
+                window.__tailwind_warn_suppressed = true;
+                const originalWarn = console.warn;
+                console.warn = (...args) => {
+                    if (args[0] && typeof args[0] === 'string' && args[0].includes('cdn.tailwindcss.com')) {
+                        return;
+                    }
+                    originalWarn.apply(console, args);
+                };
+            })();
+        </script>
+        <script>
+            (function() {
+                 // Removed Link Editing Interception
+            })();
+        </script>
+        <style>
+            .h-screen { min-height: 800px !important; height: auto !important; }
+            .min-h-screen { min-height: 800px !important; }
+            .editor-canvas-expanded-scroll { overflow: visible !important; }
+            
+            
+            html, body {
+                min-height: 800px !important;
+                height: auto !important;
+                width: 100% !important;
+                overflow: auto !important;
+                -ms-overflow-style: none;
+                scrollbar-width: none;
+            }
+            ::-webkit-scrollbar {
+                display: none;
+            }
+            .editor-link-hover {
+                outline: 2px solid #3b82f6 !important;
+                cursor: pointer !important;
+            }
+            
+            /* Expand legacy web layouts instead of making the editor iframe an
+               internal scroller. App canvases intentionally preserve authored
+               percentage/fixed heights for preview parity. */
+            .flex > .h-full {
+                height: auto !important;
+                align-self: stretch !important;
+                min-height: 0;
+            }
+            .fixed.h-full,
+            nav.fixed.h-full,
+            aside.fixed.h-full {
+                position: absolute !important;
+            }
+            
+            /* Force visibility on scroll-animation hidden elements */
+            /* These override common patterns used by AOS, ScrollReveal, GSAP, and custom animations */
+            [style*="opacity: 0"],
+            [style*="opacity:0"] {
+                opacity: 1 !important;
+            }
+            [style*="clip-path: inset"],
+            [style*="clip-path:inset"] {
+                clip-path: none !important;
+            }
+            [style*="visibility: hidden"],
+            [style*="visibility:hidden"] {
+                visibility: visible !important;
+            }
+            /* AOS library data attributes */
+            [data-aos] {
+                opacity: 1 !important;
+                transform: none !important;
+                visibility: visible !important;
+            }
+            /* Common animation class patterns */
+            [class*="aos-"],
+            [class*="scroll-"],
+            [class*="reveal"],
+            [class*="fade-"],
+            [class*="slide-"] {
+                opacity: 1 !important;
+                transform: none !important;
+                clip-path: none !important;
+                visibility: visible !important;
+            }
+            /* The editor is a static artifact. Transformed entry animations can
+               permanently enlarge Chrome's document scrollHeight (for example,
+               translateY(30px) leaves a false 30px strip after the animation),
+               so prevent generated animate-* utilities from affecting layout
+               measurement. Production/preview HTML is unchanged. */
+            [class*="animate-"] {
+                animation: none !important;
+                opacity: 1 !important;
+                visibility: visible !important;
+            }
+        </style>
+       
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Security Solutions - SISS</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&amp;family=Wix+Madefor+Display:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              link: '#2C3A55',
+              accent: '#2C3A55',
+              primary: '#8F91AB',
+              secondary: '#3E4A5C',
+              background: '#FFFFFF',
+              textPrimary: '#000000',
+              blue: '#3b82f6',
+              lightBlue: '#4b7cd3' // Used in specific text highlights
+            }
+          },
+          fontFamily: {
+            heading: ['"Wix Madefor Display"', 'sans-serif'],
+            body: ['"DM Sans"', 'sans-serif'],
+          },
+          borderRadius: {
+            'base': '10px',
+            'btn': '50px',
+          }
+        }
+      }
+    }
+  </script>
+  
+  <style>
+    body {
+      font-family: 'DM Sans', sans-serif;
+      color: #000000;
+      background-color: #FFFFFF;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'Wix Madefor Display', sans-serif;
+    }
+    
+    .hero-bg {
+      background: linear-gradient(135deg, #1b263b 0%, #172a45 100%);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .hero-bg::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-image: radial-gradient(circle at 70% 50%, rgba(255,255,255,0.05) 0%, transparent 50%);
+      pointer-events: none;
+    }
+
+    .accordion-content {
+      display: none;
+    }
+    
+    .accordion-item.active .accordion-content {
+      display: flex;
+    }
+    
+    .accordion-item.active .accordion-header {
+      background-color: #4b7cd3;
+      color: white;
+    }
+    
+    .accordion-item.active .icon-arrow {
+      transform: rotate(180deg);
+      color: white;
+    }
+  </style>
+<style>*, ::before, ::after{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }/* ! tailwindcss v3.4.17 | MIT License | https://tailwindcss.com */*,::after,::before{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}::after,::before{--tw-content:''}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;tab-size:4;font-family:ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0;padding:0}legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}.pointer-events-none{pointer-events:none}.fixed{position:fixed}.absolute{position:absolute}.relative{position:relative}.sticky{position:sticky}.inset-0{inset:0px}.bottom-6{bottom:1.5rem}.right-6{right:1.5rem}.top-0{top:0px}.top-24{top:6rem}.z-10{z-index:10}.z-20{z-index:20}.z-50{z-index:50}.mx-2{margin-left:0.5rem;margin-right:0.5rem}.mx-4{margin-left:1rem;margin-right:1rem}.mx-auto{margin-left:auto;margin-right:auto}.-mt-6{margin-top:-1.5rem}.mb-24{margin-bottom:6rem}.mb-4{margin-bottom:1rem}.mb-6{margin-bottom:1.5rem}.mb-8{margin-bottom:2rem}.mt-1{margin-top:0.25rem}.mt-4{margin-top:1rem}.mt-8{margin-top:2rem}.mt-auto{margin-top:auto}.inline-block{display:inline-block}.flex{display:flex}.grid{display:grid}.hidden{display:none}.h-10{height:2.5rem}.h-14{height:3.5rem}.h-auto{height:auto}.min-h-\[800px\]{min-height:800px}.w-10{width:2.5rem}.w-14{width:3.5rem}.w-full{width:100%}.max-w-4xl{max-width:56rem}.max-w-7xl{max-width:80rem}.flex-1{flex:1 1 0%}.shrink-0{flex-shrink:0}.flex-grow{flex-grow:1}.grid-cols-1{grid-template-columns:repeat(1, minmax(0, 1fr))}.flex-col{flex-direction:column}.items-start{align-items:flex-start}.items-center{align-items:center}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.gap-1{gap:0.25rem}.gap-12{gap:3rem}.gap-2{gap:0.5rem}.gap-3{gap:0.75rem}.gap-4{gap:1rem}.gap-6{gap:1.5rem}.gap-8{gap:2rem}.space-y-3 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.75rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.75rem * var(--tw-space-y-reverse))}.space-y-32 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(8rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(8rem * var(--tw-space-y-reverse))}.space-y-4 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(1rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(1rem * var(--tw-space-y-reverse))}.space-y-6 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(1.5rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(1.5rem * var(--tw-space-y-reverse))}.overflow-hidden{overflow:hidden}.rounded{border-radius:0.25rem}.rounded-3xl{border-radius:1.5rem}.rounded-base{border-radius:10px}.rounded-btn{border-radius:50px}.rounded-full{border-radius:9999px}.rounded-lg{border-radius:0.5rem}.rounded-b-3xl{border-bottom-right-radius:1.5rem;border-bottom-left-radius:1.5rem}.border{border-width:1px}.border-b{border-bottom-width:1px}.border-t{border-top-width:1px}.border-gray-100{--tw-border-opacity:1;border-color:rgb(243 244 246 / var(--tw-border-opacity, 1))}.border-gray-700{--tw-border-opacity:1;border-color:rgb(55 65 81 / var(--tw-border-opacity, 1))}.bg-\[\#1b263b\]{--tw-bg-opacity:1;background-color:rgb(27 38 59 / var(--tw-bg-opacity, 1))}.bg-blue-600{--tw-bg-opacity:1;background-color:rgb(37 99 235 / var(--tw-bg-opacity, 1))}.bg-brand-lightBlue{--tw-bg-opacity:1;background-color:rgb(75 124 211 / var(--tw-bg-opacity, 1))}.bg-brand-link{--tw-bg-opacity:1;background-color:rgb(44 58 85 / var(--tw-bg-opacity, 1))}.bg-gray-50{--tw-bg-opacity:1;background-color:rgb(249 250 251 / var(--tw-bg-opacity, 1))}.bg-green-500{--tw-bg-opacity:1;background-color:rgb(34 197 94 / var(--tw-bg-opacity, 1))}.bg-white{--tw-bg-opacity:1;background-color:rgb(255 255 255 / var(--tw-bg-opacity, 1))}.bg-white\/10{background-color:rgb(255 255 255 / 0.1)}.object-cover{object-fit:cover}.p-2{padding:0.5rem}.p-5{padding:1.25rem}.p-6{padding:1.5rem}.px-2{padding-left:0.5rem;padding-right:0.5rem}.px-6{padding-left:1.5rem;padding-right:1.5rem}.px-8{padding-left:2rem;padding-right:2rem}.py-1{padding-top:0.25rem;padding-bottom:0.25rem}.py-16{padding-top:4rem;padding-bottom:4rem}.py-2\.5{padding-top:0.625rem;padding-bottom:0.625rem}.py-4{padding-top:1rem;padding-bottom:1rem}.py-6{padding-top:1.5rem;padding-bottom:1.5rem}.pb-12{padding-bottom:3rem}.pb-32{padding-bottom:8rem}.pr-8{padding-right:2rem}.pt-16{padding-top:4rem}.pt-24{padding-top:6rem}.text-left{text-align:left}.font-heading{font-family:"Wix Madefor Display", sans-serif}.text-2xl{font-size:1.5rem;line-height:2rem}.text-3xl{font-size:1.875rem;line-height:2.25rem}.text-\[10px\]{font-size:10px}.text-\[36px\]{font-size:36px}.text-\[68px\]{font-size:68px}.text-lg{font-size:1.125rem;line-height:1.75rem}.text-sm{font-size:0.875rem;line-height:1.25rem}.text-xl{font-size:1.25rem;line-height:1.75rem}.text-xs{font-size:0.75rem;line-height:1rem}.font-bold{font-weight:700}.font-medium{font-weight:500}.font-semibold{font-weight:600}.leading-relaxed{line-height:1.625}.leading-tight{line-height:1.25}.text-\[\#1b263b\]{--tw-text-opacity:1;color:rgb(27 38 59 / var(--tw-text-opacity, 1))}.text-brand-accent{--tw-text-opacity:1;color:rgb(44 58 85 / var(--tw-text-opacity, 1))}.text-brand-lightBlue{--tw-text-opacity:1;color:rgb(75 124 211 / var(--tw-text-opacity, 1))}.text-brand-link{--tw-text-opacity:1;color:rgb(44 58 85 / var(--tw-text-opacity, 1))}.text-gray-300{--tw-text-opacity:1;color:rgb(209 213 219 / var(--tw-text-opacity, 1))}.text-gray-400{--tw-text-opacity:1;color:rgb(156 163 175 / var(--tw-text-opacity, 1))}.text-gray-500{--tw-text-opacity:1;color:rgb(107 114 128 / var(--tw-text-opacity, 1))}.text-gray-600{--tw-text-opacity:1;color:rgb(75 85 99 / var(--tw-text-opacity, 1))}.text-gray-700{--tw-text-opacity:1;color:rgb(55 65 81 / var(--tw-text-opacity, 1))}.text-gray-800{--tw-text-opacity:1;color:rgb(31 41 55 / var(--tw-text-opacity, 1))}.text-red-500{--tw-text-opacity:1;color:rgb(239 68 68 / var(--tw-text-opacity, 1))}.text-white{--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity, 1))}.antialiased{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}.opacity-10{opacity:0.1}.shadow{--tw-shadow:0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.shadow-lg{--tw-shadow:0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.shadow-sm{--tw-shadow:0 1px 2px 0 rgb(0 0 0 / 0.05);--tw-shadow-colored:0 1px 2px 0 var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.transition-colors{transition-property:color, background-color, border-color, fill, stroke, -webkit-text-decoration-color;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke, -webkit-text-decoration-color;transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);transition-duration:150ms}.transition-transform{transition-property:transform;transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);transition-duration:150ms}.hover\:bg-blue-700:hover{--tw-bg-opacity:1;background-color:rgb(29 78 216 / var(--tw-bg-opacity, 1))}.hover\:bg-gray-100:hover{--tw-bg-opacity:1;background-color:rgb(243 244 246 / var(--tw-bg-opacity, 1))}.hover\:bg-gray-200:hover{--tw-bg-opacity:1;background-color:rgb(229 231 235 / var(--tw-bg-opacity, 1))}.hover\:bg-green-600:hover{--tw-bg-opacity:1;background-color:rgb(22 163 74 / var(--tw-bg-opacity, 1))}.hover\:text-brand-accent:hover{--tw-text-opacity:1;color:rgb(44 58 85 / var(--tw-text-opacity, 1))}.hover\:text-white:hover{--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity, 1))}@media (min-width: 768px){.md\:col-span-3{grid-column:span 3 / span 3}.md\:col-span-4{grid-column:span 4 / span 4}.md\:col-span-5{grid-column:span 5 / span 5}.md\:mt-0{margin-top:0px}.md\:inline-block{display:inline-block}.md\:flex{display:flex}.md\:hidden{display:none}.md\:w-48{width:12rem}.md\:grid-cols-12{grid-template-columns:repeat(12, minmax(0, 1fr))}.md\:flex-row{flex-direction:row}}@media (min-width: 1024px){.lg\:col-span-4{grid-column:span 4 / span 4}.lg\:col-span-8{grid-column:span 8 / span 8}.lg\:grid-cols-12{grid-template-columns:repeat(12, minmax(0, 1fr))}}</style></head>
+<body class="antialiased flex flex-col min-h-[800px]">
+
+  <!-- Header -->
+  <header class="w-full bg-white py-4 px-8 sticky top-0 z-50 shadow-sm">
+    <div class="max-w-7xl mx-auto flex justify-between items-center">
+      <a href="#" class="flex items-center" rel="nofollow">
+        <!-- Text-based logo placeholder as requested to NOT mix up images -->
+        <div class="bg-brand-link text-white font-heading font-bold text-xl px-2 py-1 rounded shadow">
+          SISS
+        </div>
+      </a>
+      
+      <nav class="hidden md:flex items-center gap-8 text-sm font-bold text-gray-700 font-heading">
+        <a href="#" class="hover:text-brand-accent transition-colors" rel="nofollow">HOME</a>
+        <a href="#" class="hover:text-brand-accent transition-colors" rel="nofollow">ABOUT</a>
+        <a href="#" class="text-brand-accent flex items-center gap-1" rel="nofollow">SERVICES <i class="fa-solid fa-chevron-down text-[10px]"></i></a>
+        <a href="#" class="hover:text-brand-accent transition-colors" rel="nofollow">PROJECTS</a>
+        <a href="#" class="hover:text-brand-accent transition-colors" rel="nofollow">NEWS</a>
+        <a href="#" class="hover:text-brand-accent transition-colors" rel="nofollow">CONTACT</a>
+      </nav>
+      
+      <a href="#" class="hidden md:inline-block bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 px-6 rounded-btn transition-colors text-sm" rel="nofollow">
+        Vendor Registration
+      </a>
+      
+      <button class="md:hidden text-2xl text-brand-link">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero-bg text-white pt-24 pb-32 px-8 mx-4 mt-4 rounded-3xl relative">
+    <!-- Abstract background elements (simulated with CSS for now as per reference) -->
+    <div class="absolute inset-0 opacity-10 pointer-events-none" style="background-image: url('data:image/svg+xml,%3Csvg width=\'100%\' height=\'100%\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cpath d=\'M0,0 L100,100 M100,0 L0,100\' stroke=\'%23fff\' stroke-width=\'1\'/%3E%3C/svg%3E'); background-size: cover;"></div>
+    
+    <div class="max-w-7xl mx-auto relative z-10">
+      <h1 class="text-[68px] font-bold leading-tight mb-4">Security Solutions</h1>
+    </div>
+  </section>
+
+  <!-- Breadcrumbs -->
+  <div class="max-w-7xl mx-auto px-8 py-4 text-sm bg-gray-50 -mt-6 rounded-b-3xl relative z-20 mx-4 border border-gray-100 shadow-sm">
+    <a href="#" class="text-red-500 font-medium" rel="nofollow">Home</a> 
+    <span class="text-gray-400 mx-2">/</span> 
+    <a href="#" class="text-red-500 font-medium" rel="nofollow">Services</a> 
+    <span class="text-gray-400 mx-2">/</span> 
+    <span class="text-gray-700">Security Solutions</span>
+  </div>
+
+  <!-- Main Content -->
+  <main class="flex-grow w-full max-w-7xl mx-auto px-8 py-16">
+    
+    <!-- Intro Section -->
+    <section class="mb-24">
+      <h2 class="text-[36px] font-bold mb-6 font-heading">Comprehensive <span class="text-brand-lightBlue">Security Ecosystem</span></h2>
+      <div class="text-gray-500 text-lg leading-relaxed max-w-4xl space-y-6">
+        <p>At SISS, we deliver integrated security solutions that protect your people, assets, and operations. As an MOI-SSD certified provider, we design, install, and maintain state-of-the-art security systems that meet Qatar's stringent regulatory requirements. From intelligent surveillance networks to sophisticated access control and cyber defense, our solutions provide 24/7 protection backed by three decades of expertise.</p>
+        <p>Our security portfolio spans both physical and digital security infrastructure, ensuring comprehensive protection across all threat vectors. Whether you are securing a commercial facility, government building, or critical infrastructure, SISS delivers tailored solutions that scale with your needs.</p>
+      </div>
+    </section>
+
+    <!-- Services Container -->
+    <div class="space-y-32">
+      
+      <!-- CCTV Surveillance -->
+      <section class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+        <div class="lg:col-span-4 sticky top-24">
+          <h3 class="text-3xl font-bold text-brand-link mb-4 font-heading">CCTV Surveillance</h3>
+          <p class="text-gray-500 leading-relaxed text-sm">
+            Our CCTV surveillance solutions provide comprehensive visual security from design through deployment. With MOI-SSD certification and cutting-edge technology, we deliver intelligent video surveillance that protects your assets while ensuring regulatory compliance.
+          </p>
+        </div>
+        
+        <div class="lg:col-span-8 space-y-4">
+          <!-- Accordion Item 1 (Active) -->
+          <div class="accordion-item active rounded-base overflow-hidden border border-gray-100 shadow-sm">
+            <button class="accordion-header w-full flex justify-between items-center p-5 text-left font-semibold text-lg transition-colors bg-brand-lightBlue text-white">
+              <span>MOI-SSD Design &amp; Approval</span>
+              <i class="fa-solid fa-chevron-down icon-arrow transition-transform"></i>
+            </button>
+            <div class="accordion-content p-6 bg-white flex flex-col md:flex-row gap-6 items-start border-t border-gray-100">
+              <p class="text-gray-600 text-sm leading-relaxed flex-1">
+                Expert security system design services that meet Ministry of Interior Safety and Security Department standards. We handle complete documentation, technical specifications, and approval coordination to ensure your surveillance system complies with Qatar's regulatory requirements.
+              </p>
+              <div class="w-full md:w-48 shrink-0">
+                <img src="https://sendiansecurity.com/wp-content/uploads/2026/02/siss-service.jpeg" alt="MOI-SSD Design &amp; Approval" class="w-full h-auto rounded-lg object-cover" loading="lazy" decoding="async" fetchpriority="low">
+              </div>
+            </div>
+          </div>
+          
+          <!-- Accordion Item 2 -->
+          <div class="accordion-item rounded-base overflow-hidden border border-gray-100 bg-gray-50 shadow-sm">
+            <button class="accordion-header w-full flex justify-between items-center p-5 text-left font-semibold text-lg text-gray-800 hover:bg-gray-100 transition-colors">
+              <span>MOI-SSD Inspection Approval And Certification</span>
+              <i class="fa-solid fa-chevron-down text-gray-500"></i>
+            </button>
+          </div>
+          
+          <!-- Accordion Item 3 -->
+          <div class="accordion-item rounded-base overflow-hidden border border-gray-100 bg-gray-50 shadow-sm">
+            <button class="accordion-header w-full flex justify-between items-center p-5 text-left font-semibold text-lg text-gray-800 hover:bg-gray-100 transition-colors">
+              <span>IP Cameras</span>
+              <i class="fa-solid fa-chevron-down text-gray-500"></i>
+            </button>
+          </div>
+          
+          <!-- Accordion Item 4 -->
+          <div class="accordion-item rounded-base overflow-hidden border border-gray-100 bg-gray-50 shadow-sm">
+            <button class="accordion-header w-full flex justify-between items-center p-5 text-left font-semibold text-lg text-gray-800 hover:bg-gray-100 transition-colors">
+              <span>Video Management System</span>
+              <i class="fa-solid fa-chevron-down text-gray-500"></i>
+            </button>
+          </div>
+          
+          <!-- Accordion Item 5 -->
+          <div class="accordion-item rounded-base overflow-hidden border border-gray-100 bg-gray-50 shadow-sm">
+            <button class="accordion-header w-full flex justify-between items-center p-5 text-left font-semibold text-lg text-gray-800 hover:bg-gray-100 transition-colors">
+              <span>ANPR Systems</span>
+              <i class="fa-solid fa-chevron-down text-gray-500"></i>
+            </button>
+          </div>
+          
+          <!-- Accordion Item 6 -->
+          <div class="accordion-item rounded-base overflow-hidden border border-gray-100 bg-gray-50 shadow-sm">
+            <button class="accordion-header w-full flex justify-between items-center p-5 text-left font-semibold text-lg text-gray-800 hover:bg-gray-100 transition-colors">
+              <span>Storage System</span>
+              <i class="fa-solid fa-chevron-down text-gray-500"></i>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Access Control Solutions -->
+      <section class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+        <div class="lg:col-span-4 sticky top-24">
+          <h3 class="text-3xl font-bold text-brand-link mb-4 font-heading">Access Control Solutions</h3>
+          <p class="text-gray-500 leading-relaxed text-sm">
+            Intelligent physical security systems controlling who enters your facilities, when, and where. Our access control solutions combine cutting-edge authentication technology with centralized management for complete visibility and control.
+          </p>
+        </div>
+        
+        <div class="lg:col-span-8 space-y-4">
+          <!-- Accordion Item 1 (Active) -->
+          <div class="accordion-item active rounded-base overflow-hidden border border-gray-100 shadow-sm">
+            <button class="accordion-header w-full flex justify-between items-center p-5 text-left font-semibold text-lg transition-colors bg-brand-lightBlue text-white">
+              <span>Integrated Access Control Systems</span>
+              <i class="fa-solid fa-chevron-down icon-arrow transition-transform"></i>
+            </button>
+            <div class="accordion-content p-6 bg-white flex flex-col md:flex-row gap-6 items-start border-t border-gray-100">
+              <p class="text-gray-600 text-sm leading-relaxed flex-1">
+                Comprehensive electronic access management using RFID cards, biometrics (fingerprint, facial recognition), PIN codes, and mobile credentials. Centralized software controls user permissions, access schedules, and real-time monitoring across multiple doors and locations with full audit trails for compliance.
+              </p>
+              <div class="w-full md:w-48 shrink-0">
+                <img src="https://sendiansecurity.com/wp-content/uploads/2026/02/accesscontroll.jpeg" alt="Electronic Access Control Systems" class="w-full h-auto rounded-lg object-cover" loading="lazy" decoding="async" fetchpriority="low">
+              </div>
+            </div>
+          </div>
+          
+          <!-- Accordion Items -->
+          <div class="accordion-item rounded-base overflow-hidden border border-gray-100 bg-gray-50 shadow-sm">
+            <button class="accordion-header w-full flex justify-between items-center p-5 text-left font-semibold text-lg text-gray-800 hover:bg-gray-100 transition-colors">
+              <span>Automated Turnstiles</span>
+              <i class="fa-solid fa-chevron-down text-gray-500"></i>
+            </button>
+          </div>
+          <div class="accordion-item rounded-base overflow-hidden border border-gray-100 bg-gray-50 shadow-sm">
+            <button class="accordion-header w-full flex justify-between items-center p-5 text-left font-semibold text-lg text-gray-800 hover:bg-gray-100 transition-colors">
+              <span>Biometric Access Systems</span>
+              <i class="fa-solid fa-chevron-down text-gray-500"></i>
+            </button>
+          </div>
+          <div class="accordion-item rounded-base overflow-hidden border border-gray-100 bg-gray-50 shadow-sm">
+            <button class="accordion-header w-full flex justify-between items-center p-5 text-left font-semibold text-lg text-gray-800 hover:bg-gray-100 transition-colors">
+              <span>Bollard System</span>
+              <i class="fa-solid fa-chevron-down text-gray-500"></i>
+            </button>
+          </div>
+          <div class="accordion-item rounded-base overflow-hidden border border-gray-100 bg-gray-50 shadow-sm">
+            <button class="accordion-header w-full flex justify-between items-center p-5 text-left font-semibold text-lg text-gray-800 hover:bg-gray-100 transition-colors">
+              <span>Road Blockers</span>
+              <i class="fa-solid fa-chevron-down text-gray-500"></i>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Cyber Security Solutions -->
+      <section class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+        <div class="lg:col-span-4 sticky top-24">
+          <h3 class="text-3xl font-bold text-brand-link mb-4 font-heading">Cyber Security Solutions</h3>
+          <p class="text-gray-500 leading-relaxed text-sm">
+            Enterprise-grade digital defense architecture protecting your networks, data, and endpoints from evolving cyber threats. Our cybersecurity solutions combine advanced threat detection, prevention technologies, and compliance frameworks to safeguard your digital assets.
+          </p>
+        </div>
+        
+        <div class="lg:col-span-8 space-y-4">
+          <!-- Accordion Item 1 (Active) -->
+          <div class="accordion-item active rounded-base overflow-hidden border border-gray-100 shadow-sm">
+            <button class="accordion-header w-full flex justify-between items-center p-5 text-left font-semibold text-lg transition-colors bg-brand-lightBlue text-white">
+              <span>Network Security Design &amp; Implementation</span>
+              <i class="fa-solid fa-chevron-down icon-arrow transition-transform"></i>
+            </button>
+            <div class="accordion-content p-6 bg-white flex flex-col md:flex-row gap-6 items-start border-t border-gray-100">
+              <p class="text-gray-600 text-sm leading-relaxed flex-1">
+                Comprehensive network protection architecture including next-generation firewalls, intrusion detection/prevention systems (IDS/IPS), and secure network segmentation. Our solutions defend against unauthorized access, malware, and cyber attacks while maintaining network performance and enabling secure remote connectivity.
+              </p>
+              <div class="w-full md:w-48 shrink-0">
+                <img src="https://sendiansecurity.com/wp-content/uploads/2026/02/cyber-security.jpeg" alt="Network Security Solutions" class="w-full h-auto rounded-lg object-cover" loading="lazy" decoding="async" fetchpriority="low">
+              </div>
+            </div>
+          </div>
+          
+          <!-- Accordion Items -->
+          <div class="accordion-item rounded-base overflow-hidden border border-gray-100 bg-gray-50 shadow-sm">
+            <button class="accordion-header w-full flex justify-between items-center p-5 text-left font-semibold text-lg text-gray-800 hover:bg-gray-100 transition-colors">
+              <span>Data Security</span>
+              <i class="fa-solid fa-chevron-down text-gray-500"></i>
+            </button>
+          </div>
+          <div class="accordion-item rounded-base overflow-hidden border border-gray-100 bg-gray-50 shadow-sm">
+            <button class="accordion-header w-full flex justify-between items-center p-5 text-left font-semibold text-lg text-gray-800 hover:bg-gray-100 transition-colors">
+              <span>Email Security</span>
+              <i class="fa-solid fa-chevron-down text-gray-500"></i>
+            </button>
+          </div>
+          <div class="accordion-item rounded-base overflow-hidden border border-gray-100 bg-gray-50 shadow-sm">
+            <button class="accordion-header w-full flex justify-between items-center p-5 text-left font-semibold text-lg text-gray-800 hover:bg-gray-100 transition-colors">
+              <span>Mobile And End Point Security</span>
+              <i class="fa-solid fa-chevron-down text-gray-500"></i>
+            </button>
+          </div>
+          <div class="accordion-item rounded-base overflow-hidden border border-gray-100 bg-gray-50 shadow-sm">
+            <button class="accordion-header w-full flex justify-between items-center p-5 text-left font-semibold text-lg text-gray-800 hover:bg-gray-100 transition-colors">
+              <span>Governance &amp; Risk Compliance</span>
+              <i class="fa-solid fa-chevron-down text-gray-500"></i>
+            </button>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-[#1b263b] text-white pt-16 mt-auto">
+    <div class="max-w-7xl mx-auto px-8 grid grid-cols-1 md:grid-cols-12 gap-12 pb-12 border-b border-gray-700">
+      
+      <!-- Brand & About -->
+      <div class="md:col-span-5">
+        <div class="bg-white/10 p-2 inline-block rounded mb-6">
+          <div class="bg-brand-link text-white font-heading font-bold text-2xl px-2 py-1">
+            SISS
+          </div>
+        </div>
+        <p class="text-gray-300 text-sm leading-relaxed pr-8">
+          Ministry of Interior-approved security solutions provider. Protecting Qatar's infrastructure with cutting-edge CCTV, access control, and enterprise security systems for more than a decade.
+        </p>
+        <div class="flex gap-4 mt-8">
+          <a href="#" class="w-10 h-10 rounded-full bg-white text-[#1b263b] flex items-center justify-center hover:bg-gray-200 transition-colors" rel="nofollow"><i class="fa-brands fa-facebook-f"></i></a>
+          <a href="#" class="w-10 h-10 rounded-full bg-white text-[#1b263b] flex items-center justify-center hover:bg-gray-200 transition-colors" rel="nofollow"><i class="fa-brands fa-instagram"></i></a>
+          <a href="#" class="w-10 h-10 rounded-full bg-white text-[#1b263b] flex items-center justify-center hover:bg-gray-200 transition-colors" rel="nofollow"><i class="fa-brands fa-linkedin-in"></i></a>
+        </div>
+      </div>
+      
+      <!-- Quick Links -->
+      <div class="md:col-span-3">
+        <h4 class="text-xl font-bold mb-6 font-heading">Quick Links</h4>
+        <ul class="space-y-3 text-sm text-gray-300">
+          <li><a href="#" class="hover:text-white transition-colors flex items-center gap-2" rel="nofollow"><i class="fa-solid fa-angle-right text-xs"></i> About us</a></li>
+          <li><a href="#" class="hover:text-white transition-colors flex items-center gap-2" rel="nofollow"><i class="fa-solid fa-angle-right text-xs"></i> Services</a></li>
+          <li><a href="#" class="hover:text-white transition-colors flex items-center gap-2" rel="nofollow"><i class="fa-solid fa-angle-right text-xs"></i> Projects</a></li>
+          <li><a href="#" class="hover:text-white transition-colors flex items-center gap-2" rel="nofollow"><i class="fa-solid fa-angle-right text-xs"></i> News</a></li>
+          <li><a href="#" class="hover:text-white transition-colors flex items-center gap-2" rel="nofollow"><i class="fa-solid fa-angle-right text-xs"></i> Vendor Registration</a></li>
+          <li><a href="#" class="hover:text-white transition-colors flex items-center gap-2" rel="nofollow"><i class="fa-solid fa-angle-right text-xs"></i> Contact</a></li>
+        </ul>
+      </div>
+      
+      <!-- Contact Info -->
+      <div class="md:col-span-4">
+        <div class="mb-8">
+          <h4 class="text-xl font-bold mb-4 font-heading">E-Mail:</h4>
+          <div class="flex items-start gap-3 text-gray-300 text-sm">
+            <i class="fa-regular fa-envelope mt-1"></i>
+            <a href="mailto:info@sendiansecurity.com" class="hover:text-white transition-colors" rel="nofollow">info@sendiansecurity.com</a>
+          </div>
+        </div>
+        
+        <div>
+          <h4 class="text-xl font-bold mb-4 font-heading">Address:</h4>
+          <div class="flex items-start gap-3 text-gray-300 text-sm leading-relaxed">
+            <i class="fa-solid fa-location-dot mt-1"></i>
+            <p>1st Floor, Office 01, Building 60,<br>Makkah Al Mukarramah Street,<br>Luqta, Doha</p>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+    
+    <!-- Copyright -->
+    <div class="max-w-7xl mx-auto px-8 py-6 flex flex-col md:flex-row justify-between items-center text-xs text-gray-400">
+      <p>© Copyright 2026 Sendian Security</p>
+      <div class="flex gap-4 mt-4 md:mt-0">
+        <a href="#" class="hover:text-white transition-colors" rel="nofollow">Terms and Conditions</a>
+        <span class="text-gray-600">|</span>
+        <a href="#" class="hover:text-white transition-colors" rel="nofollow">Privacy policy</a>
+        <span class="text-gray-600">|</span>
+        <a href="#" class="hover:text-white transition-colors" rel="nofollow">Help</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- WhatsApp Floating Button -->
+  <a href="#" class="fixed bottom-6 right-6 w-14 h-14 bg-green-500 rounded-full flex items-center justify-center text-white text-3xl shadow-lg hover:bg-green-600 transition-colors z-50" rel="nofollow">
+    <i class="fa-brands fa-whatsapp"></i>
+  </a>
+
+  <!-- Simple script for accordion functionality (optional but adds realism) -->
+  <script>
+    document.querySelectorAll('.accordion-header').forEach(button => {
+      button.addEventListener('click', () => {
+        // Toggle current item
+        const item = button.parentElement;
+        item.classList.toggle('active');
+        
+        // Update styling classes based on active state
+        if (item.classList.contains('active')) {
+          button.classList.remove('text-gray-800', 'hover:bg-gray-100', 'bg-transparent');
+          button.classList.add('bg-brand-lightBlue', 'text-white');
+          button.querySelector('i').classList.remove('text-gray-500');
+          button.querySelector('i').classList.add('text-white');
+        } else {
+          button.classList.add('text-gray-800', 'hover:bg-gray-100', 'bg-transparent');
+          button.classList.remove('bg-brand-lightBlue', 'text-white');
+          button.querySelector('i').classList.add('text-gray-500');
+          button.querySelector('i').classList.remove('text-white');
+        }
+      });
+    });
+  </script>
+
+</body></html>

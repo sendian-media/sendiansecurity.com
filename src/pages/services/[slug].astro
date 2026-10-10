@@ -15,27 +15,25 @@ const { service } = Astro.props;
 ---
 
 <BaseLayout title={`${service.heroTitle} | Sendian Integrated Security Services`} description={service.introParagraphs[0]}>
-  <div class="px-4 pt-4">
-    <section class="detail-hero relative rounded-3xl px-6 pb-32 pt-24 text-white md:px-8" aria-label={`${service.heroTitle} banner`}>
-      <div class="relative z-10 mx-auto max-w-7xl">
-        <h1 class="mb-4 text-5xl font-bold leading-tight md:text-[68px]">{service.heroTitle}</h1>
-      </div>
-    </section>
-  </div>
+  <section class="detail-hero relative flex h-[350px] w-full items-center overflow-hidden rounded-b-[30px] shadow-lg md:h-[400px]" aria-label={`${service.heroTitle} banner`}>
+    <div class="relative z-10 mx-auto w-full max-w-7xl px-6 md:px-20 fade-up">
+      <h1 class="mb-4 text-5xl font-bold leading-tight text-white md:text-[68px]">{service.heroTitle}</h1>
+    </div>
+  </section>
 
-  <div class="relative z-20 -mt-6 mx-4 rounded-b-3xl border border-gray-100 bg-gray-50 px-6 py-4 text-sm shadow-sm md:px-8">
-    <div class="mx-auto max-w-7xl">
+  <nav class="mb-20 w-full bg-[#F9FAFB] px-6 py-4 md:px-20" aria-label="Breadcrumb">
+    <div class="mx-auto max-w-7xl text-sm">
       <a class="font-medium text-[#ef3e4a] hover:underline" href="/">Home</a>
       <span class="mx-2 text-gray-400" aria-hidden="true">/</span>
       <a class="font-medium text-[#ef3e4a] hover:underline" href="/services">Services</a>
       <span class="mx-2 text-gray-400" aria-hidden="true">/</span>
       <span class="text-gray-700" aria-current="page">{service.heroTitle}</span>
     </div>
-  </div>
+  </nav>
 
   <main class="mx-auto w-full max-w-7xl flex-grow px-6 py-16 md:px-8">
     <!-- Intro -->
-    <section class="mb-24">
+    <section class="mb-24 fade-up d1">
       <h2 class="mb-6 text-3xl font-bold md:text-[36px]">
         {service.introHeading} <span class="text-[#4b7cd3]">{service.introHighlight}</span>
       </h2>
@@ -47,9 +45,11 @@ const { service } = Astro.props;
     <!-- Categories with accordions -->
     <div class="space-y-32">
       {service.categories.map((category) => (
-        <section class="grid grid-cols-1 items-start gap-12 lg:grid-cols-12">
+        <section class="fade-up d2 grid grid-cols-1 items-start gap-12 lg:grid-cols-12">
           <div class="lg:sticky lg:top-24 lg:col-span-4">
-            <h3 class="mb-4 text-3xl font-bold text-[#2C3A55]">{category.name}</h3>
+            <h3 class="pgs-heading mb-4 text-[32px] font-bold leading-tight md:text-[48px]">
+              <span class="pgs-text-gradient">{category.name}</span>
+            </h3>
             <p class="text-sm leading-relaxed text-gray-500">{category.blurb}</p>
           </div>
 
@@ -78,24 +78,20 @@ const { service } = Astro.props;
 </BaseLayout>
 
 <style is:global>
+  .pgs-heading { font-family: 'Wix Madefor Display', sans-serif; text-transform: capitalize; }
+  .pgs-text-gradient {
+    background: linear-gradient(135deg, #2a3f5f 0%, #3e4a5c 50%, #0078d4 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+  }
   .detail-hero {
-    background: linear-gradient(135deg, #1b263b 0%, #172a45 100%);
-    overflow: hidden;
-    position: relative;
-  }
-  .detail-hero::before {
-    background-image: radial-gradient(circle at 70% 50%, rgb(255 255 255 / 0.05) 0%, transparent 50%);
-    content: '';
-    inset: 0;
-    pointer-events: none;
-    position: absolute;
-  }
-  .detail-hero::after {
-    background-image: url("data:image/svg+xml,%3Csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0,0 L100,100 M100,0 L0,100' stroke='%23fff' stroke-width='1'/%3E%3C/svg%3E");
-    content: '';
-    inset: 0;
-    opacity: 0.1;
-    pointer-events: none;
-    position: absolute;
+    background-color: #2c3a55;
+    background-image:
+      linear-gradient(rgba(26 37 71 / 0.78), rgba(26 37 71 / 0.78)),
+      url('/images/services/services-banner.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
   }
 </style>

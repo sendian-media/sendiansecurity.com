@@ -1,0 +1,546 @@
+<html lang="en"><head><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM%20Sans:wght@100;200;300;400;500;600;700;800;900&amp;display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Wix%20Madefor%20Display:wght@100;200;300;400;500;600;700;800;900&amp;display=swap"><script>window.__AIFX_MAX_DPR__=1.25;window.__AIFX_FPS_CAP__=30;</script>
+        <script>
+            (function() {
+                function tuneImage(img) {
+                    try {
+                        img.loading = 'lazy';
+                        img.decoding = 'async';
+                        img.fetchPriority = 'low';
+                    } catch (_) {}
+                }
+                function tuneAllImages() {
+                    document.querySelectorAll('img').forEach(tuneImage);
+                }
+                if (document.readyState === 'loading') {
+                    document.addEventListener('DOMContentLoaded', tuneAllImages, { once: true });
+                } else {
+                    tuneAllImages();
+                }
+            })();
+        </script>
+       
+        <script>
+            (function() {
+                const OriginalIntersectionObserver = window.IntersectionObserver;
+                if (!OriginalIntersectionObserver) return;
+                window.__editor_force_intersection_enabled = false;
+                function shouldForceIntersection() {
+                    return window.__editor_force_intersection_enabled === true;
+                }
+                window.IntersectionObserver = function(callback, options) {
+                    const observer = new OriginalIntersectionObserver(function(entries, obs) {
+                        if (!shouldForceIntersection()) {
+                            callback(entries, obs);
+                            return;
+                        }
+                        // Force all entries to appear as intersecting
+                        const modifiedEntries = entries.map(entry => ({
+                            target: entry.target,
+                            isIntersecting: true,
+                            intersectionRatio: 1,
+                            boundingClientRect: entry.boundingClientRect,
+                            intersectionRect: entry.intersectionRect,
+                            rootBounds: entry.rootBounds,
+                            time: entry.time,
+                        }));
+                        callback(modifiedEntries, obs);
+                    }, options);
+
+                    // Also immediately trigger for any observed element
+                    const originalObserve = observer.observe.bind(observer);
+                    observer.observe = function(target) {
+                        originalObserve(target);
+                        // Trigger callback immediately with the element as intersecting
+                        setTimeout(() => {
+                            if (!shouldForceIntersection()) return;
+                            callback([{
+                                target: target,
+                                isIntersecting: true,
+                                intersectionRatio: 1,
+                                boundingClientRect: target.getBoundingClientRect(),
+                                intersectionRect: target.getBoundingClientRect(),
+                                rootBounds: null,
+                                time: performance.now(),
+                            }], observer);
+                        }, 0);
+                    };
+
+                    return observer;
+                };
+                window.IntersectionObserver.prototype = OriginalIntersectionObserver.prototype;
+            })();
+        </script>
+       
+        <script>
+            (function() {
+                function hasTailwindScript() {
+                    return !!document.querySelector('script[src*="cdn.tailwindcss.com"], script[src*="@tailwindcss/browser"]');
+                }
+                function hasTailwindConfig() {
+                    return /tailwind\s*\.\s*config/i.test(document.documentElement.innerHTML);
+                }
+                function hasLikelyTailwindClasses() {
+                    var matches = 0;
+                    var classAttrs = document.querySelectorAll('[class]');
+                    for (var i = 0; i < classAttrs.length; i++) {
+                        var tokens = String(classAttrs[i].getAttribute('class') || '').split(/\s+/);
+                        for (var j = 0; j < tokens.length; j++) {
+                            var token = tokens[j].split(':').pop().replace(/^!/, '');
+                            if (
+                                /^(flex|grid|block|inline-block|inline-flex|hidden|relative|absolute|fixed|sticky|container|sr-only|antialiased|isolate)$/.test(token) ||
+                                /^-?(m|p)([trblxy])?-(\d|px|auto|\[)/.test(token) ||
+                                /^(text|bg|border|rounded|shadow|ring|divide|outline|decoration|underline|font|leading|tracking|w|h|min-w|max-w|min-h|max-h|size|z|top|right|bottom|left|inset|translate|scale|rotate|skew|origin|opacity|overflow|object|aspect|gap|space|items|justify|content|self|place|col|row|order|duration|delay|ease|animate|backdrop|blur|brightness|contrast|drop-shadow|grayscale|hue-rotate|invert|saturate|sepia|from|via|to|prose)-/.test(token)
+                            ) {
+                                matches++;
+                                if (matches >= 3) return true;
+                            }
+                        }
+                    }
+                    return false;
+                }
+                function ensureTailwind() {
+                    if (hasTailwindScript() || document.getElementById('__editor_tailwind_fallback')) return;
+                    if (!hasTailwindConfig() && !hasLikelyTailwindClasses()) return;
+                    var script = document.createElement('script');
+                    script.id = '__editor_tailwind_fallback';
+                    script.src = 'https://cdn.tailwindcss.com';
+                    document.head.appendChild(script);
+                }
+                if (document.readyState === 'loading') {
+                    document.addEventListener('DOMContentLoaded', ensureTailwind, { once: true });
+                } else {
+                    ensureTailwind();
+                }
+            })();
+        </script>
+       
+        <script>
+            (function() {
+                // console.log("[Iframe] Script injected and running");
+                document.addEventListener('error', function(e) {
+                    // console.log("[Iframe] Error event captured:", e);
+                    if (e.target && e.target.tagName) {
+                         // console.log("[Iframe] Target tag:", e.target.tagName);
+                    }
+                    
+                    if (e.target && e.target.tagName.toLowerCase() === 'img') {
+                        // console.log("[Iframe] Image error detected:", e.target.src);
+                        const img = e.target;
+                        const alt = img.alt;
+                        if (alt && !img.dataset.retried) {
+                            // console.log("[Iframe] Posting IMAGE_ERROR for:", alt);
+                            img.dataset.retried = 'true';
+                            window.parent.postMessage({
+                                type: 'IMAGE_ERROR',
+                                pageId: "c21409b9-f64e-4da5-a95c-7e430355b14d",
+                                alt: alt,
+                                src: img.src
+                            }, '*');
+                        } else {
+                            // console.log("[Iframe] Skipping IMAGE_ERROR (no alt or already retried):", { alt, retried: img.dataset.retried });
+                        }
+                    }
+                }, true);
+
+                window.addEventListener('message', function(e) {
+                    if (e.data?.type === 'IMAGE_REPLACED' && e.data?.newSrc) {
+                        // console.log("[Iframe] Received IMAGE_REPLACED:", e.data);
+                        const images = document.getElementsByTagName('img');
+                        for (let img of images) {
+                            if (img.src === e.data.originalSrc || (img.dataset.retried === 'true' && !img.complete)) {
+                                // Stash the original src so the stream-end
+                                // body-innerHTML swap can replay this rewrite
+                                // onto the freshly-parsed <img> nodes. Without
+                                // this, the swap drops our Serper-replaced src
+                                // and the image re-requests on parse, causing
+                                // duplicate Serper calls and visible flicker.
+                                if (!img.dataset.originalSrc) {
+                                    img.dataset.originalSrc = e.data.originalSrc;
+                                }
+                                img.src = e.data.newSrc;
+                            }
+                        }
+                    }
+                });
+            })();
+        </script>
+       
+        <script>
+            (function() {
+                window.__image_debug_v1 = true;
+                if (window.__tailwind_warn_suppressed) return;
+                window.__tailwind_warn_suppressed = true;
+                const originalWarn = console.warn;
+                console.warn = (...args) => {
+                    if (args[0] && typeof args[0] === 'string' && args[0].includes('cdn.tailwindcss.com')) {
+                        return;
+                    }
+                    originalWarn.apply(console, args);
+                };
+            })();
+        </script>
+        <script>
+            (function() {
+                 // Removed Link Editing Interception
+            })();
+        </script>
+        <style>
+            .h-screen { min-height: 800px !important; height: auto !important; }
+            .min-h-screen { min-height: 800px !important; }
+            .editor-canvas-expanded-scroll { overflow: visible !important; }
+            
+            
+            html, body {
+                min-height: 800px !important;
+                height: auto !important;
+                width: 100% !important;
+                overflow: auto !important;
+                -ms-overflow-style: none;
+                scrollbar-width: none;
+            }
+            ::-webkit-scrollbar {
+                display: none;
+            }
+            .editor-link-hover {
+                outline: 2px solid #3b82f6 !important;
+                cursor: pointer !important;
+            }
+            
+            /* Expand legacy web layouts instead of making the editor iframe an
+               internal scroller. App canvases intentionally preserve authored
+               percentage/fixed heights for preview parity. */
+            .flex > .h-full {
+                height: auto !important;
+                align-self: stretch !important;
+                min-height: 0;
+            }
+            .fixed.h-full,
+            nav.fixed.h-full,
+            aside.fixed.h-full {
+                position: absolute !important;
+            }
+            
+            /* Force visibility on scroll-animation hidden elements */
+            /* These override common patterns used by AOS, ScrollReveal, GSAP, and custom animations */
+            [style*="opacity: 0"],
+            [style*="opacity:0"] {
+                opacity: 1 !important;
+            }
+            [style*="clip-path: inset"],
+            [style*="clip-path:inset"] {
+                clip-path: none !important;
+            }
+            [style*="visibility: hidden"],
+            [style*="visibility:hidden"] {
+                visibility: visible !important;
+            }
+            /* AOS library data attributes */
+            [data-aos] {
+                opacity: 1 !important;
+                transform: none !important;
+                visibility: visible !important;
+            }
+            /* Common animation class patterns */
+            [class*="aos-"],
+            [class*="scroll-"],
+            [class*="reveal"],
+            [class*="fade-"],
+            [class*="slide-"] {
+                opacity: 1 !important;
+                transform: none !important;
+                clip-path: none !important;
+                visibility: visible !important;
+            }
+            /* The editor is a static artifact. Transformed entry animations can
+               permanently enlarge Chrome's document scrollHeight (for example,
+               translateY(30px) leaves a false 30px strip after the animation),
+               so prevent generated animate-* utilities from affecting layout
+               measurement. Production/preview HTML is unchanged. */
+            [class*="animate-"] {
+                animation: none !important;
+                opacity: 1 !important;
+                visibility: visible !important;
+            }
+        </style>
+       
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projects - Sendian Integrated Security Services</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&amp;family=Wix+Madefor+Display:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        link: '#2C3A55',
+                        accent: '#2C3A55',
+                        primary: '#3E4A5C',
+                        secondary: '#8F91AB',
+                        background: '#FFFFFF',
+                        textPrimary: '#000000',
+                        brandBlue: '#154baf', // active link and button color
+                        footerBg: '#1e2638',
+                        heroBg: '#1c263c',
+                    },
+                    fontFamily: {
+                        sans: ['"DM Sans"', 'sans-serif'],
+                        heading: ['"Wix Madefor Display"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background-color: #FFFFFF;
+            color: #000000;
+        }
+        h1, h2, h3, h4, h5, h6, .font-heading {
+            font-family: 'Wix Madefor Display', sans-serif;
+        }
+        .hero-pattern {
+            background-image: 
+                radial-gradient(circle at 75% 50%, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.03) 30%, transparent 31%),
+                radial-gradient(circle at 25% 60%, rgba(255,255,255,0.02) 0%, rgba(255,255,255,0.02) 20%, transparent 21%);
+            background-color: #1c263c;
+        }
+        .whatsapp-float {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #25D366;
+            color: white;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 35px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            z-index: 100;
+        }
+    </style>
+<style>*, ::before, ::after{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }/* ! tailwindcss v3.4.17 | MIT License | https://tailwindcss.com */*,::after,::before{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}::after,::before{--tw-content:''}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;tab-size:4;font-family:"DM Sans", sans-serif;font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0;padding:0}legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}.pointer-events-none{pointer-events:none}.absolute{position:absolute}.relative{position:relative}.sticky{position:sticky}.inset-0{inset:0px}.top-0{top:0px}.z-10{z-index:10}.z-50{z-index:50}.mx-2{margin-left:0.5rem;margin-right:0.5rem}.mx-auto{margin-left:auto;margin-right:auto}.mb-2{margin-bottom:0.5rem}.mb-6{margin-bottom:1.5rem}.mb-8{margin-bottom:2rem}.ml-1{margin-left:0.25rem}.mr-2{margin-right:0.5rem}.mr-3{margin-right:0.75rem}.mt-1{margin-top:0.25rem}.mt-12{margin-top:3rem}.mt-16{margin-top:4rem}.mt-4{margin-top:1rem}.mt-5{margin-top:1.25rem}.inline-block{display:inline-block}.flex{display:flex}.grid{display:grid}.hidden{display:none}.h-10{height:2.5rem}.h-24{height:6rem}.h-\[280px\]{height:280px}.h-\[320px\]{height:320px}.h-auto{height:auto}.h-full{height:100%}.min-h-\[800px\]{min-height:800px}.w-10{width:2.5rem}.w-24{width:6rem}.w-32{width:8rem}.w-\[200px\]{width:200px}.w-full{width:100%}.max-w-7xl{max-width:80rem}.max-w-\[1400px\]{max-width:1400px}.flex-shrink-0{flex-shrink:0}.flex-grow{flex-grow:1}.grid-cols-1{grid-template-columns:repeat(1, minmax(0, 1fr))}.grid-cols-4{grid-template-columns:repeat(4, minmax(0, 1fr))}.flex-col{flex-direction:column}.items-start{align-items:flex-start}.items-center{align-items:center}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.gap-12{gap:3rem}.gap-8{gap:2rem}.gap-x-8{column-gap:2rem}.gap-y-12{row-gap:3rem}.space-x-3 > :not([hidden]) ~ :not([hidden]){--tw-space-x-reverse:0;margin-right:calc(0.75rem * var(--tw-space-x-reverse));margin-left:calc(0.75rem * calc(1 - var(--tw-space-x-reverse)))}.space-x-6 > :not([hidden]) ~ :not([hidden]){--tw-space-x-reverse:0;margin-right:calc(1.5rem * var(--tw-space-x-reverse));margin-left:calc(1.5rem * calc(1 - var(--tw-space-x-reverse)))}.space-x-8 > :not([hidden]) ~ :not([hidden]){--tw-space-x-reverse:0;margin-right:calc(2rem * var(--tw-space-x-reverse));margin-left:calc(2rem * calc(1 - var(--tw-space-x-reverse)))}.space-y-4 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(1rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(1rem * var(--tw-space-y-reverse))}.overflow-hidden{overflow:hidden}.rounded{border-radius:0.25rem}.rounded-\[50px\]{border-radius:50px}.rounded-full{border-radius:9999px}.rounded-xl{border-radius:0.75rem}.border-2{border-width:2px}.border-b{border-bottom-width:1px}.border-t{border-top-width:1px}.border-t-\[8px\]{border-top-width:8px}.border-footerBg{--tw-border-opacity:1;border-color:rgb(30 38 56 / var(--tw-border-opacity, 1))}.border-gray-200{--tw-border-opacity:1;border-color:rgb(229 231 235 / var(--tw-border-opacity, 1))}.border-gray-700\/50{border-color:rgb(55 65 81 / 0.5)}.border-white{--tw-border-opacity:1;border-color:rgb(255 255 255 / var(--tw-border-opacity, 1))}.bg-\[\#295F8E\]{--tw-bg-opacity:1;background-color:rgb(41 95 142 / var(--tw-bg-opacity, 1))}.bg-\[\#F5F5F5\]{--tw-bg-opacity:1;background-color:rgb(245 245 245 / var(--tw-bg-opacity, 1))}.bg-brandBlue{--tw-bg-opacity:1;background-color:rgb(21 75 175 / var(--tw-bg-opacity, 1))}.bg-footerBg{--tw-bg-opacity:1;background-color:rgb(30 38 56 / var(--tw-bg-opacity, 1))}.bg-link{--tw-bg-opacity:1;background-color:rgb(44 58 85 / var(--tw-bg-opacity, 1))}.bg-white{--tw-bg-opacity:1;background-color:rgb(255 255 255 / var(--tw-bg-opacity, 1))}.object-cover{object-fit:cover}.p-2{padding:0.5rem}.px-2{padding-left:0.5rem;padding-right:0.5rem}.px-6{padding-left:1.5rem;padding-right:1.5rem}.py-1{padding-top:0.25rem;padding-bottom:0.25rem}.py-16{padding-top:4rem;padding-bottom:4rem}.py-2\.5{padding-top:0.625rem;padding-bottom:0.625rem}.py-3{padding-top:0.75rem;padding-bottom:0.75rem}.py-4{padding-top:1rem;padding-bottom:1rem}.pb-6{padding-bottom:1.5rem}.pl-4{padding-left:1rem}.pr-4{padding-right:1rem}.pt-12{padding-top:3rem}.pt-16{padding-top:4rem}.pt-6{padding-top:1.5rem}.text-center{text-align:center}.font-heading{font-family:"Wix Madefor Display", sans-serif}.text-4xl{font-size:2.25rem;line-height:2.5rem}.text-5xl{font-size:3rem;line-height:1}.text-\[15px\]{font-size:15px}.text-\[28px\]{font-size:28px}.text-sm{font-size:0.875rem;line-height:1.25rem}.text-xl{font-size:1.25rem;line-height:1.75rem}.text-xs{font-size:0.75rem;line-height:1rem}.font-bold{font-weight:700}.font-medium{font-weight:500}.font-semibold{font-weight:600}.leading-relaxed{line-height:1.625}.tracking-tight{letter-spacing:-0.025em}.text-brandBlue{--tw-text-opacity:1;color:rgb(21 75 175 / var(--tw-text-opacity, 1))}.text-footerBg{--tw-text-opacity:1;color:rgb(30 38 56 / var(--tw-text-opacity, 1))}.text-gray-300{--tw-text-opacity:1;color:rgb(209 213 219 / var(--tw-text-opacity, 1))}.text-gray-400{--tw-text-opacity:1;color:rgb(156 163 175 / var(--tw-text-opacity, 1))}.text-gray-500{--tw-text-opacity:1;color:rgb(107 114 128 / var(--tw-text-opacity, 1))}.text-gray-700{--tw-text-opacity:1;color:rgb(55 65 81 / var(--tw-text-opacity, 1))}.text-gray-800{--tw-text-opacity:1;color:rgb(31 41 55 / var(--tw-text-opacity, 1))}.text-red-500{--tw-text-opacity:1;color:rgb(239 68 68 / var(--tw-text-opacity, 1))}.text-white{--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity, 1))}.antialiased{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}.opacity-0{opacity:0}.opacity-10{opacity:0.1}.shadow-sm{--tw-shadow:0 1px 2px 0 rgb(0 0 0 / 0.05);--tw-shadow-colored:0 1px 2px 0 var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.transition-colors{transition-property:color, background-color, border-color, fill, stroke, -webkit-text-decoration-color;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke, -webkit-text-decoration-color;transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);transition-duration:150ms}.transition-transform{transition-property:transform;transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);transition-duration:150ms}.duration-300{transition-duration:300ms}.duration-500{transition-duration:500ms}.hover\:scale-110:hover{--tw-scale-x:1.1;--tw-scale-y:1.1;transform:translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.hover\:bg-blue-800:hover{--tw-bg-opacity:1;background-color:rgb(30 64 175 / var(--tw-bg-opacity, 1))}.hover\:bg-gray-200:hover{--tw-bg-opacity:1;background-color:rgb(229 231 235 / var(--tw-bg-opacity, 1))}.hover\:text-blue-400:hover{--tw-text-opacity:1;color:rgb(96 165 250 / var(--tw-text-opacity, 1))}.hover\:text-brandBlue:hover{--tw-text-opacity:1;color:rgb(21 75 175 / var(--tw-text-opacity, 1))}.hover\:text-white:hover{--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity, 1))}.group:hover .group-hover\:scale-105{--tw-scale-x:1.05;--tw-scale-y:1.05;transform:translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}@media (min-width: 768px){.md\:col-span-1{grid-column:span 1 / span 1}.md\:mt-0{margin-top:0px}.md\:mt-12{margin-top:3rem}.md\:block{display:block}.md\:flex{display:flex}.md\:grid-cols-2{grid-template-columns:repeat(2, minmax(0, 1fr))}.md\:grid-cols-4{grid-template-columns:repeat(4, minmax(0, 1fr))}.md\:flex-row{flex-direction:row}.md\:px-12{padding-left:3rem;padding-right:3rem}.md\:pl-24{padding-left:6rem}.md\:pr-12{padding-right:3rem}.md\:text-\[68px\]{font-size:68px}}@media (min-width: 1024px){.lg\:grid-cols-3{grid-template-columns:repeat(3, minmax(0, 1fr))}}</style></head>
+<body class="antialiased flex flex-col min-h-[800px]">
+
+    <!-- Header -->
+    <header class="w-full bg-white py-4 px-6 md:px-12 flex items-center justify-between shadow-sm sticky top-0 z-50">
+        <!-- Logo Placeholder (Using Text since no exact logo image was provided for the header, though screenshot shows it) -->
+        <div class="flex-shrink-0">
+            <div class="bg-link text-white text-xs font-bold px-2 py-1 flex items-center h-10 w-32 justify-center rounded">
+                SISS LOGO
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="hidden md:flex items-center space-x-8 text-sm font-medium text-gray-700">
+            <a href="#" class="hover:text-brandBlue transition-colors" rel="nofollow">HOME</a>
+            <a href="#" class="hover:text-brandBlue transition-colors" rel="nofollow">ABOUT</a>
+            <a href="#" class="hover:text-brandBlue transition-colors flex items-center" rel="nofollow">
+                SERVICES <i class="fas fa-chevron-down ml-1 text-xs"></i>
+            </a>
+            <a href="#" class="text-brandBlue transition-colors" rel="nofollow">PROJECTS</a>
+            <a href="#" class="hover:text-brandBlue transition-colors" rel="nofollow">NEWS</a>
+            <a href="#" class="hover:text-brandBlue transition-colors" rel="nofollow">CONTACT</a>
+        </nav>
+
+        <!-- CTA Button -->
+        <div class="hidden md:block">
+            <a href="#" class="bg-brandBlue text-white px-6 py-2.5 rounded-[50px] text-sm font-medium hover:bg-blue-800 transition-colors" rel="nofollow">
+                Vendor Registration
+            </a>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-pattern w-full h-[320px] relative flex items-center px-6 md:px-12 overflow-hidden">
+        <!-- Decorative faint shapes mimicking the background pattern -->
+        <div class="absolute inset-0 opacity-10 pointer-events-none flex justify-center items-center">
+            <div class="grid grid-cols-4 gap-8">
+                <div class="w-24 h-24 border-2 border-white rounded-xl flex items-center justify-center">
+                    <i class="fas fa-cloud-upload-alt text-4xl text-white"></i>
+                </div>
+                <div class="w-24 h-24 border-2 border-white rounded-xl flex items-center justify-center">
+                    <i class="fas fa-comment-dots text-4xl text-white"></i>
+                </div>
+                <div class="w-24 h-24 border-2 border-white rounded-full flex items-center justify-center">
+                    <i class="fas fa-network-wired text-4xl text-white"></i>
+                </div>
+            </div>
+        </div>
+        
+        <div class="max-w-7xl mx-auto w-full relative z-10 pl-4 md:pl-24 mt-12">
+            <h1 class="text-white text-5xl md:text-[68px] font-heading font-bold tracking-tight">Projects</h1>
+        </div>
+    </section>
+
+    <!-- Breadcrumbs -->
+    <div class="w-full bg-[#F5F5F5] py-3 px-6 md:px-12 border-b border-gray-200">
+        <div class="max-w-7xl mx-auto pl-4 md:pl-24 text-sm">
+            <span class="text-red-500 font-medium">Home</span> 
+            <span class="mx-2 text-gray-500">/</span> 
+            <span class="text-gray-700">Projects</span>
+        </div>
+    </div>
+
+    <!-- Projects Grid -->
+    <main class="flex-grow max-w-[1400px] mx-auto w-full py-16 px-6 md:px-12">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12 pl-4 md:pl-24 pr-4 md:pr-12">
+            
+            <!-- Project 1 -->
+            <div class="flex flex-col group">
+                <div class="overflow-hidden rounded-xl h-[280px] w-full">
+                    <img src="https://sendiansecurity.com/wp-content/uploads/2025/10/towers-1000x650.jpg" alt="Towers" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" decoding="async" fetchpriority="low">
+                </div>
+                <h3 class="mt-5 text-[28px] font-heading font-medium text-gray-800">Towers</h3>
+            </div>
+
+            <!-- Project 2 -->
+            <div class="flex flex-col group">
+                <div class="overflow-hidden rounded-xl h-[280px] w-full">
+                    <img src="https://sendiansecurity.com/wp-content/uploads/2025/10/2-6-1000x650.jpg" alt="Commercial" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" decoding="async" fetchpriority="low">
+                </div>
+                <h3 class="mt-5 text-[28px] font-heading font-medium text-gray-800">Commercial</h3>
+            </div>
+
+            <!-- Project 3 -->
+            <div class="flex flex-col group">
+                <div class="overflow-hidden rounded-xl h-[280px] w-full">
+                    <img src="https://sendiansecurity.com/wp-content/uploads/2025/10/al-bostan-compound-inside.crop_-1000x650.jpg" alt="Residential" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" decoding="async" fetchpriority="low">
+                </div>
+                <h3 class="mt-5 text-[28px] font-heading font-medium text-gray-800">Residential</h3>
+            </div>
+
+            <!-- Project 4 -->
+            <div class="flex flex-col group">
+                <div class="overflow-hidden rounded-xl h-[280px] w-full">
+                    <img src="https://sendiansecurity.com/wp-content/uploads/2025/10/eve-medical-center-1000x650.jpg" alt="Healthcare" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" decoding="async" fetchpriority="low">
+                </div>
+                <h3 class="mt-5 text-[28px] font-heading font-medium text-gray-800">Healthcare</h3>
+            </div>
+
+            <!-- Project 5 -->
+            <div class="flex flex-col group">
+                <div class="overflow-hidden rounded-xl h-[280px] w-full">
+                    <img src="https://sendiansecurity.com/wp-content/uploads/2025/10/13-2-1000x650.jpg" alt="Education" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" decoding="async" fetchpriority="low">
+                </div>
+                <h3 class="mt-5 text-[28px] font-heading font-medium text-gray-800">Education</h3>
+            </div>
+
+            <!-- Project 6 -->
+            <div class="flex flex-col group">
+                <div class="overflow-hidden rounded-xl h-[280px] w-full">
+                    <img src="https://sendiansecurity.com/wp-content/uploads/2026/02/Domasco-Watches-1000x650.png" alt="Retail" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" decoding="async" fetchpriority="low">
+                </div>
+                <h3 class="mt-5 text-[28px] font-heading font-medium text-gray-800">Retail</h3>
+            </div>
+
+            <!-- Project 7 -->
+            <div class="flex flex-col group">
+                <div class="overflow-hidden rounded-xl h-[280px] w-full">
+                    <img src="https://sendiansecurity.com/wp-content/uploads/2026/02/GAC-MOTOR-1000x650.png" alt="Showrooms" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" decoding="async" fetchpriority="low">
+                </div>
+                <h3 class="mt-5 text-[28px] font-heading font-medium text-gray-800">Showrooms</h3>
+            </div>
+
+            <!-- Project 8 -->
+            <div class="flex flex-col group">
+                <div class="overflow-hidden rounded-xl h-[280px] w-full">
+                    <img src="https://sendiansecurity.com/wp-content/uploads/2025/10/12-2-1000x650.jpg" alt="Industrial" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" decoding="async" fetchpriority="low">
+                </div>
+                <h3 class="mt-5 text-[28px] font-heading font-medium text-gray-800">Industrial</h3>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-footerBg pt-16 pb-6 text-white w-full border-t-[8px] border-footerBg">
+        <div class="max-w-[1400px] mx-auto px-6 md:px-12 grid grid-cols-1 md:grid-cols-4 gap-12 pl-4 md:pl-24 pr-4 md:pr-12">
+            
+            <!-- Company Info -->
+            <div class="md:col-span-1 pr-4">
+                <div class="bg-[#295F8E] p-2 inline-block rounded mb-6 w-[200px]">
+                    <img src="https://sendiansecurity.com/projects/" alt="SISS Logo" class="w-full h-auto opacity-0" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" loading="lazy" decoding="async" fetchpriority="low" data-retried="true" style="display: none;">
+                    <!-- Fallback if exact logo isn't an image url in the prompt -->
+                    <div class="text-white text-center font-bold" style="display: block;">SISS LOGO</div>
+                </div>
+                <p class="text-gray-300 text-[15px] leading-relaxed mb-8">
+                    Ministry of Interior-approved security solutions provider. Protecting Qatar's infrastructure with cutting-edge CCTV, access control, and enterprise security systems for more than a decade.
+                </p>
+                <div class="flex space-x-3">
+                    <a href="#" class="w-10 h-10 rounded-full bg-white text-footerBg flex items-center justify-center hover:bg-gray-200 transition-colors" rel="nofollow">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="#" class="w-10 h-10 rounded-full bg-white text-footerBg flex items-center justify-center hover:bg-gray-200 transition-colors" rel="nofollow">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="#" class="w-10 h-10 rounded-full bg-white text-footerBg flex items-center justify-center hover:bg-gray-200 transition-colors" rel="nofollow">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Quick Links -->
+            <div class="md:col-span-1">
+                <h4 class="text-xl font-heading font-semibold mb-6">Quick Links</h4>
+                <ul class="space-y-4 text-[15px]">
+                    <li><a href="#" class="text-gray-300 hover:text-white transition-colors flex items-center" rel="nofollow"><i class="fas fa-angle-double-right text-xs mr-2 text-gray-500"></i> About us</a></li>
+                    <li><a href="#" class="text-gray-300 hover:text-white transition-colors flex items-center" rel="nofollow"><i class="fas fa-angle-double-right text-xs mr-2 text-gray-500"></i> Services</a></li>
+                    <li><a href="#" class="text-brandBlue hover:text-blue-400 transition-colors flex items-center" rel="nofollow"><i class="fas fa-angle-double-right text-xs mr-2 text-brandBlue"></i> Projects</a></li>
+                </ul>
+            </div>
+            
+            <div class="md:col-span-1 md:mt-12">
+                <ul class="space-y-4 text-[15px]">
+                    <li><a href="#" class="text-gray-300 hover:text-white transition-colors flex items-center" rel="nofollow"><i class="fas fa-angle-double-right text-xs mr-2 text-gray-500"></i> News</a></li>
+                    <li><a href="#" class="text-gray-300 hover:text-white transition-colors flex items-center" rel="nofollow"><i class="fas fa-angle-double-right text-xs mr-2 text-gray-500"></i> Vendor Registration</a></li>
+                    <li><a href="#" class="text-gray-300 hover:text-white transition-colors flex items-center" rel="nofollow"><i class="fas fa-angle-double-right text-xs mr-2 text-gray-500"></i> Contact</a></li>
+                </ul>
+            </div>
+
+            <!-- Contact Info -->
+            <div class="md:col-span-1 pt-12">
+                <div class="mb-6">
+                    <h5 class="text-white font-semibold mb-2">E-Mail:</h5>
+                    <div class="flex items-start text-gray-300 text-[15px]">
+                        <i class="far fa-envelope mt-1 mr-3"></i>
+                        <a href="mailto:info@sendiansecurity.com" class="hover:text-white transition-colors" rel="nofollow">info@sendiansecurity.com</a>
+                    </div>
+                </div>
+                <div>
+                    <h5 class="text-white font-semibold mb-2">Address:</h5>
+                    <div class="flex items-start text-gray-300 text-[15px] leading-relaxed">
+                        <i class="fas fa-map-marker-alt mt-1 mr-3"></i>
+                        <p>1st Floor, Office 01, Building 60,<br>Makkah Al Mukarramah Street,<br>Luqta, Doha</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="max-w-[1400px] mx-auto px-6 md:px-12 pl-4 md:pl-24 pr-4 md:pr-12 mt-16 pt-6 border-t border-gray-700/50 flex flex-col md:flex-row justify-between items-center text-xs text-gray-400">
+            <p>© Copyright 2026 Sendian Security</p>
+            <div class="flex space-x-6 mt-4 md:mt-0">
+                <a href="#" class="hover:text-white transition-colors" rel="nofollow">Terms and Conditions</a>
+                <a href="#" class="hover:text-white transition-colors" rel="nofollow">Privacy policy</a>
+                <a href="#" class="hover:text-white transition-colors" rel="nofollow">Help</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- WhatsApp Floating Icon -->
+    <a href="#" class="whatsapp-float hover:scale-110 transition-transform duration-300" rel="nofollow">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+
+</body></html>

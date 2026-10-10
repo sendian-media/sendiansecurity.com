@@ -6,7 +6,7 @@ import { servicesPage } from '@/data/services';
 
 <BaseLayout title="Services | Sendian Integrated Security Services" description="Integrated security solutions: CCTV, networking, smart parking, communication, automation, audio-visual, and maintenance services in Qatar.">
   <section class="service-hero relative flex h-[350px] w-full items-center overflow-hidden rounded-b-[30px] shadow-lg md:h-[400px]" aria-label="Services banner">
-    <div class="relative z-10 mx-auto w-full max-w-7xl px-6 md:px-20">
+    <div class="relative z-10 mx-auto w-full max-w-7xl px-6 md:px-20 fade-up">
       <h1 class="text-5xl font-bold leading-tight text-white md:text-[68px]">{servicesPage.hero.title}</h1>
     </div>
   </section>
@@ -20,7 +20,7 @@ import { servicesPage } from '@/data/services';
   </nav>
 
   <main class="mx-auto mb-24 max-w-7xl px-6 md:px-12">
-    <div class="mb-16 flex flex-col items-center text-center">
+    <div class="mb-16 flex flex-col items-center text-center fade-up d1">
       <p class="mb-6"><span class="badge-outline-gray">// Our Services</span></p>
       <h2 class="max-w-2xl text-4xl font-bold leading-tight text-[#1E293B] md:text-[46px]">
         Integrated <span class="text-[#3B82F6]">Security</span><br />Solutions
@@ -28,9 +28,9 @@ import { servicesPage } from '@/data/services';
     </div>
 
     <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-      {servicesPage.cards.map((card) => (
-        <a class="service-card group block" href={card.href}>
-          <img class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" src={card.image} alt={card.alt} width="800" height="533" loading="lazy" decoding="async" />
+      {servicesPage.cards.map((card, index) => (
+        <a class="service-card group block fade-up" style={`animation-delay: ${(index % 2 === 0 ? 200 : 400)}ms`} href={card.href}>
+          <img class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" src={card.image} alt={card.alt} width="1920" height="1080" loading="lazy" decoding="async" />
           <h3 class="service-card-title">
             {card.titleLines.map((line, index) => (
               <>{index > 0 && <br />}{line}</>
@@ -41,12 +41,12 @@ import { servicesPage } from '@/data/services';
     </div>
   </main>
 
-  <section class="w-full bg-[#F8F9FA] px-6 py-20">
+  <section class="w-full bg-[#F8F9FA] px-6 py-20 fade-up d2">
     <div class="mx-auto grid max-w-6xl grid-cols-1 gap-12 text-center md:grid-cols-2 md:text-left lg:grid-cols-4">
       {servicesPage.stats.map((stat) => (
         <div>
           <div class="mb-2 text-[46px] font-semibold text-[#1E293B]">
-            {stat.value}<span class="text-[#3B82F6]">{stat.suffix}</span>
+            <span class="stat-counter" data-to={stat.value} data-delimiter={stat.value.length > 3 ? ',' : ''}>{stat.value.length > 3 ? Number(stat.value).toLocaleString('en-US') : stat.value}</span><span class="text-[#3B82F6]">{stat.suffix}</span>
           </div>
           <p class="text-[17px] font-semibold text-[#1E293B]">{stat.label}</p>
         </div>
@@ -57,11 +57,52 @@ import { servicesPage } from '@/data/services';
   <FloatingWhatsApp />
 </BaseLayout>
 
+<script>
+  const counters = document.querySelectorAll<HTMLElement>('.stat-counter');
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const render = (el: HTMLElement, value: number, delimiter: string) => {
+    el.textContent = delimiter ? value.toLocaleString('en-US') : String(value);
+  };
+
+  const animate = (el: HTMLElement) => {
+    const to = Number(el.dataset.to ?? '0');
+    const delimiter = el.dataset.delimiter ?? '';
+    if (reduced || !Number.isFinite(to)) {
+      render(el, to, delimiter);
+      return;
+    }
+    const duration = 2000;
+    const start = performance.now();
+    el.textContent = '0';
+    const step = (now: number) => {
+      const progress = Math.min((now - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      render(el, Math.round(to * eased), delimiter);
+      if (progress < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  };
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      for (const entry of entries) {
+        if (entry.isIntersecting) {
+          observer.unobserve(entry.target);
+          animate(entry.target as HTMLElement);
+        }
+      }
+    },
+    { threshold: 0.4 },
+  );
+  counters.forEach((el) => observer.observe(el));
+</script>
+
 <style is:global>
   .service-hero {
     background-color: #2c3a55;
     background-image:
-      url('/images/home/hero.webp'),
+      url('/images/services/services-banner.jpg'),
       radial-gradient(circle at 70% 50%, rgb(255 255 255 / 0.05) 0%, transparent 50%),
       radial-gradient(circle at 30% 80%, rgb(255 255 255 / 0.03) 0%, transparent 40%);
     background-blend-mode: overlay, normal, normal;
@@ -73,7 +114,7 @@ import { servicesPage } from '@/data/services';
     content: '';
     position: absolute;
     inset: 0;
-    background: rgb(44 58 85 / 0.92);
+    background: rgb(26 37 71 / 0.78);
   }
   .badge-outline-gray {
     border: 1px solid #d1d5db;

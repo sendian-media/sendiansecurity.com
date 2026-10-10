@@ -1,0 +1,567 @@
+<html lang="en"><head><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM%20Sans:wght@100;200;300;400;500;600;700;800;900&amp;display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Wix%20Madefor%20Display:wght@100;200;300;400;500;600;700;800;900&amp;display=swap"><script>window.__AIFX_MAX_DPR__=1.25;window.__AIFX_FPS_CAP__=30;</script>
+        <script>
+            (function() {
+                function tuneImage(img) {
+                    try {
+                        img.loading = 'lazy';
+                        img.decoding = 'async';
+                        img.fetchPriority = 'low';
+                    } catch (_) {}
+                }
+                function tuneAllImages() {
+                    document.querySelectorAll('img').forEach(tuneImage);
+                }
+                if (document.readyState === 'loading') {
+                    document.addEventListener('DOMContentLoaded', tuneAllImages, { once: true });
+                } else {
+                    tuneAllImages();
+                }
+            })();
+        </script>
+       
+        <script>
+            (function() {
+                const OriginalIntersectionObserver = window.IntersectionObserver;
+                if (!OriginalIntersectionObserver) return;
+                window.__editor_force_intersection_enabled = false;
+                function shouldForceIntersection() {
+                    return window.__editor_force_intersection_enabled === true;
+                }
+                window.IntersectionObserver = function(callback, options) {
+                    const observer = new OriginalIntersectionObserver(function(entries, obs) {
+                        if (!shouldForceIntersection()) {
+                            callback(entries, obs);
+                            return;
+                        }
+                        // Force all entries to appear as intersecting
+                        const modifiedEntries = entries.map(entry => ({
+                            target: entry.target,
+                            isIntersecting: true,
+                            intersectionRatio: 1,
+                            boundingClientRect: entry.boundingClientRect,
+                            intersectionRect: entry.intersectionRect,
+                            rootBounds: entry.rootBounds,
+                            time: entry.time,
+                        }));
+                        callback(modifiedEntries, obs);
+                    }, options);
+
+                    // Also immediately trigger for any observed element
+                    const originalObserve = observer.observe.bind(observer);
+                    observer.observe = function(target) {
+                        originalObserve(target);
+                        // Trigger callback immediately with the element as intersecting
+                        setTimeout(() => {
+                            if (!shouldForceIntersection()) return;
+                            callback([{
+                                target: target,
+                                isIntersecting: true,
+                                intersectionRatio: 1,
+                                boundingClientRect: target.getBoundingClientRect(),
+                                intersectionRect: target.getBoundingClientRect(),
+                                rootBounds: null,
+                                time: performance.now(),
+                            }], observer);
+                        }, 0);
+                    };
+
+                    return observer;
+                };
+                window.IntersectionObserver.prototype = OriginalIntersectionObserver.prototype;
+            })();
+        </script>
+       
+        <script>
+            (function() {
+                function hasTailwindScript() {
+                    return !!document.querySelector('script[src*="cdn.tailwindcss.com"], script[src*="@tailwindcss/browser"]');
+                }
+                function hasTailwindConfig() {
+                    return /tailwind\s*\.\s*config/i.test(document.documentElement.innerHTML);
+                }
+                function hasLikelyTailwindClasses() {
+                    var matches = 0;
+                    var classAttrs = document.querySelectorAll('[class]');
+                    for (var i = 0; i < classAttrs.length; i++) {
+                        var tokens = String(classAttrs[i].getAttribute('class') || '').split(/\s+/);
+                        for (var j = 0; j < tokens.length; j++) {
+                            var token = tokens[j].split(':').pop().replace(/^!/, '');
+                            if (
+                                /^(flex|grid|block|inline-block|inline-flex|hidden|relative|absolute|fixed|sticky|container|sr-only|antialiased|isolate)$/.test(token) ||
+                                /^-?(m|p)([trblxy])?-(\d|px|auto|\[)/.test(token) ||
+                                /^(text|bg|border|rounded|shadow|ring|divide|outline|decoration|underline|font|leading|tracking|w|h|min-w|max-w|min-h|max-h|size|z|top|right|bottom|left|inset|translate|scale|rotate|skew|origin|opacity|overflow|object|aspect|gap|space|items|justify|content|self|place|col|row|order|duration|delay|ease|animate|backdrop|blur|brightness|contrast|drop-shadow|grayscale|hue-rotate|invert|saturate|sepia|from|via|to|prose)-/.test(token)
+                            ) {
+                                matches++;
+                                if (matches >= 3) return true;
+                            }
+                        }
+                    }
+                    return false;
+                }
+                function ensureTailwind() {
+                    if (hasTailwindScript() || document.getElementById('__editor_tailwind_fallback')) return;
+                    if (!hasTailwindConfig() && !hasLikelyTailwindClasses()) return;
+                    var script = document.createElement('script');
+                    script.id = '__editor_tailwind_fallback';
+                    script.src = 'https://cdn.tailwindcss.com';
+                    document.head.appendChild(script);
+                }
+                if (document.readyState === 'loading') {
+                    document.addEventListener('DOMContentLoaded', ensureTailwind, { once: true });
+                } else {
+                    ensureTailwind();
+                }
+            })();
+        </script>
+       
+        <script>
+            (function() {
+                // console.log("[Iframe] Script injected and running");
+                document.addEventListener('error', function(e) {
+                    // console.log("[Iframe] Error event captured:", e);
+                    if (e.target && e.target.tagName) {
+                         // console.log("[Iframe] Target tag:", e.target.tagName);
+                    }
+                    
+                    if (e.target && e.target.tagName.toLowerCase() === 'img') {
+                        // console.log("[Iframe] Image error detected:", e.target.src);
+                        const img = e.target;
+                        const alt = img.alt;
+                        if (alt && !img.dataset.retried) {
+                            // console.log("[Iframe] Posting IMAGE_ERROR for:", alt);
+                            img.dataset.retried = 'true';
+                            window.parent.postMessage({
+                                type: 'IMAGE_ERROR',
+                                pageId: "b4a24de0-2729-4f56-bac4-ab0b2285b2b9",
+                                alt: alt,
+                                src: img.src
+                            }, '*');
+                        } else {
+                            // console.log("[Iframe] Skipping IMAGE_ERROR (no alt or already retried):", { alt, retried: img.dataset.retried });
+                        }
+                    }
+                }, true);
+
+                window.addEventListener('message', function(e) {
+                    if (e.data?.type === 'IMAGE_REPLACED' && e.data?.newSrc) {
+                        // console.log("[Iframe] Received IMAGE_REPLACED:", e.data);
+                        const images = document.getElementsByTagName('img');
+                        for (let img of images) {
+                            if (img.src === e.data.originalSrc || (img.dataset.retried === 'true' && !img.complete)) {
+                                // Stash the original src so the stream-end
+                                // body-innerHTML swap can replay this rewrite
+                                // onto the freshly-parsed <img> nodes. Without
+                                // this, the swap drops our Serper-replaced src
+                                // and the image re-requests on parse, causing
+                                // duplicate Serper calls and visible flicker.
+                                if (!img.dataset.originalSrc) {
+                                    img.dataset.originalSrc = e.data.originalSrc;
+                                }
+                                img.src = e.data.newSrc;
+                            }
+                        }
+                    }
+                });
+            })();
+        </script>
+       
+        <script>
+            (function() {
+                window.__image_debug_v1 = true;
+                if (window.__tailwind_warn_suppressed) return;
+                window.__tailwind_warn_suppressed = true;
+                const originalWarn = console.warn;
+                console.warn = (...args) => {
+                    if (args[0] && typeof args[0] === 'string' && args[0].includes('cdn.tailwindcss.com')) {
+                        return;
+                    }
+                    originalWarn.apply(console, args);
+                };
+            })();
+        </script>
+        <script>
+            (function() {
+                 // Removed Link Editing Interception
+            })();
+        </script>
+        <style>
+            .h-screen { min-height: 800px !important; height: auto !important; }
+            .min-h-screen { min-height: 800px !important; }
+            .editor-canvas-expanded-scroll { overflow: visible !important; }
+            
+            
+            html, body {
+                min-height: 800px !important;
+                height: auto !important;
+                width: 100% !important;
+                overflow: auto !important;
+                -ms-overflow-style: none;
+                scrollbar-width: none;
+            }
+            ::-webkit-scrollbar {
+                display: none;
+            }
+            .editor-link-hover {
+                outline: 2px solid #3b82f6 !important;
+                cursor: pointer !important;
+            }
+            
+            /* Expand legacy web layouts instead of making the editor iframe an
+               internal scroller. App canvases intentionally preserve authored
+               percentage/fixed heights for preview parity. */
+            .flex > .h-full {
+                height: auto !important;
+                align-self: stretch !important;
+                min-height: 0;
+            }
+            .fixed.h-full,
+            nav.fixed.h-full,
+            aside.fixed.h-full {
+                position: absolute !important;
+            }
+            
+            /* Force visibility on scroll-animation hidden elements */
+            /* These override common patterns used by AOS, ScrollReveal, GSAP, and custom animations */
+            [style*="opacity: 0"],
+            [style*="opacity:0"] {
+                opacity: 1 !important;
+            }
+            [style*="clip-path: inset"],
+            [style*="clip-path:inset"] {
+                clip-path: none !important;
+            }
+            [style*="visibility: hidden"],
+            [style*="visibility:hidden"] {
+                visibility: visible !important;
+            }
+            /* AOS library data attributes */
+            [data-aos] {
+                opacity: 1 !important;
+                transform: none !important;
+                visibility: visible !important;
+            }
+            /* Common animation class patterns */
+            [class*="aos-"],
+            [class*="scroll-"],
+            [class*="reveal"],
+            [class*="fade-"],
+            [class*="slide-"] {
+                opacity: 1 !important;
+                transform: none !important;
+                clip-path: none !important;
+                visibility: visible !important;
+            }
+            /* The editor is a static artifact. Transformed entry animations can
+               permanently enlarge Chrome's document scrollHeight (for example,
+               translateY(30px) leaves a false 30px strip after the animation),
+               so prevent generated animate-* utilities from affecting layout
+               measurement. Production/preview HTML is unchanged. */
+            [class*="animate-"] {
+                animation: none !important;
+                opacity: 1 !important;
+                visibility: visible !important;
+            }
+        </style>
+       
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sendian Security - Services</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&amp;family=Wix+Madefor+Display:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        link: '#8F91AB',
+                        accent: '#8F91AB',
+                        primary: '#2C3A55',
+                        secondary: '#3E4A5C',
+                        brandBlue: '#2563EB',
+                        brandLightGray: '#F7F8FA',
+                    },
+                    fontFamily: {
+                        heading: ['"Wix Madefor Display"', 'sans-serif'],
+                        body: ['"DM Sans"', 'sans-serif'],
+                    },
+                    borderRadius: {
+                        DEFAULT: '7px',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'DM Sans', sans-serif;
+            color: #000000;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Wix Madefor Display', sans-serif;
+        }
+        
+        .hero-bg {
+            background-color: #2C3A55;
+            background-image: radial-gradient(circle at 70% 50%, rgba(255, 255, 255, 0.05) 0%, transparent 50%),
+                              radial-gradient(circle at 30% 80%, rgba(255, 255, 255, 0.03) 0%, transparent 40%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-bg::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: url('https://images.unsplash.com/photo-1557597774-9d273605dfa9?auto=format&fit=crop&q=80&w=2000') center/cover;
+            opacity: 0.1;
+            mix-blend-mode: overlay;
+        }
+
+        .service-card {
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+            aspect-ratio: 16/10;
+        }
+        
+        .service-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0; right: 0; height: 60%;
+            background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 100%);
+            z-index: 10;
+        }
+        
+        .service-card img {
+            transition: transform 0.5s ease;
+        }
+        
+        .service-card:hover img {
+            transform: scale(1.05);
+        }
+
+        .service-card-title {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            z-index: 20;
+            color: white;
+            font-family: 'Wix Madefor Display', sans-serif;
+            font-size: 24px;
+            font-weight: 600;
+            line-height: 1.2;
+        }
+    </style>
+<style>*, ::before, ::after{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }/* ! tailwindcss v3.4.17 | MIT License | https://tailwindcss.com */*,::after,::before{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}::after,::before{--tw-content:''}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;tab-size:4;font-family:ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0;padding:0}legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}.fixed{position:fixed}.relative{position:relative}.bottom-6{bottom:1.5rem}.right-6{right:1.5rem}.z-20{z-index:20}.z-50{z-index:50}.mx-2{margin-left:0.5rem;margin-right:0.5rem}.mx-auto{margin-left:auto;margin-right:auto}.mb-0{margin-bottom:0px}.mb-16{margin-bottom:4rem}.mb-2{margin-bottom:0.5rem}.mb-20{margin-bottom:5rem}.mb-24{margin-bottom:6rem}.mb-4{margin-bottom:1rem}.mb-6{margin-bottom:1.5rem}.mb-8{margin-bottom:2rem}.mt-1{margin-top:0.25rem}.mt-4{margin-top:1rem}.inline-block{display:inline-block}.flex{display:flex}.grid{display:grid}.hidden{display:none}.h-10{height:2.5rem}.h-12{height:3rem}.h-14{height:3.5rem}.h-3{height:0.75rem}.h-9{height:2.25rem}.h-\[350px\]{height:350px}.h-full{height:100%}.w-14{width:3.5rem}.w-9{width:2.25rem}.w-\[1px\]{width:1px}.w-full{width:100%}.max-w-2xl{max-width:42rem}.max-w-6xl{max-width:72rem}.max-w-7xl{max-width:80rem}.max-w-\[1920px\]{max-width:1920px}.grid-cols-1{grid-template-columns:repeat(1, minmax(0, 1fr))}.grid-cols-2{grid-template-columns:repeat(2, minmax(0, 1fr))}.flex-col{flex-direction:column}.items-start{align-items:flex-start}.items-center{align-items:center}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.gap-1{gap:0.25rem}.gap-12{gap:3rem}.gap-2{gap:0.5rem}.gap-3{gap:0.75rem}.gap-6{gap:1.5rem}.gap-x-4{column-gap:1rem}.gap-y-4{row-gap:1rem}.space-x-4 > :not([hidden]) ~ :not([hidden]){--tw-space-x-reverse:0;margin-right:calc(1rem * var(--tw-space-x-reverse));margin-left:calc(1rem * calc(1 - var(--tw-space-x-reverse)))}.space-x-6 > :not([hidden]) ~ :not([hidden]){--tw-space-x-reverse:0;margin-right:calc(1.5rem * var(--tw-space-x-reverse));margin-left:calc(1.5rem * calc(1 - var(--tw-space-x-reverse)))}.space-x-8 > :not([hidden]) ~ :not([hidden]){--tw-space-x-reverse:0;margin-right:calc(2rem * var(--tw-space-x-reverse));margin-left:calc(2rem * calc(1 - var(--tw-space-x-reverse)))}.rounded-full{border-radius:9999px}.rounded-b-\[20px\]{border-bottom-right-radius:20px;border-bottom-left-radius:20px}.rounded-b-\[30px\]{border-bottom-right-radius:30px;border-bottom-left-radius:30px}.border{border-width:1px}.border-b{border-bottom-width:1px}.border-t{border-top-width:1px}.border-gray-100{--tw-border-opacity:1;border-color:rgb(243 244 246 / var(--tw-border-opacity, 1))}.border-gray-300{--tw-border-opacity:1;border-color:rgb(209 213 219 / var(--tw-border-opacity, 1))}.border-gray-700{--tw-border-opacity:1;border-color:rgb(55 65 81 / var(--tw-border-opacity, 1))}.bg-\[\#1D4ED8\]{--tw-bg-opacity:1;background-color:rgb(29 78 216 / var(--tw-bg-opacity, 1))}.bg-\[\#202B3E\]{--tw-bg-opacity:1;background-color:rgb(32 43 62 / var(--tw-bg-opacity, 1))}.bg-\[\#25D366\]{--tw-bg-opacity:1;background-color:rgb(37 211 102 / var(--tw-bg-opacity, 1))}.bg-\[\#F8F9FA\]{--tw-bg-opacity:1;background-color:rgb(248 249 250 / var(--tw-bg-opacity, 1))}.bg-\[\#F9FAFB\]{--tw-bg-opacity:1;background-color:rgb(249 250 251 / var(--tw-bg-opacity, 1))}.bg-gray-600{--tw-bg-opacity:1;background-color:rgb(75 85 99 / var(--tw-bg-opacity, 1))}.bg-white{--tw-bg-opacity:1;background-color:rgb(255 255 255 / var(--tw-bg-opacity, 1))}.object-contain{object-fit:contain}.object-cover{object-fit:cover}.px-4{padding-left:1rem;padding-right:1rem}.px-6{padding-left:1.5rem;padding-right:1.5rem}.py-1\.5{padding-top:0.375rem;padding-bottom:0.375rem}.py-20{padding-top:5rem;padding-bottom:5rem}.py-3{padding-top:0.75rem;padding-bottom:0.75rem}.py-4{padding-top:1rem;padding-bottom:1rem}.pb-6{padding-bottom:1.5rem}.pr-0{padding-right:0px}.pt-20{padding-top:5rem}.pt-6{padding-top:1.5rem}.text-center{text-align:center}.font-heading{font-family:"Wix Madefor Display", sans-serif}.text-3xl{font-size:1.875rem;line-height:2.25rem}.text-4xl{font-size:2.25rem;line-height:2.5rem}.text-5xl{font-size:3rem;line-height:1}.text-\[10px\]{font-size:10px}.text-\[12px\]{font-size:12px}.text-\[13px\]{font-size:13px}.text-\[14px\]{font-size:14px}.text-\[15px\]{font-size:15px}.text-\[17px\]{font-size:17px}.text-\[18px\]{font-size:18px}.text-\[46px\]{font-size:46px}.text-sm{font-size:0.875rem;line-height:1.25rem}.font-bold{font-weight:700}.font-medium{font-weight:500}.font-semibold{font-weight:600}.uppercase{text-transform:uppercase}.leading-relaxed{line-height:1.625}.leading-tight{line-height:1.25}.tracking-wide{letter-spacing:0.025em}.tracking-widest{letter-spacing:0.1em}.text-\[\#1E293B\]{--tw-text-opacity:1;color:rgb(30 41 59 / var(--tw-text-opacity, 1))}.text-\[\#202B3E\]{--tw-text-opacity:1;color:rgb(32 43 62 / var(--tw-text-opacity, 1))}.text-\[\#3B82F6\]{--tw-text-opacity:1;color:rgb(59 130 246 / var(--tw-text-opacity, 1))}.text-brandBlue{--tw-text-opacity:1;color:rgb(37 99 235 / var(--tw-text-opacity, 1))}.text-gray-200{--tw-text-opacity:1;color:rgb(229 231 235 / var(--tw-text-opacity, 1))}.text-gray-300{--tw-text-opacity:1;color:rgb(209 213 219 / var(--tw-text-opacity, 1))}.text-gray-400{--tw-text-opacity:1;color:rgb(156 163 175 / var(--tw-text-opacity, 1))}.text-gray-500{--tw-text-opacity:1;color:rgb(107 114 128 / var(--tw-text-opacity, 1))}.text-gray-600{--tw-text-opacity:1;color:rgb(75 85 99 / var(--tw-text-opacity, 1))}.text-gray-900{--tw-text-opacity:1;color:rgb(17 24 39 / var(--tw-text-opacity, 1))}.text-red-500{--tw-text-opacity:1;color:rgb(239 68 68 / var(--tw-text-opacity, 1))}.text-white{--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity, 1))}.antialiased{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}.shadow-lg{--tw-shadow:0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.brightness-0{--tw-brightness:brightness(0);filter:var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow)}.invert{--tw-invert:invert(100%);filter:var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow)}.filter{filter:var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow)}.transition-colors{transition-property:color, background-color, border-color, fill, stroke, -webkit-text-decoration-color;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke, -webkit-text-decoration-color;transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);transition-duration:150ms}.hover\:bg-\[\#20b858\]:hover{--tw-bg-opacity:1;background-color:rgb(32 184 88 / var(--tw-bg-opacity, 1))}.hover\:bg-blue-800:hover{--tw-bg-opacity:1;background-color:rgb(30 64 175 / var(--tw-bg-opacity, 1))}.hover\:bg-gray-200:hover{--tw-bg-opacity:1;background-color:rgb(229 231 235 / var(--tw-bg-opacity, 1))}.hover\:text-brandBlue:hover{--tw-text-opacity:1;color:rgb(37 99 235 / var(--tw-text-opacity, 1))}.hover\:text-white:hover{--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity, 1))}@media (min-width: 768px){.md\:mt-0{margin-top:0px}.md\:flex{display:flex}.md\:h-\[400px\]{height:400px}.md\:grid-cols-2{grid-template-columns:repeat(2, minmax(0, 1fr))}.md\:grid-cols-3{grid-template-columns:repeat(3, minmax(0, 1fr))}.md\:flex-row{flex-direction:row}.md\:px-12{padding-left:3rem;padding-right:3rem}.md\:px-20{padding-left:5rem;padding-right:5rem}.md\:pr-12{padding-right:3rem}.md\:text-left{text-align:left}.md\:text-\[46px\]{font-size:46px}.md\:text-\[68px\]{font-size:68px}}@media (min-width: 1024px){.lg\:grid-cols-3{grid-template-columns:repeat(3, minmax(0, 1fr))}.lg\:grid-cols-4{grid-template-columns:repeat(4, minmax(0, 1fr))}}</style></head>
+<body class="bg-white text-gray-900 antialiased">
+
+    <!-- Header -->
+    <header class="w-full bg-white py-4 px-6 md:px-12 flex items-center justify-between z-50 relative border-b border-gray-100">
+        <div class="flex items-center">
+            <img src="https://images.unsplash.com/photo-1560179707-f14e90ef3623?auto=format&amp;fit=crop&amp;w=300&amp;h=100&amp;q=80" alt="SISS Logo" class="h-10 object-contain" style="filter: brightness(0.8) contrast(1.2);" loading="lazy" decoding="async" fetchpriority="low">
+        </div>
+        
+        <nav class="hidden md:flex items-center space-x-8 text-[14px] font-medium text-gray-600 uppercase tracking-wide">
+            <a href="#" class="hover:text-brandBlue transition-colors" rel="nofollow">Home</a>
+            <a href="#" class="hover:text-brandBlue transition-colors" rel="nofollow">About</a>
+            <a href="#" class="text-brandBlue font-semibold flex items-center gap-1" rel="nofollow">
+                Services <i class="fa-solid fa-chevron-down text-[10px]"></i>
+            </a>
+            <a href="#" class="hover:text-brandBlue transition-colors" rel="nofollow">Projects</a>
+            <a href="#" class="hover:text-brandBlue transition-colors" rel="nofollow">News</a>
+            <a href="#" class="hover:text-brandBlue transition-colors" rel="nofollow">Contact</a>
+        </nav>
+        
+        <div>
+            <a href="#" class="bg-[#1D4ED8] hover:bg-blue-800 text-white px-6 py-3 rounded-full font-medium text-sm transition-colors" rel="nofollow">
+                Vendor Registration
+            </a>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-bg w-full h-[350px] md:h-[400px] flex items-center px-6 md:px-20 mx-auto max-w-[1920px] rounded-b-[30px] shadow-lg mb-0 relative">
+        <div class="relative z-20 w-full max-w-7xl mx-auto">
+            <h1 class="font-heading text-white text-5xl md:text-[68px] font-bold leading-tight">Services</h1>
+        </div>
+    </section>
+
+    <!-- Breadcrumbs -->
+    <div class="w-full bg-[#F9FAFB] py-4 px-6 md:px-20 mb-20 rounded-b-[20px]">
+        <div class="max-w-7xl mx-auto text-sm">
+            <span class="text-red-500 font-medium">Home</span> 
+            <span class="text-gray-400 mx-2">/</span> 
+            <span class="text-gray-600">Services</span>
+        </div>
+    </div>
+
+    <!-- Main Content: Services -->
+    <main class="max-w-7xl mx-auto px-6 md:px-12 mb-24">
+        
+        <!-- Section Heading -->
+        <div class="text-center mb-16 flex flex-col items-center">
+            <div class="inline-block border border-gray-300 rounded-full px-4 py-1.5 mb-6">
+                <span class="text-[13px] font-semibold text-gray-500 tracking-widest uppercase">// Our Services</span>
+            </div>
+            <h2 class="font-heading text-4xl md:text-[46px] font-bold text-[#1E293B] leading-tight max-w-2xl">
+                Integrated <span class="text-[#3B82F6]">Security</span><br>Solutions
+            </h2>
+        </div>
+
+        <!-- Services Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            
+            <!-- Row 1 (Images without text overlaid in reference, but maintaining consistency) -->
+            <div class="service-card group">
+                <img src="https://images.unsplash.com/photo-1557597774-9d273605dfa9?auto=format&amp;fit=crop&amp;q=80&amp;w=800" alt="CCTV Wall Camera" class="w-full h-full object-cover" loading="lazy" decoding="async" fetchpriority="low">
+            </div>
+            
+            <div class="service-card group">
+                <img src="https://images.unsplash.com/photo-1544197150-b99a580bb7a8?auto=format&amp;fit=crop&amp;q=80&amp;w=800" alt="Networking Cables" class="w-full h-full object-cover" loading="lazy" decoding="async" fetchpriority="low">
+            </div>
+            
+            <div class="service-card group">
+                <img src="https://images.unsplash.com/photo-1506521781263-d8422e82f27a?auto=format&amp;fit=crop&amp;q=80&amp;w=800" alt="Parking Barrier" class="w-full h-full object-cover" loading="lazy" decoding="async" fetchpriority="low">
+            </div>
+
+            <!-- Row 2 -->
+            <div class="service-card group">
+                <img src="https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?auto=format&amp;fit=crop&amp;q=80&amp;w=800" alt="Communication Solutions" class="w-full h-full object-cover" loading="lazy" decoding="async" fetchpriority="low">
+                <h3 class="service-card-title">Communication<br>Solutions</h3>
+            </div>
+            
+            <div class="service-card group">
+                <img src="https://images.unsplash.com/photo-1557597774-9d273605dfa9?auto=format&amp;fit=crop&amp;q=80&amp;w=800" alt="Automation Solutions" class="w-full h-full object-cover" loading="lazy" decoding="async" fetchpriority="low">
+                <h3 class="service-card-title">Automation<br>Solutions</h3>
+            </div>
+            
+            <div class="service-card group">
+                <img src="https://images.unsplash.com/photo-1551808525-51a94da548ce?auto=format&amp;fit=crop&amp;q=80&amp;w=800" alt="Audio-Visual Solutions" class="w-full h-full object-cover" loading="lazy" decoding="async" fetchpriority="low">
+                <h3 class="service-card-title">Audio-Visual<br>Solutions</h3>
+            </div>
+
+            <!-- Row 3 -->
+            <div class="service-card group">
+                <img src="https://images.unsplash.com/photo-1544197150-b99a580bb7a8?auto=format&amp;fit=crop&amp;q=80&amp;w=800" alt="Maintenance And Others" class="w-full h-full object-cover" loading="lazy" decoding="async" fetchpriority="low">
+                <h3 class="service-card-title">Maintenance<br>And Others</h3>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- Stats Section -->
+    <section class="w-full bg-[#F8F9FA] py-20 px-6">
+        <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 text-center md:text-left">
+            
+            <div>
+                <div class="text-[46px] font-heading font-semibold text-[#1E293B] mb-2">
+                    244<span class="text-[#3B82F6]">+</span>
+                </div>
+                <p class="text-[17px] font-semibold text-[#1E293B]">Projects Delivered</p>
+            </div>
+            
+            <div>
+                <div class="text-[46px] font-heading font-semibold text-[#1E293B] mb-2">
+                    9,767<span class="text-[#3B82F6]">+</span>
+                </div>
+                <p class="text-[17px] font-semibold text-[#1E293B]">Devices Deployed</p>
+            </div>
+            
+            <div>
+                <div class="text-[46px] font-heading font-semibold text-[#1E293B] mb-2">
+                    23<span class="text-[#3B82F6]">/7</span>
+                </div>
+                <p class="text-[17px] font-semibold text-[#1E293B]">Operational Support</p>
+            </div>
+            
+            <div>
+                <div class="text-[46px] font-heading font-semibold text-[#1E293B] mb-2">
+                    732M<span class="text-[#3B82F6]">+</span>
+                </div>
+                <p class="text-[17px] font-semibold text-[#1E293B]">QAR Asset Value</p>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-[#202B3E] text-white pt-20 pb-6 w-full">
+        <div class="max-w-7xl mx-auto px-6 md:px-12 grid grid-cols-1 md:grid-cols-3 gap-12 mb-16">
+            
+            <!-- Column 1 -->
+            <div class="pr-0 md:pr-12">
+                <img src="https://images.unsplash.com/photo-1560179707-f14e90ef3623?auto=format&amp;fit=crop&amp;w=300&amp;h=100&amp;q=80" alt="SISS Logo" class="h-12 object-contain mb-8 filter brightness-0 invert" loading="lazy" decoding="async" fetchpriority="low">
+                <p class="text-[14px] text-gray-300 leading-relaxed mb-8">
+                    Ministry of Interior-approved security solutions provider. Protecting Qatar's infrastructure with cutting-edge CCTV, access control, and enterprise security systems for more than a decade.
+                </p>
+                <div class="flex space-x-4">
+                    <a href="#" class="w-9 h-9 rounded-full bg-white text-[#202B3E] flex items-center justify-center hover:bg-gray-200 transition-colors" rel="nofollow">
+                        <i class="fa-brands fa-facebook-f text-sm"></i>
+                    </a>
+                    <a href="#" class="w-9 h-9 rounded-full bg-white text-[#202B3E] flex items-center justify-center hover:bg-gray-200 transition-colors" rel="nofollow">
+                        <i class="fa-brands fa-instagram text-sm"></i>
+                    </a>
+                    <a href="#" class="w-9 h-9 rounded-full bg-white text-[#202B3E] flex items-center justify-center hover:bg-gray-200 transition-colors" rel="nofollow">
+                        <i class="fa-brands fa-linkedin-in text-sm"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Column 2 -->
+            <div>
+                <h4 class="text-[18px] font-semibold font-heading mb-8">Quick Links</h4>
+                <div class="grid grid-cols-2 gap-x-4 gap-y-4 text-[14px] text-gray-300">
+                    <a href="#" class="hover:text-white transition-colors flex items-center gap-2" rel="nofollow"><i class="fa-solid fa-angle-right text-[10px] text-gray-500"></i> About us</a>
+                    <a href="#" class="hover:text-white transition-colors flex items-center gap-2" rel="nofollow"><i class="fa-solid fa-angle-right text-[10px] text-gray-500"></i> News</a>
+                    <a href="#" class="hover:text-white transition-colors flex items-center gap-2" rel="nofollow"><i class="fa-solid fa-angle-right text-[10px] text-gray-500"></i> Services</a>
+                    <a href="#" class="hover:text-white transition-colors flex items-center gap-2" rel="nofollow"><i class="fa-solid fa-angle-right text-[10px] text-gray-500"></i> Vendor Registration</a>
+                    <a href="#" class="hover:text-white transition-colors flex items-center gap-2" rel="nofollow"><i class="fa-solid fa-angle-right text-[10px] text-gray-500"></i> Projects</a>
+                    <a href="#" class="hover:text-white transition-colors flex items-center gap-2" rel="nofollow"><i class="fa-solid fa-angle-right text-[10px] text-gray-500"></i> Contact</a>
+                </div>
+            </div>
+
+            <!-- Column 3 -->
+            <div>
+                <div class="mb-8">
+                    <h4 class="text-[15px] font-semibold font-heading mb-4 text-gray-200">E-Mail:</h4>
+                    <a href="mailto:info@sendiansecurity.com" class="text-[14px] text-gray-300 hover:text-white flex items-center gap-3" rel="nofollow">
+                        <i class="fa-regular fa-envelope"></i> info@sendiansecurity.com
+                    </a>
+                </div>
+                <div>
+                    <h4 class="text-[15px] font-semibold font-heading mb-4 text-gray-200">Address:</h4>
+                    <div class="text-[14px] text-gray-300 flex items-start gap-3 leading-relaxed">
+                        <i class="fa-solid fa-location-dot mt-1"></i> 
+                        <span>1st Floor, Office 01, Building 60,<br>Mekkah Al Mukarramah Street,<br>Luqta, Doha</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Copyright Bottom -->
+        <div class="max-w-7xl mx-auto px-6 md:px-12 border-t border-gray-700 pt-6 flex flex-col md:flex-row items-center justify-between text-[12px] text-gray-400">
+            <p>© Copyright 2024 Sendian Security</p>
+            <div class="flex items-center space-x-6 mt-4 md:mt-0">
+                <a href="#" class="hover:text-white transition-colors" rel="nofollow">Terms and Conditions</a>
+                <span class="w-[1px] h-3 bg-gray-600"></span>
+                <a href="#" class="hover:text-white transition-colors" rel="nofollow">Privacy policy</a>
+                <span class="w-[1px] h-3 bg-gray-600"></span>
+                <a href="#" class="hover:text-white transition-colors" rel="nofollow">Help</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- WhatsApp Floating Button -->
+    <a href="#" class="fixed bottom-6 right-6 bg-[#25D366] text-white w-14 h-14 rounded-full flex items-center justify-center text-3xl shadow-lg hover:bg-[#20b858] transition-colors z-50" rel="nofollow">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
+
+
+</body></html>

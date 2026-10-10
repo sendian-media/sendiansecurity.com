@@ -61,15 +61,15 @@ export const serviceDetails: ServiceDetail[] = [
             title: 'Video Management System',
             description:
               'Centralized platforms for monitoring and managing all cameras from a single interface. Features include intelligent analytics, automated alerts, multi-site management, and support for leading platforms like Milestone and Genetec.',
-            image: '/images/services/detail-video.jpeg',
+            image: '/images/services/detail-video-service.jpeg',
             alt: 'Video management system platform',
           },
           {
             title: 'ANPR Systems',
             description:
               'Centralized platforms for monitoring and managing all cameras from a single interface. Features include intelligent analytics, automated alerts, multi-site management, and support for leading platforms like Milestone and Genetec.',
-            image: '/images/services/detail-video.jpeg',
-            alt: 'ANPR license plate recognition system',
+            image: '/images/services/detail-video-service.jpeg',
+            alt: 'ANPR systems (VMS screenshot)',
           },
           {
             title: 'Storage System',
@@ -102,7 +102,7 @@ export const serviceDetails: ServiceDetail[] = [
           {
             title: 'Biometric Access Systems',
             description:
-              'Facial recognition terminals scanning at building entrances with digital displays — modern access control technology integrated with your security platform for touchless, high-assurance entry.',
+              'Close-up of facial recognition system scanning person’s face at building entrance, futuristic biometric terminal with digital display, modern access control technology, professional security installation.',
             image: '/images/services/detail-access-control.jpeg',
             alt: 'Biometric access systems',
           },
@@ -173,7 +173,7 @@ export const serviceDetails: ServiceDetail[] = [
     introHighlight: 'Infrastructure Solutions',
     introParagraphs: [
       'At SISS, we deliver comprehensive infrastructure solutions that form the backbone of modern enterprises. From structured cabling systems to enterprise-grade data centers, our expert engineering team designs, deploys, and maintains critical IT infrastructure that ensures seamless connectivity, optimal performance, and business continuity. With decades of experience serving government institutions, commercial enterprises, and industrial facilities across Qatar, we provide scalable, future-proof infrastructure solutions tailored to your organization’s unique requirements.',
-      'Our infrastructure portfolio spans copper and fiber cabling, data centers, and enterprise storage — ensuring comprehensive coverage across all connectivity and data layers. Whether you are building a commercial tower, government campus, or critical facility, SISS delivers tailored solutions that scale with your needs.',
+      'Our security portfolio spans both physical and digital security infrastructure, ensuring comprehensive protection across all threat vectors. Whether you are securing a commercial facility, government building, or critical infrastructure, SISS delivers tailored solutions that scale with your needs.',
     ],
     categories: [
       {
@@ -186,35 +186,35 @@ export const serviceDetails: ServiceDetail[] = [
             description:
               'Complete end-to-end cabling infrastructure services from site assessment through installation and certification testing. We provide quality materials and certified practices ensuring optimal network performance and industry standards compliance.',
             image: '/images/services/detail-nas.jpeg',
-            alt: 'Structured cabling design and installation',
+            alt: 'Design, Supply, Installation, and Testing',
           },
           {
             title: 'Copper Cabling',
             description:
               'High-performance Cat5e, Cat6, and Cat6a copper cabling for voice, data, and PoE applications supporting speeds up to 10 Gbps for workstations, phones, cameras, and access points.',
             image: '/images/services/detail-nas.jpeg',
-            alt: 'Copper network cabling',
+            alt: 'Copper Cabling',
           },
           {
             title: 'Fiber Cabling',
             description:
               'Single-mode and multi-mode fiber optic cabling for high-bandwidth connectivity. Our fiber solutions deliver speeds up to 100 Gbps for backbone connections, data centers, and campus networks.',
             image: '/images/services/detail-nas.jpeg',
-            alt: 'Fiber optic cabling',
+            alt: 'Fiber Cabling',
           },
           {
             title: 'Rack & Accessories',
             description:
               'Professional server racks, cabinets, and networking enclosures with complete accessories including cable management, patch panels, PDUs, cooling systems, and security features for organized equipment housing.',
             image: '/images/services/detail-nas.jpeg',
-            alt: 'Server racks and accessories',
+            alt: 'Rack & Accessories',
           },
           {
             title: 'Intelligent Patch Panel and Cable Management',
             description:
               'Smart patch panels with real-time monitoring and automated cable management. Our intelligent infrastructure provides visibility into port connectivity and cable tracing, reducing troubleshooting time and maintenance costs.',
             image: '/images/services/detail-nas.jpeg',
-            alt: 'Intelligent patch panel and cable management',
+            alt: 'Intelligent Patch Panel and Cable Management',
           },
         ],
       },
@@ -228,56 +228,56 @@ export const serviceDetails: ServiceDetail[] = [
             description:
               'Comprehensive data center design services including site assessment, capacity planning, and technical consulting. We develop optimized architectures meeting TIA-942 and Uptime Institute standards while ensuring scalability and regulatory compliance.',
             image: '/images/services/detail-datacenter.jpeg',
-            alt: 'Data center design and consultancy',
+            alt: 'Design, Planning & Consultancy',
           },
           {
             title: 'Infrastructure Solution for Server Room',
             description:
               'Complete server room infrastructure including raised flooring, environmental monitoring, fire suppression, and structured cabling. Our solutions provide secure, climate-controlled environments optimized for equipment performance and maintenance accessibility.',
             image: '/images/services/detail-datacenter.jpeg',
-            alt: 'Server room infrastructure',
+            alt: 'Infrastructure Solution for Server Room',
           },
           {
             title: 'Access Control Solution',
             description:
               'Multi-layered physical security for data centers including biometric authentication, mantrap entries, and surveillance integration. Our systems provide audit trails, visitor management, and zone-based access control for critical infrastructure protection.',
             image: '/images/services/detail-datacenter.jpeg',
-            alt: 'Data center access control',
+            alt: 'Access Control Solution',
           },
           {
             title: 'UPS Supplies and Installation',
             description:
               'Uninterruptible power supply systems ensuring continuous operation during power failures. We design, supply, and install redundant UPS configurations with battery backup, providing clean power and seamless failover for mission-critical equipment.',
             image: '/images/services/detail-datacenter.jpeg',
-            alt: 'UPS supplies and installation',
+            alt: 'UPS Supplies and Installation',
           },
           {
             title: 'DC Build (Power, Cooling, and Infrastructure)',
             description:
               'Turnkey data center construction including power distribution, precision cooling, and infrastructure systems. Our builds integrate redundant electrical systems, hot/cold aisle containment, and environmental controls meeting Tier II-IV standards.',
             image: '/images/services/detail-datacenter.jpeg',
-            alt: 'Data center build',
+            alt: 'DC Build (Power, Cooling, and Infrastructure)',
           },
           {
             title: 'Management and Maintenance Services',
             description:
               'Proactive monitoring and maintenance services ensuring optimal data center performance. We provide 24/7 remote monitoring, preventive maintenance, performance optimization, and rapid response support minimizing downtime risks.',
             image: '/images/services/detail-datacenter.jpeg',
-            alt: 'Data center management and maintenance',
+            alt: 'Management and Maintenance Services',
           },
           {
             title: 'Professional Cleaning',
             description:
               'Specialized data center cleaning services maintaining equipment performance and longevity. Our certified technicians perform raised floor cleaning, rack decontamination, and air filtration maintenance using ESD-safe methods and approved cleaning agents.',
             image: '/images/services/detail-datacenter.jpeg',
-            alt: 'Professional data center cleaning',
+            alt: 'Professional Cleaning',
           },
           {
             title: 'DCIM and Container Data Center',
             description:
               'Data Center Infrastructure Management (DCIM) software for real-time monitoring and modular container data centers for rapid deployment. Our solutions provide asset tracking, capacity planning, and mobile infrastructure for temporary or remote operations.',
             image: '/images/services/detail-datacenter.jpeg',
-            alt: 'DCIM and container data center',
+            alt: 'DCIM and Container Data Center',
           },
         ],
       },
@@ -291,35 +291,35 @@ export const serviceDetails: ServiceDetail[] = [
             description:
               'Network-attached storage systems providing centralized file sharing and data access across your organization. We configure enterprise NAS solutions with RAID protection, user permissions, and automated backup scheduling for reliable, accessible data storage.',
             image: '/images/services/detail-nas-1.jpeg',
-            alt: 'NAS box configuration',
+            alt: 'NAS box Configuration',
           },
           {
-            title: 'SAN Implementation of storage area network',
+            title: 'SAN- Implementation of storage area network',
             description:
               'High-performance storage area networks delivering block-level storage for mission-critical applications. Our SAN implementations provide fiber channel or iSCSI connectivity with redundant paths, ensuring low-latency access and maximum data availability for databases and virtualized environments.',
             image: '/images/services/detail-nas-1.jpeg',
-            alt: 'Storage area network implementation',
+            alt: 'SAN- Implementation of storage area network',
           },
           {
-            title: 'Backup — onsite, online cloud backup solution',
+            title: 'Backup-onsite, online cloud backup solution',
             description:
               'Multi-tiered backup strategies combining local and cloud storage for comprehensive data protection. We implement automated backup solutions with versioning, encryption, and offsite replication ensuring rapid recovery and protection against ransomware, hardware failures, and disasters.',
             image: '/images/services/detail-nas-1.jpeg',
-            alt: 'Onsite and cloud backup solutions',
+            alt: 'Backup-onsite, online cloud backup solution',
           },
           {
             title: 'Data Recovery Services',
             description:
               'Professional data recovery services for failed storage devices and corrupted systems. Our certified technicians recover data from hard drives, SSDs, RAID arrays, and tape systems using advanced tools and cleanroom facilities, minimizing downtime and data loss.',
             image: '/images/services/detail-nas-1.jpeg',
-            alt: 'Data recovery services',
+            alt: 'Data Recovery Services',
           },
           {
             title: 'Disaster Recovery planning for data center',
             description:
               'Comprehensive disaster recovery strategies ensuring business continuity during catastrophic events. We develop documented DR plans including backup sites, failover procedures, RTO/RPO targets, and regular testing to guarantee rapid recovery of critical systems and data.',
             image: '/images/services/detail-nas-1.jpeg',
-            alt: 'Disaster recovery planning',
+            alt: 'Disaster Recovery planning for data center',
           },
         ],
       },
@@ -332,7 +332,7 @@ export const serviceDetails: ServiceDetail[] = [
     introHighlight: 'Management & Access Control Solutions',
     introParagraphs: [
       'At SISS, we deliver intelligent parking management solutions that optimize vehicle flow, enhance security, and improve user experience across commercial, government, and residential facilities. Our comprehensive parking systems integrate advanced ANPR technology, automated barriers, smart sensors, and intuitive management software to create seamless parking operations. From shopping malls and airports to government buildings and residential complexes, our MOI-approved parking solutions provide real-time occupancy tracking, automated payment processing, and complete access control for efficient, secure parking management across Qatar.',
-      'Our parking portfolio spans management systems, real-time guidance, and LPR enforcement — ensuring comprehensive coverage across every stage of the vehicle journey. Whether you are operating a shopping mall, airport, or residential complex, SISS delivers tailored solutions that scale with your needs.',
+      'Our security portfolio spans both physical and digital security infrastructure, ensuring comprehensive protection across all threat vectors. Whether you are securing a commercial facility, government building, or critical infrastructure, SISS delivers tailored solutions that scale with your needs.',
     ],
     categories: [
       {
@@ -344,50 +344,50 @@ export const serviceDetails: ServiceDetail[] = [
             title: 'Sensors, Barriers and Gates',
             description:
               'Vehicle detection and automated barriers for controlled entry/exit, anti-tailgating, and safe traffic flow.',
-            image: '/images/services/detail-parking.jpeg',
-            alt: 'Parking sensors, barriers and gates',
+            image: '/images/services/detail-parking-2.jpeg',
+            alt: 'Sensors, Barriers and Gates',
           },
           {
             title: 'ANPR Cameras',
             description:
               'High-accuracy license plate capture for ticketless entry/exit, whitelist/blacklist access, and audit logs.',
-            image: '/images/services/detail-parking.jpeg',
-            alt: 'Parking ANPR cameras',
+            image: '/images/services/detail-parking-2.jpeg',
+            alt: 'ANPR Cameras',
           },
           {
             title: 'Ticketing Machines',
             description:
               'Entry/exit kiosks for ticket issuance, validation, and QR/barcode scanning with clear user guidance.',
-            image: '/images/services/detail-parking.jpeg',
-            alt: 'Parking ticketing machines',
+            image: '/images/services/detail-parking-2.jpeg',
+            alt: 'Ticketing Machines',
           },
           {
             title: 'Access Control Devices',
             description:
               'RFID/QR readers, intercoms, and controller panels enabling secure access and staff override at gates.',
-            image: '/images/services/detail-parking.jpeg',
-            alt: 'Parking access control devices',
+            image: '/images/services/detail-parking-2.jpeg',
+            alt: 'Access Control Devices',
           },
           {
             title: 'ANPR Systems',
             description:
               'End-to-end plate recognition workflows integrating cameras, barriers, and software for automated enforcement.',
-            image: '/images/services/detail-parking.jpeg',
-            alt: 'ANPR enforcement systems',
+            image: '/images/services/detail-parking-2.jpeg',
+            alt: 'ANPR Systems',
           },
           {
             title: 'Parking Management Software',
             description:
               'Central dashboard for occupancy, device status, permits, alerts, reporting, and multi-site control.',
-            image: '/images/services/detail-parking.jpeg',
-            alt: 'Parking management software',
+            image: '/images/services/detail-parking-2.jpeg',
+            alt: 'Parking Management Software',
           },
           {
             title: 'Payment Processing Software',
             description:
               'Cashless payments via kiosks, mobile, or cards with receipts, validations, and secure transaction logs.',
             image: '/images/services/detail-parking-2.jpeg',
-            alt: 'Parking payment processing',
+            alt: 'Payment Processing Software',
           },
         ],
       },
@@ -401,35 +401,35 @@ export const serviceDetails: ServiceDetail[] = [
             description:
               'Ultrasonic or camera sensors per space detecting occupancy and transmitting status in real time.',
             image: '/images/services/detail-parking.jpeg',
-            alt: 'Parking space sensors',
+            alt: 'Parking Space Sensors',
           },
           {
             title: 'Entry/Exit Sensors',
             description:
               'Gate sensors counting vehicles in/out to maintain accurate total occupancy for facility-wide availability.',
             image: '/images/services/detail-parking.jpeg',
-            alt: 'Entry and exit sensors',
+            alt: 'Entry/Exit Sensors',
           },
           {
             title: 'Signage and Displays',
             description:
               'LED signs at entry, floors, and intersections showing available spaces by zone with color-coded guidance.',
             image: '/images/services/detail-parking.jpeg',
-            alt: 'Parking signage and displays',
+            alt: 'Signage and Displays',
           },
           {
             title: 'Central Management Software',
             description:
               'Backend platform aggregating sensor data, managing displays, generating analytics, and monitoring system health.',
             image: '/images/services/detail-parking.jpeg',
-            alt: 'Guidance central management software',
+            alt: 'Central Management Software',
           },
           {
             title: 'Integration and APIs',
             description:
               'APIs linking guidance systems with payment, reservations, mobile apps, and building management platforms.',
             image: '/images/services/detail-parking.jpeg',
-            alt: 'Guidance system integrations and APIs',
+            alt: 'Integration and APIs',
           },
         ],
       },
@@ -442,36 +442,36 @@ export const serviceDetails: ServiceDetail[] = [
             title: 'ANPR Cameras',
             description:
               'Specialized high-resolution cameras with IR illumination capturing plates at speed in day/night conditions.',
-            image: '/images/services/detail-video-service.jpeg',
-            alt: 'LPR ANPR cameras',
+            image: '/images/services/detail-lpr-camera.jpeg',
+            alt: 'ANPR Cameras',
           },
           {
             title: 'Gate Barriers',
             description:
               'Automated barriers integrated with ANPR for hands-free vehicle access based on whitelist or payment status.',
-            image: '/images/services/detail-video-service.jpeg',
-            alt: 'ANPR gate barriers',
+            image: '/images/services/detail-lpr-camera.jpeg',
+            alt: 'Gate Barriers',
           },
           {
             title: 'Video Intercom panel',
             description:
               'Entry panel with video call for manual override, visitor communication, and secondary verification at gates.',
-            image: '/images/services/detail-video-service.jpeg',
-            alt: 'Video intercom panel',
+            image: '/images/services/detail-lpr-camera.jpeg',
+            alt: 'Video Intercom panel',
           },
           {
             title: 'Optical Character Recognition (OCR) Software',
             description:
               'AI-powered engine converting plate images to text with multi-language support and error correction algorithms.',
-            image: '/images/services/detail-video-service.jpeg',
-            alt: 'OCR recognition software',
+            image: '/images/services/detail-lpr-camera.jpeg',
+            alt: 'Optical Character Recognition (OCR) Software',
           },
           {
             title: 'ANPR Server',
             description:
               'Central processing server running recognition engine, managing databases, logs, and integration with access control.',
-            image: '/images/services/detail-video-service.jpeg',
-            alt: 'ANPR processing server',
+            image: '/images/services/detail-lpr-camera.jpeg',
+            alt: 'ANPR Server',
           },
         ],
       },
@@ -483,7 +483,7 @@ export const serviceDetails: ServiceDetail[] = [
     introHeading: 'Smart',
     introHighlight: 'Building & Home Automation Solutions',
     introParagraphs: [
-      'Transform your facility into an intelligent, energy-efficient environment with integrated automation solutions. Our building management systems seamlessly control HVAC, lighting, access control, and energy systems from a unified platform. Using IoT sensors, AI-driven analytics, and predictive maintenance, we optimize comfort, reduce operational costs, and enhance sustainability across residential, commercial, and industrial properties.',
+      'Transform your facility into an intelligent, energy-efficient environment with integrated automation solutions. Our building management systems seamlessly control HVAC, lighting, access control, and energy systems from a unified platform. Using IoT sensors, AI-driven analytics, and predictive maintenance, we optimize comfort, reduce operational costs, and enhance sustainability across residential, commercial, and industrial properties',
       'From smart home automation to enterprise building management systems, our solutions adapt to your needs. Whether you’re automating a single residential property or managing a complex commercial facility, our scalable automation infrastructure provides centralized control, real-time monitoring, and data-driven insights for intelligent building operations.',
     ],
     categories: [
@@ -497,56 +497,56 @@ export const serviceDetails: ServiceDetail[] = [
             description:
               'Control lights by app, keypad, motion, or scenes with dimming and energy-saving schedules.',
             image: '/images/services/detail-automation.png',
-            alt: 'Smart light control',
+            alt: 'Light Control',
           },
           {
             title: 'Curtain Control',
             description:
               'Automate blinds and curtains with timers, daylight sensors, and one-touch scenes for privacy and comfort.',
             image: '/images/services/detail-automation.png',
-            alt: 'Automated curtain control',
+            alt: 'Curtain Control',
           },
           {
             title: 'Audio',
             description:
               'Multi-room audio with zone control, source selection, and voice/app control for seamless playback.',
             image: '/images/services/detail-automation.png',
-            alt: 'Multi-room audio automation',
+            alt: 'Audio',
           },
           {
             title: 'TV Control',
             description:
               'Unified remote control for TVs and media devices with simple scenes like Movie Night.',
             image: '/images/services/detail-automation.png',
-            alt: 'Smart TV control',
+            alt: 'TV Control',
           },
           {
             title: 'Distribution & Tiling',
             description:
               'Central AV distribution to route TV and media to multiple rooms with clean, clutter-free installations.',
             image: '/images/services/detail-automation.png',
-            alt: 'AV distribution and tiling',
+            alt: 'Distribution & Tiling',
           },
           {
             title: 'AC Control',
             description:
               'Smart thermostat and HVAC control with schedules, occupancy logic, and app-based temperature management.',
             image: '/images/services/detail-automation.png',
-            alt: 'Smart AC control',
+            alt: 'AC Control',
           },
           {
             title: 'Security Access Control',
             description:
               'Integrate door locks, video doorbells, and sensors for secure entry, alerts, and remote monitoring.',
             image: '/images/services/detail-automation.png',
-            alt: 'Security and access control automation',
+            alt: 'Security Access Control',
           },
           {
             title: 'Scheduling & Access Levels',
             description:
               'Set user permissions and timed access for family, guests, and staff with activity logs.',
             image: '/images/services/detail-automation.png',
-            alt: 'Scheduling and access levels',
+            alt: 'Scheduling & Access Levels',
           },
         ],
       },
@@ -558,7 +558,7 @@ export const serviceDetails: ServiceDetail[] = [
     introHeading: 'Enterprise',
     introHighlight: 'Communication Systems',
     introParagraphs: [
-      'Unified communication platforms integrating voice, video, messaging, and collaboration tools across all devices. From IP telephony and video conferencing to team collaboration software, our scalable solutions enhance productivity, reduce costs, and support hybrid work environments with enterprise-grade reliability.',
+      'Unified communication platforms integrating voice, video, messaging, and collaboration tools across all devices. From IP telephony and video conferencing to team collaboration software, our scalable solutions enhance productivity, reduce costs, and support hybrid work environments with enterprise-grade reliability',
       'Our communication portfolio includes IP-PBX systems, SIP trunking, video conferencing rooms, unified messaging, and contact center solutions. Whether you’re upgrading legacy phone systems or building new communication infrastructure, we design, deploy, and support solutions from leading platforms like Cisco, Microsoft Teams, and Zoom that keep your teams connected and collaborative.',
     ],
     categories: [
@@ -572,14 +572,14 @@ export const serviceDetails: ServiceDetail[] = [
             description:
               'End-to-end unified communication deployment from requirements analysis to system commissioning and user training.',
             image: '/images/services/detail-unified.png',
-            alt: 'Unified communication design and installation',
+            alt: 'Design, Supply, and Installation',
           },
           {
             title: 'IP Telephony',
             description:
               'VoIP phone systems delivering HD voice over data networks with reduced costs and advanced call features.',
             image: '/images/services/detail-unified.png',
-            alt: 'IP telephony',
+            alt: 'IP Telephony',
           },
           {
             title: 'PABX system',
@@ -589,18 +589,18 @@ export const serviceDetails: ServiceDetail[] = [
             alt: 'PABX system',
           },
           {
-            title: 'Voice / video telephony',
+            title: 'Voice/ video telephony',
             description:
               'HD voice and video calling integrated across desk phones, softphones, and mobile clients for rich communication.',
             image: '/images/services/detail-unified.png',
-            alt: 'Voice and video telephony',
+            alt: 'Voice/ video telephony',
           },
           {
             title: 'Fixed-mobile converged voice / multimedia VPN',
             description:
               'FMC solutions extending corporate phone systems to mobile devices via secure VPN for seamless roaming.',
             image: '/images/services/detail-unified.png',
-            alt: 'Fixed-mobile converged voice',
+            alt: 'Fixed-mobile converged voice / multimedia VPN',
           },
           {
             title: 'Multimedia conferencing',
@@ -614,7 +614,7 @@ export const serviceDetails: ServiceDetail[] = [
             description:
               'Unified platforms integrating chat, presence, calendars, and contacts for real-time team collaboration.',
             image: '/images/services/detail-unified.png',
-            alt: 'Collaboration and instant messaging',
+            alt: 'Collaboration, Calendaring, Address book, Instant messaging',
           },
         ],
       },
@@ -628,42 +628,42 @@ export const serviceDetails: ServiceDetail[] = [
             description:
               'Enterprise server and workstation deployment with OS installation, domain integration, security hardening, and performance optimization.',
             image: '/images/services/detail-network.png',
-            alt: 'Server and workstation installation',
+            alt: 'Server, workstation Installation & Configuration',
           },
           {
             title: 'Switches, Routers Installation & Configuration',
             description:
               'Core and edge network equipment setup with VLAN configuration, routing protocols, QoS policies, and redundancy for high availability.',
             image: '/images/services/detail-network.png',
-            alt: 'Switch and router installation',
+            alt: 'Switches, Routers Installation & Configuration',
           },
           {
             title: 'Firewall and Networking Solution',
             description:
               'Next-generation firewall deployment with intrusion prevention, application control, VPN, and unified threat management for network security.',
             image: '/images/services/detail-network.png',
-            alt: 'Firewall and networking solution',
+            alt: 'Firewall and Networking Solution',
           },
           {
             title: 'Wireless and Remote Connectivity Solution',
             description:
               'Enterprise WiFi infrastructure with access points, controllers, captive portals, and secure VPN for remote workforce connectivity.',
             image: '/images/services/detail-network.png',
-            alt: 'Wireless and remote connectivity',
+            alt: 'Wireless and Remote Connectivity Solution',
           },
           {
             title: 'Desktop, Laptop, and Printer Solution',
             description:
               'End-user device procurement, deployment, and configuration with software installation, security policies, and printer network integration.',
             image: '/images/services/detail-network.png',
-            alt: 'End-user device solutions',
+            alt: 'Desktop, Laptop, and Printer Solution',
           },
           {
             title: 'Server and Data Center Virtualization',
             description:
               'VMware, Hyper-V virtualization platforms consolidating workloads, enabling resource pooling, HA clustering, and disaster recovery capabilities.',
             image: '/images/services/detail-network.png',
-            alt: 'Server and data center virtualization',
+            alt: 'Server and Data Center Virtualization',
           },
         ],
       },
@@ -689,28 +689,28 @@ export const serviceDetails: ServiceDetail[] = [
             description:
               'High-fidelity ceiling, wall-mounted, and column speakers designed for clear voice paging and background music distribution.',
             image: '/images/services/detail-speakers.jpeg',
-            alt: 'Commercial speakers',
+            alt: 'Speakers',
           },
           {
             title: 'Sound System',
             description:
               'Complete audio solutions integrating microphones, mixers, and DSPs for seamless sound management in meeting rooms and public areas.',
             image: '/images/services/detail-speakers.jpeg',
-            alt: 'Sound system integration',
+            alt: 'Sound System',
           },
           {
             title: 'Amplifier',
             description:
               'Power amplifiers delivering reliable, high-efficiency audio distribution across multiple zones with overload protection.',
             image: '/images/services/detail-speakers.jpeg',
-            alt: 'Audio amplifiers',
+            alt: 'Amplifier',
           },
           {
-            title: 'Control Panel',
+            title: 'Control Pane',
             description:
               'Intuitive wall-mounted or touch-panel interfaces for easy volume adjustment, source selection, and zone management.',
             image: '/images/services/detail-speakers.jpeg',
-            alt: 'Audio control panels',
+            alt: 'Control Pane',
           },
         ],
       },
@@ -724,42 +724,42 @@ export const serviceDetails: ServiceDetail[] = [
             description:
               'Custom LED and LCD video walls for control rooms, lobbies, and auditoriums with high-resolution seamless displays.',
             image: '/images/services/detail-wall-video.jpeg',
-            alt: 'Video wall design and installation',
+            alt: 'Video Walls Design & Installation',
           },
           {
-            title: 'Professional Installation of the Video Solution',
+            title: 'Professional Installation of the video Solution',
             description:
               'Expert mounting, cabling, and calibration of video systems ensuring optimal viewing angles, safety, and performance.',
             image: '/images/services/detail-wall-video.jpeg',
-            alt: 'Professional video installation',
+            alt: 'Professional Installation of the video Solution',
           },
           {
             title: 'Smart TV',
             description:
               'Commercial-grade smart displays with built-in content management, screen mirroring, and business apps for digital signage.',
             image: '/images/services/detail-wall-video.jpeg',
-            alt: 'Commercial smart TVs',
+            alt: 'Smart TV',
           },
           {
             title: 'IPTV',
             description:
               'Network-based television systems distributing live TV and video on demand across enterprise LANs to any endpoint.',
             image: '/images/services/detail-wall-video.jpeg',
-            alt: 'Enterprise IPTV',
+            alt: 'IPTV',
           },
           {
             title: 'Meeting Room Solutions',
             description:
               'Integrated presentation systems with wireless sharing, touch displays, and room scheduling panels for seamless collaboration.',
             image: '/images/services/detail-wall-video.jpeg',
-            alt: 'Meeting room solutions',
+            alt: 'Meeting Room Solutions',
           },
           {
             title: 'Video Conferencing Solutions',
             description:
               'HD video conferencing kits with auto-tracking cameras and microphone arrays certified for Teams, Zoom, and Webex.',
             image: '/images/services/detail-wall-video.jpeg',
-            alt: 'Video conferencing solutions',
+            alt: 'Video Conferencing Solutions',
           },
         ],
       },
@@ -785,21 +785,21 @@ export const serviceDetails: ServiceDetail[] = [
             description:
               'Certified maintenance services for surveillance systems ensuring continuous compliance with MOI-SSD regulations, optimal camera performance, and recording integrity.',
             image: '/images/services/detail-others.jpeg',
-            alt: 'CCTV maintenance under MOI-SSD',
+            alt: 'CCTV Maintenance (MOI-SSD)',
           },
           {
             title: 'ELV System Maintenance',
             description:
               'Proactive maintenance for Extra Low Voltage systems including access control, fire alarms, and PA systems to prevent downtime and extend equipment life.',
             image: '/images/services/detail-others.jpeg',
-            alt: 'ELV system maintenance',
+            alt: 'ELV System Maintenance',
           },
           {
             title: 'IT System Maintenance',
             description:
               'End-to-end IT support covering servers, workstations, and networks with regular updates, patches, and troubleshooting to ensure business continuity.',
             image: '/images/services/detail-others.jpeg',
-            alt: 'IT system maintenance',
+            alt: 'IT System Maintenance',
           },
         ],
       },
@@ -809,39 +809,39 @@ export const serviceDetails: ServiceDetail[] = [
           'Secure voice and video communication solutions for residential and commercial entry management, enhancing building security and visitor verification.',
         subServices: [
           {
-            title: 'Design, Supply and Installation',
+            title: 'Design Supply and Installation',
             description:
               'Custom design and deployment of intercom architectures tailored to building layout, integrating seamlessly with existing access control and security networks.',
             image: '/images/services/detail-other-2.jpeg',
-            alt: 'Intercom design and installation',
+            alt: 'Design Supply and Installation',
           },
           {
             title: 'IP Based Intercom System',
             description:
               'Networked intercom solutions leveraging existing IP infrastructure for scalable, clear communication across multiple buildings and remote management.',
             image: '/images/services/detail-other-2.jpeg',
-            alt: 'IP based intercom system',
+            alt: 'IP Based Intercom System',
           },
           {
             title: 'Video Intercom System',
             description:
               'High-definition video entry systems providing visual verification of visitors with night vision and wide-angle lenses for enhanced security.',
             image: '/images/services/detail-other-2.jpeg',
-            alt: 'Video intercom system',
+            alt: 'Video Intercom System',
           },
           {
             title: 'Video Intercom System with Mobile App',
             description:
               'Remote entry management allowing users to see, speak, and unlock doors for visitors directly from their smartphones, anywhere in the world.',
             image: '/images/services/detail-other-2.jpeg',
-            alt: 'Video intercom with mobile app',
+            alt: 'Video Intercom System with Mobile App',
           },
           {
             title: 'IP Intercom Adaptors & Door Stations',
             description:
               'Versatile hardware integrating legacy analog door stations into modern IP networks, protecting investment while upgrading functionality.',
             image: '/images/services/detail-other-2.jpeg',
-            alt: 'IP intercom adaptors and door stations',
+            alt: 'IP Intercom Adaptors & Door Stations',
           },
         ],
       },
@@ -855,35 +855,35 @@ export const serviceDetails: ServiceDetail[] = [
             description:
               'End-to-end execution of wireless projects, from initial RF site surveys and network design to hardware supply and certified installation. Our team ensures precise AP placement, cabling, and configuration for maximum coverage and throughput.',
             image: '/images/services/detail-others-3.png',
-            alt: 'Smart WiFi design and installation',
+            alt: 'Design, Supply, and Installation',
           },
           {
-            title: 'Controller based solution',
+            title: 'Controller base solution',
             description:
               'Centralized wireless LAN controllers managing access points for optimized traffic flow, interference mitigation, and unified network policy enforcement.',
             image: '/images/services/detail-others-3.png',
-            alt: 'Controller-based WiFi solution',
+            alt: 'Controller base solution',
           },
           {
             title: 'Wireless Network Security',
             description:
               'Robust wireless defense protocols including WPA3 encryption, rogue AP detection, and intrusion prevention to protect your network airwaves.',
             image: '/images/services/detail-others-3.png',
-            alt: 'Wireless network security',
+            alt: 'Wireless Network Security',
           },
           {
             title: 'Guest Access',
             description:
               'Secure captive portals for visitor connectivity, separating guest traffic from internal networks while providing branded login experiences.',
             image: '/images/services/detail-others-3.png',
-            alt: 'Guest WiFi access',
+            alt: 'Guest Access',
           },
           {
             title: 'End to end WLAN Solution',
             description:
               'Complete wireless lifecycle services from site surveys and planning to hardware installation, configuration, and post-deployment optimization.',
             image: '/images/services/detail-others-3.png',
-            alt: 'End to end WLAN solution',
+            alt: 'End to end WLAN Solution',
           },
         ],
       },
@@ -897,28 +897,28 @@ export const serviceDetails: ServiceDetail[] = [
             description:
               'Comprehensive Azure cloud services including virtual machines, storage, and app deployment, managed and optimized for your enterprise needs.',
             image: '/images/services/detail-others-4.webp',
-            alt: 'Microsoft Azure cloud solutions',
+            alt: 'Microsoft Azure',
           },
           {
             title: 'Office 365 Solutions',
             description:
               'Cloud-based productivity suite integrating Outlook, Teams, OneDrive, and SharePoint for seamless collaboration and secure file management anywhere.',
             image: '/images/services/detail-others-4.webp',
-            alt: 'Office 365 solutions',
+            alt: 'Office 365 Solutions',
           },
           {
             title: 'Cisco Meraki',
             description:
               'Cloud-managed IT solutions including wireless, switching, and security appliances controlled via a centralized, intuitive web-based dashboard.',
             image: '/images/services/detail-others-4.webp',
-            alt: 'Cisco Meraki cloud-managed IT',
+            alt: 'Cisco Meraki',
           },
           {
             title: 'Google Cloud',
             description:
               'High-performance cloud infrastructure for computing, data analytics, and machine learning, tailored for scalability and innovation.',
             image: '/images/services/detail-others-4.webp',
-            alt: 'Google Cloud solutions',
+            alt: 'Google Cloud',
           },
         ],
       },

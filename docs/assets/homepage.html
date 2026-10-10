@@ -1,0 +1,778 @@
+<html lang="en"><head><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM%20Sans:wght@100;200;300;400;500;600;700;800;900&amp;display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Wix%20Madefor%20Display:wght@100;200;300;400;500;600;700;800;900&amp;display=swap"><script>window.__AIFX_MAX_DPR__=1.25;window.__AIFX_FPS_CAP__=30;</script>
+        <script>
+            (function() {
+                function tuneImage(img) {
+                    try {
+                        img.loading = 'lazy';
+                        img.decoding = 'async';
+                        img.fetchPriority = 'low';
+                    } catch (_) {}
+                }
+                function tuneAllImages() {
+                    document.querySelectorAll('img').forEach(tuneImage);
+                }
+                if (document.readyState === 'loading') {
+                    document.addEventListener('DOMContentLoaded', tuneAllImages, { once: true });
+                } else {
+                    tuneAllImages();
+                }
+            })();
+        </script>
+       
+        <script>
+            (function() {
+                const OriginalIntersectionObserver = window.IntersectionObserver;
+                if (!OriginalIntersectionObserver) return;
+                window.__editor_force_intersection_enabled = false;
+                function shouldForceIntersection() {
+                    return window.__editor_force_intersection_enabled === true;
+                }
+                window.IntersectionObserver = function(callback, options) {
+                    const observer = new OriginalIntersectionObserver(function(entries, obs) {
+                        if (!shouldForceIntersection()) {
+                            callback(entries, obs);
+                            return;
+                        }
+                        // Force all entries to appear as intersecting
+                        const modifiedEntries = entries.map(entry => ({
+                            target: entry.target,
+                            isIntersecting: true,
+                            intersectionRatio: 1,
+                            boundingClientRect: entry.boundingClientRect,
+                            intersectionRect: entry.intersectionRect,
+                            rootBounds: entry.rootBounds,
+                            time: entry.time,
+                        }));
+                        callback(modifiedEntries, obs);
+                    }, options);
+
+                    // Also immediately trigger for any observed element
+                    const originalObserve = observer.observe.bind(observer);
+                    observer.observe = function(target) {
+                        originalObserve(target);
+                        // Trigger callback immediately with the element as intersecting
+                        setTimeout(() => {
+                            if (!shouldForceIntersection()) return;
+                            callback([{
+                                target: target,
+                                isIntersecting: true,
+                                intersectionRatio: 1,
+                                boundingClientRect: target.getBoundingClientRect(),
+                                intersectionRect: target.getBoundingClientRect(),
+                                rootBounds: null,
+                                time: performance.now(),
+                            }], observer);
+                        }, 0);
+                    };
+
+                    return observer;
+                };
+                window.IntersectionObserver.prototype = OriginalIntersectionObserver.prototype;
+            })();
+        </script>
+       
+        <script>
+            (function() {
+                function hasTailwindScript() {
+                    return !!document.querySelector('script[src*="cdn.tailwindcss.com"], script[src*="@tailwindcss/browser"]');
+                }
+                function hasTailwindConfig() {
+                    return /tailwind\s*\.\s*config/i.test(document.documentElement.innerHTML);
+                }
+                function hasLikelyTailwindClasses() {
+                    var matches = 0;
+                    var classAttrs = document.querySelectorAll('[class]');
+                    for (var i = 0; i < classAttrs.length; i++) {
+                        var tokens = String(classAttrs[i].getAttribute('class') || '').split(/\s+/);
+                        for (var j = 0; j < tokens.length; j++) {
+                            var token = tokens[j].split(':').pop().replace(/^!/, '');
+                            if (
+                                /^(flex|grid|block|inline-block|inline-flex|hidden|relative|absolute|fixed|sticky|container|sr-only|antialiased|isolate)$/.test(token) ||
+                                /^-?(m|p)([trblxy])?-(\d|px|auto|\[)/.test(token) ||
+                                /^(text|bg|border|rounded|shadow|ring|divide|outline|decoration|underline|font|leading|tracking|w|h|min-w|max-w|min-h|max-h|size|z|top|right|bottom|left|inset|translate|scale|rotate|skew|origin|opacity|overflow|object|aspect|gap|space|items|justify|content|self|place|col|row|order|duration|delay|ease|animate|backdrop|blur|brightness|contrast|drop-shadow|grayscale|hue-rotate|invert|saturate|sepia|from|via|to|prose)-/.test(token)
+                            ) {
+                                matches++;
+                                if (matches >= 3) return true;
+                            }
+                        }
+                    }
+                    return false;
+                }
+                function ensureTailwind() {
+                    if (hasTailwindScript() || document.getElementById('__editor_tailwind_fallback')) return;
+                    if (!hasTailwindConfig() && !hasLikelyTailwindClasses()) return;
+                    var script = document.createElement('script');
+                    script.id = '__editor_tailwind_fallback';
+                    script.src = 'https://cdn.tailwindcss.com';
+                    document.head.appendChild(script);
+                }
+                if (document.readyState === 'loading') {
+                    document.addEventListener('DOMContentLoaded', ensureTailwind, { once: true });
+                } else {
+                    ensureTailwind();
+                }
+            })();
+        </script>
+       
+        <script>
+            (function() {
+                // console.log("[Iframe] Script injected and running");
+                document.addEventListener('error', function(e) {
+                    // console.log("[Iframe] Error event captured:", e);
+                    if (e.target && e.target.tagName) {
+                         // console.log("[Iframe] Target tag:", e.target.tagName);
+                    }
+                    
+                    if (e.target && e.target.tagName.toLowerCase() === 'img') {
+                        // console.log("[Iframe] Image error detected:", e.target.src);
+                        const img = e.target;
+                        const alt = img.alt;
+                        if (alt && !img.dataset.retried) {
+                            // console.log("[Iframe] Posting IMAGE_ERROR for:", alt);
+                            img.dataset.retried = 'true';
+                            window.parent.postMessage({
+                                type: 'IMAGE_ERROR',
+                                pageId: "5066bbfd-7445-4b0e-a6e5-fbb449586f7a",
+                                alt: alt,
+                                src: img.src
+                            }, '*');
+                        } else {
+                            // console.log("[Iframe] Skipping IMAGE_ERROR (no alt or already retried):", { alt, retried: img.dataset.retried });
+                        }
+                    }
+                }, true);
+
+                window.addEventListener('message', function(e) {
+                    if (e.data?.type === 'IMAGE_REPLACED' && e.data?.newSrc) {
+                        // console.log("[Iframe] Received IMAGE_REPLACED:", e.data);
+                        const images = document.getElementsByTagName('img');
+                        for (let img of images) {
+                            if (img.src === e.data.originalSrc || (img.dataset.retried === 'true' && !img.complete)) {
+                                // Stash the original src so the stream-end
+                                // body-innerHTML swap can replay this rewrite
+                                // onto the freshly-parsed <img> nodes. Without
+                                // this, the swap drops our Serper-replaced src
+                                // and the image re-requests on parse, causing
+                                // duplicate Serper calls and visible flicker.
+                                if (!img.dataset.originalSrc) {
+                                    img.dataset.originalSrc = e.data.originalSrc;
+                                }
+                                img.src = e.data.newSrc;
+                            }
+                        }
+                    }
+                });
+            })();
+        </script>
+       
+        <script>
+            (function() {
+                window.__image_debug_v1 = true;
+                if (window.__tailwind_warn_suppressed) return;
+                window.__tailwind_warn_suppressed = true;
+                const originalWarn = console.warn;
+                console.warn = (...args) => {
+                    if (args[0] && typeof args[0] === 'string' && args[0].includes('cdn.tailwindcss.com')) {
+                        return;
+                    }
+                    originalWarn.apply(console, args);
+                };
+            })();
+        </script>
+        <script>
+            (function() {
+                 // Removed Link Editing Interception
+            })();
+        </script>
+        <style>
+            .h-screen { min-height: 800px !important; height: auto !important; }
+            .min-h-screen { min-height: 800px !important; }
+            .editor-canvas-expanded-scroll { overflow: visible !important; }
+            
+            
+            html, body {
+                min-height: 800px !important;
+                height: auto !important;
+                width: 100% !important;
+                overflow: auto !important;
+                -ms-overflow-style: none;
+                scrollbar-width: none;
+            }
+            ::-webkit-scrollbar {
+                display: none;
+            }
+            .editor-link-hover {
+                outline: 2px solid #3b82f6 !important;
+                cursor: pointer !important;
+            }
+            
+            /* Expand legacy web layouts instead of making the editor iframe an
+               internal scroller. App canvases intentionally preserve authored
+               percentage/fixed heights for preview parity. */
+            .flex > .h-full {
+                height: auto !important;
+                align-self: stretch !important;
+                min-height: 0;
+            }
+            .fixed.h-full,
+            nav.fixed.h-full,
+            aside.fixed.h-full {
+                position: absolute !important;
+            }
+            
+            /* Force visibility on scroll-animation hidden elements */
+            /* These override common patterns used by AOS, ScrollReveal, GSAP, and custom animations */
+            [style*="opacity: 0"],
+            [style*="opacity:0"] {
+                opacity: 1 !important;
+            }
+            [style*="clip-path: inset"],
+            [style*="clip-path:inset"] {
+                clip-path: none !important;
+            }
+            [style*="visibility: hidden"],
+            [style*="visibility:hidden"] {
+                visibility: visible !important;
+            }
+            /* AOS library data attributes */
+            [data-aos] {
+                opacity: 1 !important;
+                transform: none !important;
+                visibility: visible !important;
+            }
+            /* Common animation class patterns */
+            [class*="aos-"],
+            [class*="scroll-"],
+            [class*="reveal"],
+            [class*="fade-"],
+            [class*="slide-"] {
+                opacity: 1 !important;
+                transform: none !important;
+                clip-path: none !important;
+                visibility: visible !important;
+            }
+            /* The editor is a static artifact. Transformed entry animations can
+               permanently enlarge Chrome's document scrollHeight (for example,
+               translateY(30px) leaves a false 30px strip after the animation),
+               so prevent generated animate-* utilities from affecting layout
+               measurement. Production/preview HTML is unchanged. */
+            [class*="animate-"] {
+                animation: none !important;
+                opacity: 1 !important;
+                visibility: visible !important;
+            }
+        </style>
+       
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sendian Integrated Security Services</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&amp;family=Wix+Madefor+Display:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        link: '#2C3A55',
+                        accent: '#2C3A55',
+                        primary: '#8F91AB',
+                        secondary: '#3E4A5C',
+                        background: '#FFFFFF',
+                        textPrimary: '#000000',
+                        brandBlue: '#1565D8',
+                        brandDark: '#1A2547',
+                        brandGray: '#F5F6F8'
+                    },
+                    fontFamily: {
+                        sans: ['DM Sans', 'sans-serif'],
+                        heading: ['Wix Madefor Display', 'sans-serif'],
+                    },
+                    borderRadius: {
+                        DEFAULT: '10px',
+                        'btn': '50px'
+                    },
+                    spacing: {
+                        'base': '4px',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'DM Sans', sans-serif;
+            color: #333;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Wix Madefor Display', sans-serif;
+        }
+        .hero-bg {
+            background-image: url('https://sendiansecurity.com/wp-content/uploads/2026/02/3.webp');
+            background-size: cover;
+            background-position: center;
+        }
+        .cam-corners {
+            position: relative;
+        }
+        .cam-corners::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: 40px;
+            height: 40px;
+            border-top: 3px solid rgba(255,255,255,0.7);
+            border-left: 3px solid rgba(255,255,255,0.7);
+        }
+        .cam-corners::after {
+            content: '';
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            border-bottom: 3px solid rgba(255,255,255,0.7);
+            border-right: 3px solid rgba(255,255,255,0.7);
+        }
+        .cam-corners-bl {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            width: 40px;
+            height: 40px;
+            border-bottom: 3px solid rgba(255,255,255,0.7);
+            border-left: 3px solid rgba(255,255,255,0.7);
+        }
+        .cam-corners-tr {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            border-top: 3px solid rgba(255,255,255,0.7);
+            border-right: 3px solid rgba(255,255,255,0.7);
+        }
+        .service-card-overlay {
+            background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%);
+        }
+        .whatsapp-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #25D366;
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            z-index: 1000;
+        }
+        .whatsapp-btn:hover {
+            background-color: #128C7E;
+        }
+    </style>
+<style>*, ::before, ::after{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }/* ! tailwindcss v3.4.17 | MIT License | https://tailwindcss.com */*,::after,::before{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}::after,::before{--tw-content:''}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;tab-size:4;font-family:DM Sans, sans-serif;font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0;padding:0}legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}.container{width:100%}@media (min-width: 640px){.container{max-width:640px}}@media (min-width: 768px){.container{max-width:768px}}@media (min-width: 1024px){.container{max-width:1024px}}@media (min-width: 1280px){.container{max-width:1280px}}@media (min-width: 1536px){.container{max-width:1536px}}.absolute{position:absolute}.relative{position:relative}.sticky{position:sticky}.inset-0{inset:0px}.left-10{left:2.5rem}.right-10{right:2.5rem}.right-4{right:1rem}.top-0{top:0px}.top-10{top:2.5rem}.top-4{top:1rem}.z-10{z-index:10}.z-50{z-index:50}.mx-auto{margin-left:auto;margin-right:auto}.mb-12{margin-bottom:3rem}.mb-16{margin-bottom:4rem}.mb-2{margin-bottom:0.5rem}.mb-3{margin-bottom:0.75rem}.mb-4{margin-bottom:1rem}.mb-6{margin-bottom:1.5rem}.mb-8{margin-bottom:2rem}.ml-1{margin-left:0.25rem}.mt-1{margin-top:0.25rem}.mt-12{margin-top:3rem}.mt-2{margin-top:0.5rem}.mt-4{margin-top:1rem}.inline-block{display:inline-block}.flex{display:flex}.inline-flex{display:inline-flex}.grid{display:grid}.hidden{display:none}.aspect-\[3\/2\]{aspect-ratio:3/2}.aspect-\[4\/5\]{aspect-ratio:4/5}.aspect-video{aspect-ratio:16 / 9}.h-12{height:3rem}.h-20{height:5rem}.h-3{height:0.75rem}.h-6{height:1.5rem}.h-8{height:2rem}.h-\[640px\]{height:640px}.h-full{height:100%}.min-h-\[600px\]{min-height:600px}.w-12{width:3rem}.w-3{width:0.75rem}.w-3\/4{width:75%}.w-6{width:1.5rem}.w-8{width:2rem}.w-80{width:20rem}.w-auto{width:auto}.w-full{width:100%}.max-w-2xl{max-width:42rem}.max-w-3xl{max-width:48rem}.max-w-6xl{max-width:72rem}.-rotate-45{--tw-rotate:-45deg;transform:translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}@keyframes pulse{50%{opacity:.5}}.animate-pulse{animation:pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite}.cursor-pointer{cursor:pointer}.grid-cols-1{grid-template-columns:repeat(1, minmax(0, 1fr))}.grid-cols-2{grid-template-columns:repeat(2, minmax(0, 1fr))}.flex-col{flex-direction:column}.flex-wrap{flex-wrap:wrap}.items-start{align-items:flex-start}.items-end{align-items:flex-end}.items-center{align-items:center}.items-baseline{align-items:baseline}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.gap-12{gap:3rem}.gap-16{gap:4rem}.gap-2{gap:0.5rem}.gap-3{gap:0.75rem}.gap-4{gap:1rem}.gap-6{gap:1.5rem}.gap-8{gap:2rem}.space-x-8 > :not([hidden]) ~ :not([hidden]){--tw-space-x-reverse:0;margin-right:calc(2rem * var(--tw-space-x-reverse));margin-left:calc(2rem * calc(1 - var(--tw-space-x-reverse)))}.space-y-4 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(1rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(1rem * var(--tw-space-y-reverse))}.overflow-hidden{overflow:hidden}.rounded-\[10px\]{border-radius:10px}.rounded-\[20px\]{border-radius:20px}.rounded-btn{border-radius:50px}.rounded-full{border-radius:9999px}.border{border-width:1px}.border-y{border-top-width:1px;border-bottom-width:1px}.border-b-\[8px\]{border-bottom-width:8px}.border-t{border-top-width:1px}.border-\[\#2E3C5B\]{--tw-border-opacity:1;border-color:rgb(46 60 91 / var(--tw-border-opacity, 1))}.border-gray-100{--tw-border-opacity:1;border-color:rgb(243 244 246 / var(--tw-border-opacity, 1))}.border-gray-200{--tw-border-opacity:1;border-color:rgb(229 231 235 / var(--tw-border-opacity, 1))}.border-gray-300{--tw-border-opacity:1;border-color:rgb(209 213 219 / var(--tw-border-opacity, 1))}.border-gray-700\/50{border-color:rgb(55 65 81 / 0.5)}.border-white\/10{border-color:rgb(255 255 255 / 0.1)}.border-white\/20{border-color:rgb(255 255 255 / 0.2)}.border-white\/30{border-color:rgb(255 255 255 / 0.3)}.bg-\[\#1C243B\]{--tw-bg-opacity:1;background-color:rgb(28 36 59 / var(--tw-bg-opacity, 1))}.bg-background{--tw-bg-opacity:1;background-color:rgb(255 255 255 / var(--tw-bg-opacity, 1))}.bg-black\/30{background-color:rgb(0 0 0 / 0.3)}.bg-black\/40{background-color:rgb(0 0 0 / 0.4)}.bg-brandBlue{--tw-bg-opacity:1;background-color:rgb(21 101 216 / var(--tw-bg-opacity, 1))}.bg-brandGray{--tw-bg-opacity:1;background-color:rgb(245 246 248 / var(--tw-bg-opacity, 1))}.bg-gray-50{--tw-bg-opacity:1;background-color:rgb(249 250 251 / var(--tw-bg-opacity, 1))}.bg-link{--tw-bg-opacity:1;background-color:rgb(44 58 85 / var(--tw-bg-opacity, 1))}.bg-red-500{--tw-bg-opacity:1;background-color:rgb(239 68 68 / var(--tw-bg-opacity, 1))}.bg-white{--tw-bg-opacity:1;background-color:rgb(255 255 255 / var(--tw-bg-opacity, 1))}.bg-white\/90{background-color:rgb(255 255 255 / 0.9)}.object-contain{object-fit:contain}.object-cover{object-fit:cover}.p-12{padding:3rem}.p-6{padding:1.5rem}.p-8{padding:2rem}.px-10{padding-left:2.5rem;padding-right:2.5rem}.px-3{padding-left:0.75rem;padding-right:0.75rem}.px-4{padding-left:1rem;padding-right:1rem}.px-6{padding-left:1.5rem;padding-right:1.5rem}.px-8{padding-left:2rem;padding-right:2rem}.py-1{padding-top:0.25rem;padding-bottom:0.25rem}.py-1\.5{padding-top:0.375rem;padding-bottom:0.375rem}.py-16{padding-top:4rem;padding-bottom:4rem}.py-20{padding-top:5rem;padding-bottom:5rem}.py-24{padding-top:6rem;padding-bottom:6rem}.py-3{padding-top:0.75rem;padding-bottom:0.75rem}.py-4{padding-top:1rem;padding-bottom:1rem}.pb-6{padding-bottom:1.5rem}.pt-20{padding-top:5rem}.pt-6{padding-top:1.5rem}.text-center{text-align:center}.font-heading{font-family:Wix Madefor Display, sans-serif}.font-mono{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace}.text-4xl{font-size:2.25rem;line-height:2.5rem}.text-\[10px\]{font-size:10px}.text-\[15px\]{font-size:15px}.text-\[36px\]{font-size:36px}.text-\[49px\]{font-size:49px}.text-lg{font-size:1.125rem;line-height:1.75rem}.text-sm{font-size:0.875rem;line-height:1.25rem}.text-xl{font-size:1.25rem;line-height:1.75rem}.text-xs{font-size:0.75rem;line-height:1rem}.font-bold{font-weight:700}.font-light{font-weight:300}.font-medium{font-weight:500}.font-semibold{font-weight:600}.uppercase{text-transform:uppercase}.leading-relaxed{line-height:1.625}.leading-snug{line-height:1.375}.leading-tight{line-height:1.25}.tracking-wider{letter-spacing:0.05em}.text-\[\#1C243B\]{--tw-text-opacity:1;color:rgb(28 36 59 / var(--tw-text-opacity, 1))}.text-brandBlue{--tw-text-opacity:1;color:rgb(21 101 216 / var(--tw-text-opacity, 1))}.text-brandDark{--tw-text-opacity:1;color:rgb(26 37 71 / var(--tw-text-opacity, 1))}.text-gray-200{--tw-text-opacity:1;color:rgb(229 231 235 / var(--tw-text-opacity, 1))}.text-gray-300{--tw-text-opacity:1;color:rgb(209 213 219 / var(--tw-text-opacity, 1))}.text-gray-400{--tw-text-opacity:1;color:rgb(156 163 175 / var(--tw-text-opacity, 1))}.text-gray-500{--tw-text-opacity:1;color:rgb(107 114 128 / var(--tw-text-opacity, 1))}.text-gray-600{--tw-text-opacity:1;color:rgb(75 85 99 / var(--tw-text-opacity, 1))}.text-gray-700{--tw-text-opacity:1;color:rgb(55 65 81 / var(--tw-text-opacity, 1))}.text-gray-800{--tw-text-opacity:1;color:rgb(31 41 55 / var(--tw-text-opacity, 1))}.text-link{--tw-text-opacity:1;color:rgb(44 58 85 / var(--tw-text-opacity, 1))}.text-textPrimary{--tw-text-opacity:1;color:rgb(0 0 0 / var(--tw-text-opacity, 1))}.text-white{--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity, 1))}.opacity-0{opacity:0}.shadow-lg{--tw-shadow:0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.shadow-sm{--tw-shadow:0 1px 2px 0 rgb(0 0 0 / 0.05);--tw-shadow-colored:0 1px 2px 0 var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.brightness-0{--tw-brightness:brightness(0);filter:var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow)}.invert{--tw-invert:invert(100%);filter:var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow)}.backdrop-blur-md{--tw-backdrop-blur:blur(12px);-webkit-backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia)}.backdrop-blur-sm{--tw-backdrop-blur:blur(4px);-webkit-backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia)}.transition{transition-property:color, background-color, border-color, fill, stroke, opacity, box-shadow, transform, filter, -webkit-text-decoration-color, -webkit-backdrop-filter;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter, -webkit-text-decoration-color, -webkit-backdrop-filter;transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);transition-duration:150ms}.duration-500{transition-duration:500ms}.hover\:bg-blue-700:hover{--tw-bg-opacity:1;background-color:rgb(29 78 216 / var(--tw-bg-opacity, 1))}.hover\:bg-gray-100:hover{--tw-bg-opacity:1;background-color:rgb(243 244 246 / var(--tw-bg-opacity, 1))}.hover\:bg-gray-200:hover{--tw-bg-opacity:1;background-color:rgb(229 231 235 / var(--tw-bg-opacity, 1))}.hover\:bg-opacity-90:hover{--tw-bg-opacity:0.9}.hover\:text-brandBlue:hover{--tw-text-opacity:1;color:rgb(21 101 216 / var(--tw-text-opacity, 1))}.hover\:text-gray-300:hover{--tw-text-opacity:1;color:rgb(209 213 219 / var(--tw-text-opacity, 1))}.hover\:text-white:hover{--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity, 1))}.group:hover .group-hover\:scale-105{--tw-scale-x:1.05;--tw-scale-y:1.05;transform:translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.group:hover .group-hover\:scale-110{--tw-scale-x:1.1;--tw-scale-y:1.1;transform:translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.group:hover .group-hover\:text-brandBlue{--tw-text-opacity:1;color:rgb(21 101 216 / var(--tw-text-opacity, 1))}@media (min-width: 768px){.md\:mt-0{margin-top:0px}.md\:block{display:block}.md\:flex{display:flex}.md\:w-1\/2{width:50%}.md\:grid-cols-2{grid-template-columns:repeat(2, minmax(0, 1fr))}.md\:grid-cols-3{grid-template-columns:repeat(3, minmax(0, 1fr))}.md\:grid-cols-4{grid-template-columns:repeat(4, minmax(0, 1fr))}.md\:flex-row{flex-direction:row}}@media (min-width: 1024px){.lg\:col-span-1{grid-column:span 1 / span 1}.lg\:flex{display:flex}.lg\:grid-cols-4{grid-template-columns:repeat(4, minmax(0, 1fr))}}</style></head>
+<body class="bg-background text-textPrimary">
+
+    <!-- Header -->
+    <header class="w-full bg-white py-4 px-8 flex justify-between items-center sticky top-0 z-50 shadow-sm">
+        <div class="logo">
+            <img src="https://sendiansecurity.com/wp-content/uploads/2026/02/1.png" alt="SISS Logo" class="h-12 w-auto" loading="lazy" decoding="async" fetchpriority="low">
+        </div>
+        <nav class="hidden md:flex space-x-8">
+            <a href="#" class="text-brandBlue font-medium text-[15px]" rel="nofollow">HOME</a>
+            <a href="#" class="text-gray-700 hover:text-brandBlue font-medium text-[15px]" rel="nofollow">ABOUT</a>
+            <a href="#" class="text-gray-700 hover:text-brandBlue font-medium text-[15px] flex items-center" rel="nofollow">SERVICES <i class="fas fa-chevron-down ml-1 text-xs"></i></a>
+            <a href="#" class="text-gray-700 hover:text-brandBlue font-medium text-[15px]" rel="nofollow">PROJECTS</a>
+            <a href="#" class="text-gray-700 hover:text-brandBlue font-medium text-[15px]" rel="nofollow">NEWS</a>
+            <a href="#" class="text-gray-700 hover:text-brandBlue font-medium text-[15px]" rel="nofollow">CONTACT</a>
+        </nav>
+        <div>
+            <a href="#" class="bg-brandBlue text-white px-6 py-3 rounded-btn font-medium hover:bg-blue-700 transition" rel="nofollow">Vendor Registration</a>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="relative h-[640px] min-h-[600px] w-full hero-bg cam-corners text-white flex items-center">
+        <div class="absolute inset-0 bg-black/40"></div>
+        <div class="cam-corners-bl"></div>
+        <div class="cam-corners-tr"></div>
+        
+        <div class="absolute top-10 left-10 flex items-center gap-2">
+            <div class="w-3 h-3 rounded-full bg-red-500 animate-pulse"></div>
+            <span class="font-mono">Rec</span>
+        </div>
+        
+        <div class="absolute top-10 right-10">
+            <span class="font-mono">19:20:00</span>
+        </div>
+
+        <div class="container mx-auto px-10 relative z-10 flex justify-between items-center mt-12">
+            <div class="max-w-2xl">
+                <div class="inline-block border border-white/30 rounded-full px-4 py-1.5 mb-6 backdrop-blur-sm text-sm uppercase tracking-wider">
+                    // SENDIAN INTEGRATED SECURITY SERVICES (SISS)
+                </div>
+                <h1 class="text-[49px] font-bold leading-tight mb-6 font-heading">INTEGRATED SECURITY SOLUTIONS IN QATAR</h1>
+                <p class="text-lg mb-8 text-gray-200">Integrated security, infrastructure, and technology solutions supporting modern developments, enterprises, and smart city initiatives across Qatar.</p>
+                <div class="flex flex-wrap gap-4">
+                    <a href="#" class="bg-link text-white px-6 py-3 rounded-btn font-medium flex items-center gap-2 hover:bg-opacity-90 transition" rel="nofollow">
+                        Request a Consultation <span class="bg-white text-link rounded-full w-6 h-6 flex items-center justify-center text-xs"><i class="fas fa-arrow-right -rotate-45"></i></span>
+                    </a>
+                    <a href="#" class="bg-white text-brandDark px-8 py-3 rounded-btn font-medium hover:bg-gray-100 transition" rel="nofollow">
+                        Explore Our Solutions
+                    </a>
+                </div>
+            </div>
+            
+            <div class="hidden lg:flex flex-col gap-4">
+                <div class="bg-black/30 backdrop-blur-md border border-white/10 rounded-[10px] p-6 flex items-center gap-4 w-80">
+                    <div class="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center">
+                        <i class="fas fa-phone"></i>
+                    </div>
+                    <div>
+                        <div class="text-sm text-gray-300">Call Us</div>
+                        <div class="font-semibold">+974 44866766</div>
+                    </div>
+                </div>
+                <div class="bg-black/30 backdrop-blur-md border border-white/10 rounded-[10px] p-6 flex items-center gap-4 w-80">
+                    <div class="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center">
+                        <i class="far fa-envelope"></i>
+                    </div>
+                    <div>
+                        <div class="text-sm text-gray-300">Email</div>
+                        <div class="font-semibold">info@sendiansecurity.com</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="py-24 bg-white relative overflow-hidden">
+        <div class="container mx-auto px-8 flex flex-col md:flex-row items-center gap-16">
+            <div class="w-full md:w-1/2">
+                <img src="https://sendiansecurity.com/wp-content/uploads/elementor/thumbs/SISS-About-us-image-1-rj9zcdwn2f2op4ihmq14o0u0hoj6wbq1e4erj3jksw.png" alt="SISS About us image (1)" class="w-full rounded-[10px] shadow-lg" loading="lazy" decoding="async" fetchpriority="low">
+            </div>
+            <div class="w-full md:w-1/2">
+                <div class="inline-block border border-gray-200 rounded-full px-4 py-1.5 mb-4 text-xs font-semibold text-brandBlue uppercase tracking-wider">
+                    // ABOUT US
+                </div>
+                <h2 class="text-[36px] font-bold text-brandDark mb-6 font-heading leading-tight">Sendian Integrated Security Services</h2>
+                <p class="text-gray-600 mb-6 leading-relaxed">Sendian Integrated Security Services (SISS) is a systems integrator delivering end-to-end security, infrastructure, communication, and automation solutions for complex environments.</p>
+                <p class="text-gray-600 mb-6 leading-relaxed">We design, build, and maintain integrated systems that combine surveillance, access control, networking, data infrastructure, automation, and audio-visual technologies into unified, scalable platforms.</p>
+                <p class="text-gray-600 mb-8 leading-relaxed">With more than a decade of experience delivering large-scale projects across Qatar, SISS supports clients throughout the full lifecycle of their systems, from design and approvals to implementation, maintenance, and long-term operation.</p>
+                <a href="#" class="bg-link text-white px-6 py-3 rounded-btn font-medium inline-flex items-center gap-2 hover:bg-opacity-90 transition" rel="nofollow">
+                    Learn More <span class="bg-white text-link rounded-full w-6 h-6 flex items-center justify-center text-xs"><i class="fas fa-arrow-right -rotate-45"></i></span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="py-20 bg-white">
+        <div class="container mx-auto px-8 text-center mb-12">
+            <div class="inline-block border border-gray-200 rounded-full px-4 py-1.5 mb-4 text-xs font-semibold text-brandBlue uppercase tracking-wider">
+                // OUR SERVICES
+            </div>
+            <h2 class="text-[36px] font-bold text-brandDark mb-4 font-heading">Comprehensive <span class="text-brandBlue">Security &amp; Technology</span> Solutions</h2>
+            <p class="text-gray-600 max-w-3xl mx-auto">From Ministry of Interior-approved CCTV surveillance to enterprise networking and smart infrastructure, SISS delivers integrated security solutions tailored to Qatar's government, commercial, and industrial sectors.</p>
+        </div>
+
+        <div class="container mx-auto px-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <!-- Service 1 -->
+            <div class="relative rounded-[10px] overflow-hidden group aspect-[4/5]">
+                <img src="https://sendiansecurity.com/wp-content/uploads/2026/02/cctv-2_imresizer-800x950.jpg" alt="cctv-2_imresizer" class="w-full h-full object-cover transition duration-500 group-hover:scale-110" loading="lazy" decoding="async" fetchpriority="low">
+                <div class="absolute inset-0 service-card-overlay flex items-end p-6">
+                    <h3 class="text-white font-bold text-xl font-heading leading-tight w-3/4">Security &amp; Surveillance Solutions</h3>
+                </div>
+            </div>
+            <!-- Service 2 -->
+            <div class="relative rounded-[10px] overflow-hidden group aspect-[4/5]">
+                <img src="https://sendiansecurity.com/wp-content/uploads/2026/02/7-800x950.png" alt="7" class="w-full h-full object-cover transition duration-500 group-hover:scale-110" loading="lazy" decoding="async" fetchpriority="low">
+                <div class="absolute inset-0 service-card-overlay flex items-end p-6">
+                    <h3 class="text-white font-bold text-xl font-heading leading-tight w-3/4">Infrastructure &amp; Data Center Solutions</h3>
+                </div>
+            </div>
+            <!-- Service 3 -->
+            <div class="relative rounded-[10px] overflow-hidden group aspect-[4/5]">
+                <img src="https://sendiansecurity.com/wp-content/uploads/2026/02/6-800x950.png" alt="6" class="w-full h-full object-cover transition duration-500 group-hover:scale-110" loading="lazy" decoding="async" fetchpriority="low">
+                <div class="absolute inset-0 service-card-overlay flex items-end p-6">
+                    <h3 class="text-white font-bold text-xl font-heading leading-tight w-3/4">Parking &amp; Mobility Systems</h3>
+                </div>
+            </div>
+            <!-- Service 4 -->
+            <div class="relative rounded-[10px] overflow-hidden group aspect-[4/5]">
+                <img src="https://sendiansecurity.com/wp-content/uploads/2026/02/9-800x950.png" alt="9" class="w-full h-full object-cover transition duration-500 group-hover:scale-110" loading="lazy" decoding="async" fetchpriority="low">
+                <div class="absolute inset-0 service-card-overlay flex items-end p-6">
+                    <h3 class="text-white font-bold text-xl font-heading leading-tight w-3/4">Communication &amp; Network Solutions</h3>
+                </div>
+            </div>
+        </div>
+        
+        <div class="text-center mt-12">
+            <a href="#" class="bg-link text-white px-6 py-3 rounded-btn font-medium inline-flex items-center gap-2 hover:bg-opacity-90 transition" rel="nofollow">
+                View All Services <span class="bg-white text-link rounded-full w-6 h-6 flex items-center justify-center text-xs"><i class="fas fa-arrow-right -rotate-45"></i></span>
+            </a>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="py-16 bg-gray-50 border-y border-gray-200">
+        <div class="container mx-auto px-8 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+            <div>
+                <div class="text-[49px] font-bold text-brandDark font-heading flex justify-center items-baseline">250<span class="text-brandBlue text-4xl">+</span></div>
+                <div class="text-sm font-bold mt-2 uppercase text-gray-800">Projects Delivered</div>
+            </div>
+            <div>
+                <div class="text-[49px] font-bold text-brandDark font-heading flex justify-center items-baseline">10,000<span class="text-brandBlue text-4xl">+</span></div>
+                <div class="text-sm font-bold mt-2 uppercase text-gray-800">Devices Deployed</div>
+            </div>
+            <div>
+                <div class="text-[49px] font-bold text-brandDark font-heading flex justify-center items-baseline text-brandBlue">24<span class="text-gray-400 font-light">/</span>7</div>
+                <div class="text-sm font-bold mt-2 uppercase text-gray-800">Operational Support</div>
+            </div>
+            <div>
+                <div class="text-[49px] font-bold text-brandDark font-heading flex justify-center items-baseline">750M<span class="text-brandBlue text-4xl">+</span></div>
+                <div class="text-sm font-bold mt-2 uppercase text-gray-800">QAR Value Delivered</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="py-24 bg-white relative">
+        <div class="container mx-auto px-8 max-w-6xl">
+            <div class="bg-brandGray rounded-[20px] p-12 relative overflow-hidden">
+                <div class="text-center mb-12 relative z-10">
+                    <div class="inline-block border border-gray-300 rounded-full px-4 py-1.5 mb-4 text-xs font-semibold text-brandBlue uppercase tracking-wider bg-white">
+                        // OUR FEATURE
+                    </div>
+                    <h2 class="text-[36px] font-bold text-brandDark font-heading leading-tight">Built On <span class="text-brandBlue">Trusted</span><br>Foundations</h2>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 relative z-10">
+                    <!-- Feature 1 -->
+                    <div class="bg-white rounded-[10px] p-6 text-center shadow-sm border border-gray-100">
+                        <img src="https://sendiansecurity.com/wp-content/uploads/2026/02/1.png" alt="1" class="h-20 mx-auto mb-6 object-contain" loading="lazy" decoding="async" fetchpriority="low">
+                        <h4 class="font-bold text-brandDark mb-2 text-sm">MOI Approved Contractor</h4>
+                        <p class="text-xs text-gray-500 leading-relaxed">Fully authorized to deliver security systems in compliance with Qatar's regulatory standards.</p>
+                    </div>
+                    <!-- Feature 2 -->
+                    <div class="bg-white rounded-[10px] p-6 text-center shadow-sm border border-gray-100">
+                        <img src="https://sendiansecurity.com/wp-content/uploads/2026/02/2.png" alt="2" class="h-20 mx-auto mb-6 object-contain" loading="lazy" decoding="async" fetchpriority="low">
+                        <h4 class="font-bold text-brandDark mb-2 text-sm">ISO Certified Operations</h4>
+                        <p class="text-xs text-gray-500 leading-relaxed">Certified across quality management, information security, and operational processes.</p>
+                    </div>
+                    <!-- Feature 3 -->
+                    <div class="bg-white rounded-[10px] p-6 text-center shadow-sm border border-gray-100">
+                        <img src="https://sendiansecurity.com/wp-content/uploads/2026/02/4-1.png" alt="4 1" class="h-20 mx-auto mb-6 object-contain" loading="lazy" decoding="async" fetchpriority="low">
+                        <h4 class="font-bold text-brandDark mb-2 text-sm">Cisco-Certified Networking Expertise</h4>
+                        <p class="text-xs text-gray-500 leading-relaxed">Secure, scalable infrastructure designed and implemented by certified professionals.</p>
+                    </div>
+                    <!-- Feature 4 -->
+                    <div class="bg-white rounded-[10px] p-6 text-center shadow-sm border border-gray-100">
+                        <img src="https://sendiansecurity.com/wp-content/uploads/2026/02/3-1.png" alt="3 1" class="h-20 mx-auto mb-6 object-contain" loading="lazy" decoding="async" fetchpriority="low">
+                        <h4 class="font-bold text-brandDark mb-2 text-sm">Financially &amp; Operationally Capable</h4>
+                        <p class="text-xs text-gray-500 leading-relaxed">Proven capacity to execute large-scale, multi-site security projects with long-term support.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio Section -->
+    <section class="py-20 bg-white">
+        <div class="container mx-auto px-8 text-center mb-12">
+            <div class="inline-block border border-gray-200 rounded-full px-4 py-1.5 mb-4 text-xs font-semibold text-brandBlue uppercase tracking-wider">
+                // OUR WORK
+            </div>
+            <h2 class="text-[36px] font-bold text-brandDark font-heading leading-tight">Our Portfolio Of <span class="text-brandBlue">Excellence</span><br>In Security</h2>
+        </div>
+
+        <div class="container mx-auto px-8 grid grid-cols-2 md:grid-cols-4 gap-4">
+            <!-- Project 1 -->
+            <div class="text-center group">
+                <div class="overflow-hidden rounded-[10px] mb-4 aspect-[3/2]">
+                    <img src="https://sendiansecurity.com/wp-content/uploads/2025/10/2-6-1000x650.jpg" alt="2 6" class="w-full h-full object-cover transition duration-500 group-hover:scale-110" loading="lazy" decoding="async" fetchpriority="low">
+                </div>
+                <h5 class="font-medium text-sm text-gray-800">Ghanem Office Building</h5>
+            </div>
+            <!-- Project 2 -->
+            <div class="text-center group">
+                <div class="overflow-hidden rounded-[10px] mb-4 aspect-[3/2]">
+                    <img src="https://sendiansecurity.com/wp-content/uploads/2026/02/Marina-Mix-52-BG7P13FRoof-1000x650.png" alt="Marina Mix 52 BG7P13FRoof" class="w-full h-full object-cover transition duration-500 group-hover:scale-110" loading="lazy" decoding="async" fetchpriority="low">
+                </div>
+                <h5 class="font-medium text-sm text-gray-800">MARINA MIX 52</h5>
+            </div>
+            <!-- Project 3 -->
+            <div class="text-center group">
+                <div class="overflow-hidden rounded-[10px] mb-4 aspect-[3/2]">
+                    <img src="https://sendiansecurity.com/wp-content/uploads/2025/10/12-2-1000x650.jpg" alt="12 2" class="w-full h-full object-cover transition duration-500 group-hover:scale-110" loading="lazy" decoding="async" fetchpriority="low">
+                </div>
+                <h5 class="font-medium text-sm text-gray-800">Gulf Warhousing Company</h5>
+            </div>
+            <!-- Project 4 -->
+            <div class="text-center group">
+                <div class="overflow-hidden rounded-[10px] mb-4 aspect-[3/2]">
+                    <img src="https://sendiansecurity.com/wp-content/uploads/2025/10/eve-medical-center-1000x650.jpg" alt="eve medical center" class="w-full h-full object-cover transition duration-500 group-hover:scale-110" loading="lazy" decoding="async" fetchpriority="low">
+                </div>
+                <h5 class="font-medium text-sm text-gray-800">Eve Medical Center</h5>
+            </div>
+            <!-- Project 5 -->
+            <div class="text-center group">
+                <div class="overflow-hidden rounded-[10px] mb-4 aspect-[3/2]">
+                    <img src="https://sendiansecurity.com/wp-content/uploads/2026/02/GAC-MOTOR-1000x650.png" alt="GAC MOTOR" class="w-full h-full object-cover transition duration-500 group-hover:scale-110" loading="lazy" decoding="async" fetchpriority="low">
+                </div>
+                <h5 class="font-medium text-sm text-gray-800">GAC Motors</h5>
+            </div>
+            <!-- Project 6 -->
+            <div class="text-center group">
+                <div class="overflow-hidden rounded-[10px] mb-4 aspect-[3/2]">
+                    <img src="https://sendiansecurity.com/wp-content/uploads/2026/02/Doha-Bank-1000x650.png" alt="Doha Bank" class="w-full h-full object-cover transition duration-500 group-hover:scale-110" loading="lazy" decoding="async" fetchpriority="low">
+                </div>
+                <h5 class="font-medium text-sm text-gray-800">Doha Bank</h5>
+            </div>
+            <!-- Project 7 -->
+            <div class="text-center group">
+                <div class="overflow-hidden rounded-[10px] mb-4 aspect-[3/2]">
+                    <img src="https://sendiansecurity.com/wp-content/uploads/2025/10/13-2-1000x650.jpg" alt="13 2" class="w-full h-full object-cover transition duration-500 group-hover:scale-110" loading="lazy" decoding="async" fetchpriority="low">
+                </div>
+                <h5 class="font-medium text-sm text-gray-800">The Lebanese School</h5>
+            </div>
+            <!-- Project 8 -->
+            <div class="text-center group">
+                <div class="overflow-hidden rounded-[10px] mb-4 aspect-[3/2]">
+                    <img src="https://sendiansecurity.com/wp-content/uploads/2026/02/QP-1000x650.png" alt="QP" class="w-full h-full object-cover transition duration-500 group-hover:scale-110" loading="lazy" decoding="async" fetchpriority="low">
+                </div>
+                <h5 class="font-medium text-sm text-gray-800">Qatar Petroleum</h5>
+            </div>
+        </div>
+
+        <div class="text-center mt-12">
+            <a href="#" class="bg-link text-white px-6 py-3 rounded-btn font-medium inline-flex items-center gap-2 hover:bg-opacity-90 transition" rel="nofollow">
+                View All Projects <span class="bg-white text-link rounded-full w-6 h-6 flex items-center justify-center text-xs"><i class="fas fa-arrow-right -rotate-45"></i></span>
+            </a>
+        </div>
+    </section>
+
+    <!-- News Section -->
+    <section class="py-20 bg-white">
+        <div class="container mx-auto px-8 text-center mb-12">
+            <div class="inline-block border border-gray-200 rounded-full px-4 py-1.5 mb-4 text-xs font-semibold text-brandBlue uppercase tracking-wider">
+                // LATEST NEWS
+            </div>
+            <h2 class="text-[36px] font-bold text-brandDark font-heading leading-tight">Ongoing <span class="text-brandBlue">Projects And Updates</span></h2>
+        </div>
+
+        <div class="container mx-auto px-8 grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- News 1 -->
+            <div class="group cursor-pointer">
+                <div class="relative rounded-[10px] overflow-hidden mb-6 aspect-video">
+                    <img src="https://sendiansecurity.com/wp-content/uploads/2026/02/4-2-768x432.png" alt="CCTV Surveillance System Installation at Qatar Finland International School" class="w-full h-full object-cover transition duration-500 group-hover:scale-105" loading="lazy" decoding="async" fetchpriority="low">
+                    <div class="absolute top-4 right-4 bg-white/90 backdrop-blur-sm text-xs font-medium px-3 py-1 rounded-full border border-gray-200">
+                        Ongoing, Security
+                    </div>
+                </div>
+                <h3 class="font-bold text-brandDark text-xl mb-3 leading-snug group-hover:text-brandBlue transition">CCTV Surveillance System Installation At Qatar Finland International School</h3>
+                <div class="text-sm text-gray-500">Jan 12, 2026</div>
+            </div>
+            <!-- News 2 -->
+            <div class="group cursor-pointer">
+                <div class="relative rounded-[10px] overflow-hidden mb-6 aspect-video">
+                    <img src="https://sendiansecurity.com/wp-content/uploads/2026/02/2-1-768x432.png" alt="MOI-Regulated CCTV System Deployment at Kreeq Sports Club, Al Wakra" class="w-full h-full object-cover transition duration-500 group-hover:scale-105" loading="lazy" decoding="async" fetchpriority="low">
+                    <div class="absolute top-4 right-4 bg-white/90 backdrop-blur-sm text-xs font-medium px-3 py-1 rounded-full border border-gray-200">
+                        Ongoing, Security
+                    </div>
+                </div>
+                <h3 class="font-bold text-brandDark text-xl mb-3 leading-snug group-hover:text-brandBlue transition">MOI-Regulated CCTV System Deployment At Kreeq Sports Club, Al Wakra</h3>
+                <div class="text-sm text-gray-500">Jan 10, 2026</div>
+            </div>
+            <!-- News 3 -->
+            <div class="group cursor-pointer">
+                <div class="relative rounded-[10px] overflow-hidden mb-6 aspect-video border border-gray-100 p-8 flex items-center justify-center bg-white">
+                    <img src="https://sendiansecurity.com/wp-content/uploads/2025/09/cisco-768x512.jpeg" alt="Sendian Integrated Security Services (SISS) Becomes Cisco Registered Partner" class="w-full h-full object-contain transition duration-500 group-hover:scale-105" loading="lazy" decoding="async" fetchpriority="low">
+                    <div class="absolute top-4 right-4 bg-white/90 backdrop-blur-sm text-xs font-medium px-3 py-1 rounded-full border border-gray-200">
+                        Security
+                    </div>
+                </div>
+                <h3 class="font-bold text-brandDark text-xl mb-3 leading-snug group-hover:text-brandBlue transition">Sendian Integrated Security Services (SISS) Becomes Cisco Registered Partner</h3>
+                <div class="text-sm text-gray-500">Apr 14, 2025</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-[#1C243B] text-white pt-20 pb-6 relative z-10 border-b-[8px] border-[#2E3C5B]">
+        <div class="container mx-auto px-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+            <!-- Brand -->
+            <div class="lg:col-span-1">
+                <img src="https://sendiansecurity.com/wp-content/uploads/2026/02/1.png" alt="SISS Logo" class="h-12 w-auto mb-6 brightness-0 invert" loading="lazy" decoding="async" fetchpriority="low">
+                <p class="text-gray-400 text-sm leading-relaxed mb-6">Ministry of Interior-approved security solutions provider. Protecting Qatar's infrastructure with cutting-edge CCTV, access control, and enterprise security systems for more than a decade.</p>
+                <div class="flex gap-3">
+                    <a href="#" class="w-8 h-8 rounded-full bg-white text-[#1C243B] flex items-center justify-center hover:bg-gray-200 transition" rel="nofollow"><i class="fab fa-facebook-f text-sm"></i></a>
+                    <a href="#" class="w-8 h-8 rounded-full bg-white text-[#1C243B] flex items-center justify-center hover:bg-gray-200 transition" rel="nofollow"><i class="fab fa-instagram text-sm"></i></a>
+                    <a href="#" class="w-8 h-8 rounded-full bg-white text-[#1C243B] flex items-center justify-center hover:bg-gray-200 transition" rel="nofollow"><i class="fab fa-linkedin-in text-sm"></i></a>
+                </div>
+            </div>
+            
+            <!-- Links 1 -->
+            <div>
+                <h4 class="text-lg font-bold mb-6 font-heading">Quick Links</h4>
+                <ul class="space-y-4 text-sm text-gray-300">
+                    <li><a href="#" class="hover:text-white transition flex items-center gap-2" rel="nofollow"><i class="fas fa-chevron-right text-[10px]"></i> About us</a></li>
+                    <li><a href="#" class="hover:text-white transition flex items-center gap-2" rel="nofollow"><i class="fas fa-chevron-right text-[10px]"></i> Services</a></li>
+                    <li><a href="#" class="hover:text-white transition flex items-center gap-2" rel="nofollow"><i class="fas fa-chevron-right text-[10px]"></i> Projects</a></li>
+                </ul>
+            </div>
+            
+            <!-- Links 2 -->
+            <div>
+                <h4 class="text-lg font-bold mb-6 font-heading opacity-0 hidden md:block">Links</h4>
+                <ul class="space-y-4 text-sm text-gray-300">
+                    <li><a href="#" class="hover:text-white transition flex items-center gap-2" rel="nofollow"><i class="fas fa-chevron-right text-[10px]"></i> News</a></li>
+                    <li><a href="#" class="hover:text-white transition flex items-center gap-2" rel="nofollow"><i class="fas fa-chevron-right text-[10px]"></i> Vendor Registration</a></li>
+                    <li><a href="#" class="hover:text-white transition flex items-center gap-2" rel="nofollow"><i class="fas fa-chevron-right text-[10px]"></i> Contact</a></li>
+                </ul>
+            </div>
+            
+            <!-- Contact -->
+            <div>
+                <div class="mb-6">
+                    <h4 class="text-sm font-semibold mb-2 text-gray-300">E-Mail:</h4>
+                    <a href="mailto:info@sendiansecurity.com" class="text-sm text-white hover:text-gray-300 transition flex items-center gap-3" rel="nofollow">
+                        <i class="far fa-envelope"></i> info@sendiansecurity.com
+                    </a>
+                </div>
+                <div>
+                    <h4 class="text-sm font-semibold mb-2 text-gray-300">Address:</h4>
+                    <p class="text-sm text-white flex items-start gap-3 leading-relaxed">
+                        <i class="fas fa-map-marker-alt mt-1"></i>
+                        <span>1st Floor, Office 01, Building 60,<br>Mekkah Al Mukarramah Street,<br>Luqta, Doha</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Bottom Bar -->
+        <div class="container mx-auto px-8 pt-6 border-t border-gray-700/50 flex flex-col md:flex-row justify-between items-center text-xs text-gray-400">
+            <p>© Copyright 2026 Sendian Security</p>
+            <div class="flex gap-4 mt-4 md:mt-0">
+                <a href="#" class="hover:text-white transition" rel="nofollow">Terms and Conditions</a>
+                <a href="#" class="hover:text-white transition" rel="nofollow">Privacy policy</a>
+                <a href="#" class="hover:text-white transition" rel="nofollow">Help</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- WhatsApp Button -->
+    <a href="#" class="whatsapp-btn" aria-label="Chat on WhatsApp" rel="nofollow">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+
+</body></html>

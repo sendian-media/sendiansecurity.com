@@ -1,0 +1,127 @@
+---
+import FloatingWhatsApp from '@/components/ui/FloatingWhatsApp.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { projectSummaries } from '@/data/projects';
+---
+
+<BaseLayout title="Projects | Sendian Integrated Security Services" description="Security projects delivered by SISS across towers, commercial, residential, healthcare, education, retail, showrooms, and industrial sectors in Qatar.">
+  <section class="project-header" aria-labelledby="projects-heading">
+    <div class="project-header__title project-container">
+      <h1 id="projects-heading">Projects</h1>
+    </div>
+    <nav class="project-header__crumbs" aria-label="Breadcrumb">
+      <div class="project-container"><a href="/">Home</a><span aria-hidden="true">/</span><span aria-current="page">Projects</span></div>
+    </nav>
+  </section>
+
+  <section class="projects-grid-section project-container" aria-label="Projects">
+    <div class="projects-grid">
+      {projectSummaries.map((project, index) => (
+        <button class="project-card" type="button" data-dialog-open={`project-dialog-${project.slug}`} aria-haspopup="dialog" aria-controls={`project-dialog-${project.slug}`} style={`--card-delay: ${index * 100}ms`}>
+          <span class="project-card__media"><img src={project.image} alt={project.alt} width="1000" height="650" loading={index < 3 ? 'eager' : 'lazy'} decoding="async" /></span>
+          <span class="project-card__title">{project.title}</span>
+        </button>
+      ))}
+    </div>
+  </section>
+
+  {projectSummaries.map((project) => (
+    <dialog class="project-dialog" id={`project-dialog-${project.slug}`} aria-labelledby={`project-dialog-title-${project.slug}`}>
+      <button class="project-dialog__close" type="button" data-dialog-close autofocus aria-label={`Close ${project.title} project details`}>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" /></svg>
+      </button>
+      <article class="project-dialog__content">
+        <div class="project-dialog__copy">
+          <p class="project-dialog__category">{project.category}</p>
+          <h2 id={`project-dialog-title-${project.slug}`}>{project.title}</h2>
+          <p class="project-dialog__description">{project.description}</p>
+          <div class="project-dialog__lists">
+            <section aria-labelledby={`completed-${project.slug}`}>
+              <h3 id={`completed-${project.slug}`}>Completed Projects</h3>
+              <ul>{project.completedProjects.map((item) => <li>{item}</li>)}</ul>
+            </section>
+            {project.ongoingProjects.length > 0 && (
+              <section aria-labelledby={`ongoing-${project.slug}`}>
+                <h3 id={`ongoing-${project.slug}`}>Ongoing Projects</h3>
+                <ul>{project.ongoingProjects.map((item) => <li>{item}</li>)}</ul>
+              </section>
+            )}
+          </div>
+        </div>
+        <div class="project-dialog__media"><img src={project.image} alt={project.alt} width="1000" height="650" loading="lazy" decoding="async" /></div>
+      </article>
+    </dialog>
+  ))}
+  <FloatingWhatsApp />
+</BaseLayout>
+
+<script>
+  for (const trigger of document.querySelectorAll<HTMLButtonElement>('[data-dialog-open]')) {
+    trigger.addEventListener('click', () => {
+      const dialog = document.getElementById(trigger.dataset.dialogOpen ?? '') as HTMLDialogElement | null;
+      dialog?.showModal();
+    });
+  }
+
+  for (const dialog of document.querySelectorAll<HTMLDialogElement>('.project-dialog')) {
+    dialog.querySelector<HTMLButtonElement>('[data-dialog-close]')?.addEventListener('click', () => dialog.close());
+    dialog.addEventListener('click', (event) => {
+      if (event.target === dialog) dialog.close();
+    });
+  }
+</script>
+
+<style>
+  .project-container { margin-inline: auto; width: calc(100% - 24px); }
+  .project-header { background: linear-gradient(rgb(26 37 71 / .86), rgb(26 37 71 / .86)), url('/images/projects/services-single05.jpg') left top / cover; border-radius: 20px; height: 480px; margin: 0 30px; overflow: hidden; color: white; }
+  .project-header__title { align-items: center; display: flex; height: calc(100% - 55px); }
+  .project-header h1 { font-size: 68px; font-weight: 600; line-height: 78px; margin: 0; }
+  .project-header__crumbs { align-items: center; background: #f7f7fa; color: #2c3a55; display: flex; font-size: 15px; height: 55px; }
+  .project-header__crumbs div { display: flex; gap: 11px; }
+  .project-header__crumbs a { color: #2c3a55; font-weight: 500; }
+  .projects-grid-section { padding-block: 110px; }
+  .projects-grid { display: grid; gap: 48px 24px; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .project-card { animation: project-fade-up .7s both; animation-delay: var(--card-delay); appearance: none; background: none; border: 0; color: #2c3a55; cursor: pointer; display: block; font: inherit; min-width: 0; padding: 0; text-align: left; }
+  .project-card:focus-visible { border-radius: 15px; outline: 3px solid var(--focus); outline-offset: 5px; }
+  .project-card__media { border-radius: 15px; display: block; overflow: hidden; position: relative; }
+  .project-card__media::after { background: linear-gradient(120deg, transparent 35%, rgb(255 255 255 / .4) 50%, transparent 65%); content: ''; inset: 0; position: absolute; transform: translateX(-125%); transition: transform .7s ease; }
+  .project-card:hover .project-card__media::after, .project-card:focus-visible .project-card__media::after { transform: translateX(125%); }
+  .project-card img { aspect-ratio: 700 / 455; display: block; height: auto; object-fit: cover; transition: transform .5s ease; width: 100%; }
+  .project-card:hover img, .project-card:focus-visible img { transform: scale(1.04); }
+  .project-card__title { display: block; font-family: 'Wix Madefor Display', sans-serif; font-size: 30px; font-weight: 600; line-height: 42px; margin-top: 20px; }
+
+  .project-dialog { background: transparent; border: 0; height: fit-content; inset: 0; margin: auto; max-height: none; max-width: none; overflow: visible; padding: 0; position: fixed; width: min(1400px, calc(100% - 80px)); }
+  .project-dialog::backdrop { animation: project-overlay-in .4s ease both; background: rgb(26 37 51 / .84); }
+  .project-dialog[open] { animation: project-dialog-in .5s ease both; }
+  .project-dialog__content { background: #fff; border-radius: 20px; box-sizing: border-box; display: grid; gap: 60px; grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); max-height: calc(100vh - 160px); overflow: auto; padding: 80px 40px; position: relative; }
+  .project-dialog__close { align-items: center; background: #fff; border: 2px solid #c79d4f; border-radius: 999px; color: #2c3a55; cursor: pointer; display: flex; height: 54px; justify-content: center; padding: 0; position: absolute; right: -12px; top: -12px; width: 54px; z-index: 1; }
+  .project-dialog__close:hover { transform: translateY(-2px) rotate(90deg); }
+  .project-dialog__close:active { transform: scale(.96); }
+  .project-dialog__close:focus-visible { outline: none; }
+  .project-dialog__close svg { fill: none; height: 26px; stroke: currentColor; stroke-linecap: round; stroke-width: 1.6; width: 26px; }
+  .project-dialog__category { color: #c79d4f; font-size: 13px; font-weight: 700; letter-spacing: .2em; line-height: 20px; margin: 0; text-transform: uppercase; }
+  .project-dialog h2 { color: #1a2547; font-family: 'Wix Madefor Display', sans-serif; font-size: 52px; font-weight: 700; line-height: 1.1; margin: 28px 0 26px; }
+  .project-dialog__description { color: #2f3033; font-size: 17px; line-height: 30px; margin: 0; max-width: 670px; }
+  .project-dialog__lists { border-top: 1px solid #d8dce4; column-gap: 42px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); margin-top: 42px; padding-top: 32px; }
+  .project-dialog__lists section + section { margin-top: 0; }
+  .project-dialog h3 { color: #33425b; font-family: 'Wix Madefor Display', sans-serif; font-size: 24px; font-weight: 600; line-height: 34px; margin: 0; }
+  .project-dialog ul { color: #303239; font-size: 16px; line-height: 27px; list-style: none; margin: 20px 0 0; padding: 0; }
+  .project-dialog li { padding-left: 20px; position: relative; }
+  .project-dialog li::before { color: #c79d4f; content: '•'; left: 0; position: absolute; }
+  .project-dialog li + li { margin-top: 6px; }
+  .project-dialog__media { align-self: start; }
+  .project-dialog__media img { display: block; height: auto; object-fit: cover; width: 100%; }
+
+  @media (min-width: 576px) { .project-container { width: 540px; } }
+  @media (min-width: 768px) { .project-container { width: 720px; } .projects-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (min-width: 992px) { .project-container { width: 960px; } .projects-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  @media (min-width: 1200px) { .project-container { width: 1140px; } }
+  @media (min-width: 1401px) { .project-container { width: 1320px; } }
+  @media (max-width: 1400px) { .project-header { margin-inline: 15px; } .project-dialog__content { gap: 42px; } }
+  @media (max-width: 991px) { .project-header { height: 300px; } .project-header h1 { font-size: 52px; line-height: 62px; } .project-dialog { width: min(720px, calc(100% - 40px)); } .project-dialog__content { grid-template-columns: 1fr; max-height: calc(100vh - 60px); padding: 60px 28px; } .project-dialog__media { grid-row: 2; } }
+  @media (max-width: 767px) { .project-header h1 { font-size: 42px; line-height: 52px; } .projects-grid-section { padding-block: 60px; } .projects-grid { gap: 36px; grid-template-columns: 1fr; } .project-card__title { font-size: 22px; line-height: 32px; } .project-dialog { width: calc(100% - 24px); } .project-dialog__content { border-radius: 16px; gap: 30px; max-height: calc(100vh - 24px); padding: 44px 20px 32px; } .project-dialog__close { height: 46px; right: 10px; top: 10px; width: 46px; } .project-dialog h2 { font-size: 32px; margin: 18px 58px 20px 0; } .project-dialog__description { font-size: 16px; line-height: 28px; } .project-dialog__lists { column-gap: 0; grid-template-columns: 1fr; margin-top: 30px; padding-top: 26px; row-gap: 30px; } .project-dialog h3 { font-size: 21px; line-height: 30px; } .project-dialog ul { font-size: 15px; line-height: 26px; } }
+  @media (prefers-reduced-motion: reduce) { .project-card, .project-dialog[open], .project-dialog::backdrop { animation: none; } .project-card__media::after, .project-card img, .project-dialog__close { transition: none; } .project-dialog__close:hover, .project-dialog__close:active { transform: none; } }
+  @keyframes project-fade-up { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes project-overlay-in { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes project-dialog-in { from { opacity: 0; transform: translateY(26px); } to { opacity: 1; transform: translateY(0); } }
+</style>
