@@ -1,6 +1,6 @@
 ---
-interface Props { children?: string; class?: string; }
-const { children, class: className = '' } = Astro.props;
+interface Props { class?: string; }
+const { class: className = '' } = Astro.props;
 ---
 
-<p class:list={['eyebrow', className]}>{"// "}{children}</p>
+<p class:list={['eyebrow', className]}>// <slot /></p>

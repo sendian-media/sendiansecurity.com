@@ -1,10 +1,9 @@
 ---
-import FloatingWhatsApp from '@/components/ui/FloatingWhatsApp.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { servicesPage } from '@/data/services';
 ---
 
-<BaseLayout title="Services | Sendian Integrated Security Services" description="Integrated security solutions: CCTV, networking, smart parking, communication, automation, audio-visual, and maintenance services in Qatar.">
+<BaseLayout title="Services | Sendian Integrated Security Services" description="Integrated security solutions: CCTV, networking, smart parking, communication, automation, audio-visual, and maintenance services in Qatar." socialImage="/images/services/services-banner.jpg">
   <section class="service-hero relative flex h-[350px] w-full items-center overflow-hidden rounded-b-[30px] shadow-lg md:h-[400px]" aria-label="Services banner">
     <div class="relative z-10 mx-auto w-full max-w-7xl px-6 md:px-20 fade-up">
       <h1 class="text-5xl font-bold leading-tight text-white md:text-[68px]">{servicesPage.hero.title}</h1>
@@ -19,7 +18,7 @@ import { servicesPage } from '@/data/services';
     </div>
   </nav>
 
-  <main class="mx-auto mb-24 max-w-7xl px-6 md:px-12">
+  <div class="mx-auto mb-24 max-w-7xl px-6 md:px-12">
     <div class="mb-16 flex flex-col items-center text-center fade-up d1">
       <p class="mb-6"><span class="badge-outline-gray">// Our Services</span></p>
       <h2 class="max-w-2xl text-4xl font-bold leading-tight text-[#1E293B] md:text-[46px]">
@@ -39,7 +38,7 @@ import { servicesPage } from '@/data/services';
         </a>
       ))}
     </div>
-  </main>
+  </div>
 
   <section class="w-full bg-[#F8F9FA] px-6 py-20 fade-up d2">
     <div class="mx-auto grid max-w-6xl grid-cols-1 gap-12 text-center md:grid-cols-2 md:text-left lg:grid-cols-4">
@@ -54,7 +53,6 @@ import { servicesPage } from '@/data/services';
     </div>
   </section>
 
-  <FloatingWhatsApp />
 </BaseLayout>
 
 <script>

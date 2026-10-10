@@ -1,19 +1,63 @@
 ---
+import { site as siteDetails } from '@/data/site';
+
+interface BreadcrumbItem {
+  name: string;
+  path: string;
+}
+
 interface Props {
   title: string;
   description: string;
   noindex?: boolean;
+  socialImage?: string;
+  breadcrumbs?: BreadcrumbItem[];
 }
 
-const { title, description, noindex = false } = Astro.props;
+const { title, description, noindex = false, socialImage, breadcrumbs } = Astro.props;
 const site = new URL(import.meta.env.SITE_URL || 'https://sendiansecurity.com');
 const canonical = new URL(Astro.url.pathname, site).href;
-const organization = {
-  '@context': 'https://schema.org',
-  '@type': 'Organization',
-  name: 'Sendian Integrated Security Services',
-  url: site.href,
-};
+const image = new URL(socialImage || '/images/home/hero.webp', site).href;
+const structuredData: Record<string, unknown>[] = [];
+
+if (!noindex && Astro.url.pathname === '/') {
+  structuredData.push(
+    {
+      '@context': 'https://schema.org',
+      '@type': 'Organization',
+      name: siteDetails.name,
+      url: site.href,
+      logo: new URL('/images/home/logo-header.png', site).href,
+      telephone: siteDetails.phone,
+      email: siteDetails.email,
+      address: {
+        '@type': 'PostalAddress',
+        streetAddress: `${siteDetails.address[0]}, ${siteDetails.address[1]}`,
+        addressLocality: 'Doha',
+        addressCountry: 'QA',
+      },
+    },
+    {
+      '@context': 'https://schema.org',
+      '@type': 'WebSite',
+      name: siteDetails.name,
+      url: site.href,
+    },
+  );
+}
+
+if (!noindex && breadcrumbs?.length) {
+  structuredData.push({
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: breadcrumbs.map(({ name, path }, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      name,
+      item: new URL(path, site).href,
+    })),
+  });
+}
 ---
 
 <title>{title}</title>
@@ -23,6 +67,11 @@ const organization = {
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
 <meta property="og:url" content={canonical} />
-<meta name="twitter:card" content="summary" />
+<meta property="og:image" content={image} />
+<meta property="og:image:alt" content={title} />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={image} />
 {noindex && <meta name="robots" content="noindex,follow" />}
-<script type="application/ld+json" set:html={JSON.stringify(organization)} />
+{structuredData.map((schema) => <script type="application/ld+json" set:html={JSON.stringify(schema)} />)}

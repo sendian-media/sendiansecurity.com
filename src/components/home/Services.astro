@@ -6,21 +6,113 @@ import ActionLink from '@/components/ui/ActionLink.astro';
 
 <section id="services" class="scroll-mt-20 bg-white py-20">
   <div class="container mx-auto px-8 text-center">
-    <Eyebrow class="fade-up d1">Our services</Eyebrow>
+    <Eyebrow class="fade-up d1">Our Services</Eyebrow>
     <h2 class="section-title mx-auto max-w-3xl fade-up d2">Comprehensive <span class="text-[var(--brand)]">Security &amp; Technology</span> Solutions</h2>
     <p class="mx-auto max-w-3xl text-gray-600 fade-up d3">From Ministry of Interior-approved CCTV surveillance to enterprise networking and smart infrastructure, SISS delivers integrated security solutions tailored to Qatar’s government, commercial, and industrial sectors.</p>
   </div>
 
-  <div class="container mx-auto mt-12 grid grid-cols-1 gap-6 px-8 md:grid-cols-2 lg:grid-cols-4">
-    {home.services.map((service, index) => (
-      <article class:list={['group relative aspect-[4/5] overflow-hidden rounded-[10px]', `fade-up d${index + 3}`]}>
-        <img class="size-full object-cover transition duration-500 group-hover:scale-110 motion-reduce:transition-none" src={service.image} alt={service.alt} width="800" height="950" loading="lazy" decoding="async" />
-        <div class="service-card-overlay absolute inset-0 flex items-end p-6">
-          <h3 class="w-3/4 text-xl font-bold leading-tight text-white">{service.title}</h3>
-        </div>
-      </article>
-    ))}
+  <div class="services-viewport fade-up d5" data-service-carousel aria-label="Our services">
+    <div class="services-track" data-service-track>
+      {home.services.map((service) => (
+        <a class="service-card group" href={service.href}>
+          <img src={service.image} alt={service.alt} width="800" height="950" loading="lazy" decoding="async" />
+          <span class="service-card__overlay">
+            <span>{service.title}</span>
+          </span>
+        </a>
+      ))}
+    </div>
   </div>
 
-  <p class="mt-12 text-center fade-up d8"><ActionLink href="/services" badge>View all services</ActionLink></p>
+  <p class="mt-12 text-center fade-up d8"><ActionLink href="/services" badge>View All Services</ActionLink></p>
 </section>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-service-carousel]').forEach((carousel) => {
+    const track = carousel.querySelector<HTMLElement>('[data-service-track]');
+    const firstCard = track?.querySelector<HTMLElement>('.service-card');
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!track || !firstCard || reducedMotion) return;
+
+    let timer: number | undefined;
+    const advance = () => {
+      const styles = window.getComputedStyle(track);
+      const gap = Number.parseFloat(styles.columnGap || styles.gap || '0');
+      const step = firstCard.getBoundingClientRect().width + gap;
+      const atEnd = track.scrollLeft + track.clientWidth >= track.scrollWidth - step / 2;
+      track.scrollTo({ left: atEnd ? 0 : track.scrollLeft + step, behavior: 'smooth' });
+    };
+    const stop = () => { if (timer) window.clearInterval(timer); };
+    const start = () => { stop(); timer = window.setInterval(advance, 3500); };
+
+    carousel.addEventListener('pointerenter', stop);
+    carousel.addEventListener('pointerleave', start);
+    carousel.addEventListener('focusin', stop);
+    carousel.addEventListener('focusout', start);
+    start();
+  });
+</script>
+
+<style>
+  .services-viewport {
+    margin: 3rem auto 0;
+    max-width: 80rem;
+    overflow: hidden;
+  }
+
+  .services-track {
+    display: flex;
+    gap: 1.5rem;
+    overflow-x: auto;
+    padding: 0 2rem 0.5rem;
+    scroll-behavior: smooth;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+
+  .services-track::-webkit-scrollbar { display: none; }
+
+  .service-card {
+    aspect-ratio: 800 / 950;
+    flex: 0 0 23.6875rem;
+    overflow: hidden;
+    position: relative;
+    scroll-snap-align: start;
+    border-radius: 0.625rem;
+  }
+
+  .service-card img {
+    height: 100%;
+    object-fit: cover;
+    transition: transform 500ms ease;
+    width: 100%;
+  }
+
+  .service-card:hover img,
+  .service-card:focus-visible img { transform: scale(1.1); }
+
+  .service-card__overlay {
+    align-items: end;
+    background: linear-gradient(to top, rgb(0 0 0 / 0.8) 0%, transparent 70%);
+    color: white;
+    display: flex;
+    font-size: 1.25rem;
+    font-weight: 700;
+    inset: 0;
+    line-height: 1.25;
+    padding: 1.5rem;
+    position: absolute;
+  }
+
+  .service-card__overlay > span { max-width: 75%; }
+
+  @media (max-width: 767px) {
+    .services-viewport { margin-top: 2.5rem; }
+    .services-track { gap: 1rem; padding-inline: 1rem; }
+    .service-card { flex-basis: calc(100vw - 2rem); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .service-card img { transition: none; }
+  }
+</style>

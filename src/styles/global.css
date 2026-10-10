@@ -113,7 +113,7 @@ body { margin: 0; }
 /* Floating WhatsApp */
 .whatsapp-btn { align-items: center; background: #25d366; border-radius: 999px; bottom: 1.25rem; color: white; display: flex; height: 3.75rem; justify-content: center; position: fixed; right: 1.25rem; width: 3.75rem; z-index: 40; }
 .whatsapp-btn:hover { background: #128c7e; }
-.whatsapp-btn svg { height: 1.875rem; width: 1.875rem; }
+.whatsapp-btn img { height: 1.875rem; width: 1.875rem; }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }

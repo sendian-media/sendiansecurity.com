@@ -1,4 +1,14 @@
 User-agent: *
 Allow: /
 
+# Approved AI crawler policy
+User-agent: GPTBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
 Sitemap: https://sendiansecurity.com/sitemap-index.xml

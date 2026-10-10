@@ -1,10 +1,9 @@
 ---
-import FloatingWhatsApp from '@/components/ui/FloatingWhatsApp.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { projectSummaries } from '@/data/projects';
 ---
 
-<BaseLayout title="Projects | Sendian Integrated Security Services" description="Security projects delivered by SISS across towers, commercial, residential, healthcare, education, retail, showrooms, and industrial sectors in Qatar.">
+<BaseLayout title="Projects | Sendian Integrated Security Services" description="Security projects delivered by SISS across towers, commercial, residential, healthcare, education, retail, showrooms, and industrial sectors in Qatar." socialImage="/images/projects/services-single05.jpg">
   <section class="project-header" aria-labelledby="projects-heading">
     <div class="project-header__title project-container">
       <h1 id="projects-heading">Projects</h1>
@@ -52,7 +51,6 @@ import { projectSummaries } from '@/data/projects';
       </article>
     </dialog>
   ))}
-  <FloatingWhatsApp />
 </BaseLayout>
 
 <script>

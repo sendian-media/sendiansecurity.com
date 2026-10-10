@@ -1,5 +1,4 @@
 ---
-import FloatingWhatsApp from '@/components/ui/FloatingWhatsApp.astro';
 import ChevronIcon from '@/components/ui/ChevronIcon.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { serviceDetails } from '@/data/service-details';
@@ -14,7 +13,16 @@ export async function getStaticPaths() {
 const { service } = Astro.props;
 ---
 
-<BaseLayout title={`${service.heroTitle} | Sendian Integrated Security Services`} description={service.introParagraphs[0]}>
+<BaseLayout
+  title={`${service.heroTitle} | Sendian Integrated Security Services`}
+  description={service.introParagraphs[0]}
+  socialImage="/images/services/services-banner.jpg"
+  breadcrumbs={[
+    { name: 'Home', path: '/' },
+    { name: 'Services', path: '/services' },
+    { name: service.heroTitle, path: Astro.url.pathname },
+  ]}
+>
   <section class="detail-hero relative flex h-[350px] w-full items-center overflow-hidden rounded-b-[30px] shadow-lg md:h-[400px]" aria-label={`${service.heroTitle} banner`}>
     <div class="relative z-10 mx-auto w-full max-w-7xl px-6 md:px-20 fade-up">
       <h1 class="mb-4 text-5xl font-bold leading-tight text-white md:text-[68px]">{service.heroTitle}</h1>
@@ -31,7 +39,7 @@ const { service } = Astro.props;
     </div>
   </nav>
 
-  <main class="mx-auto w-full max-w-7xl flex-grow px-6 py-16 md:px-8">
+  <div class="mx-auto w-full max-w-7xl flex-grow px-6 py-16 md:px-8">
     <!-- Intro -->
     <section class="mb-24 fade-up d1">
       <h2 class="mb-6 text-3xl font-bold md:text-[36px]">
@@ -72,9 +80,8 @@ const { service } = Astro.props;
         </section>
       ))}
     </div>
-  </main>
+  </div>
 
-  <FloatingWhatsApp />
 </BaseLayout>
 
 <style is:global>
