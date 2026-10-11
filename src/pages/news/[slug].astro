@@ -1,0 +1,120 @@
+---
+import {PortableText} from '@portabletext/astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import {getNewsArticle, getNewsArticles, getRelatedNewsArticles} from '@/lib/sanity/news';
+
+export async function getStaticPaths() {
+  const articles = await getNewsArticles();
+  return articles.map((article) => ({params: {slug: article.id}}));
+}
+
+const {slug} = Astro.params;
+const article = slug ? await getNewsArticle(slug) : null;
+
+if (!article) {
+  throw new Error(`Published news article not found for slug: ${slug}`);
+}
+
+const relatedArticles = await getRelatedNewsArticles(article.category, article.id);
+const title = article.seo?.title || `${article.title} | Sendian Integrated Security Services`;
+const description = article.seo?.description || article.summary;
+const socialImage = article.seo?.imageUrl || article.featuredImage.url;
+const formatDate = (date: string) => new Intl.DateTimeFormat('en', {dateStyle: 'long'}).format(new Date(`${date}T00:00:00Z`));
+const publishedDate = formatDate(article.publishedAt);
+---
+
+<BaseLayout title={title} description={description} socialImage={socialImage} breadcrumbs={[{name: 'Home', path: '/'}, {name: 'News', path: '/news'}, {name: article.title, path: `/news/${article.id}`}]}>
+  <article class="mx-auto max-w-7xl px-6 py-16 md:px-10 md:py-24">
+    <div class="article-grid">
+      <div class="article-main">
+        <p class="mb-4 text-sm font-semibold uppercase tracking-[0.16em] text-[#3B82F6]">{article.category}</p>
+        <h1 class="text-4xl font-bold leading-tight text-[#1E293B] md:text-6xl">{article.title}</h1>
+        <p class="mt-6 text-lg leading-relaxed text-slate-600">{article.summary}</p>
+        <p class="mt-6 text-sm text-slate-500">{publishedDate}</p>
+
+        <figure class="my-10 overflow-hidden rounded-[14px] bg-slate-100">
+          <img src={article.featuredImage.url} alt={article.featuredImage.alt} width="1600" height="900" class="aspect-video size-full object-cover" />
+        </figure>
+
+        {article.primaryKeyword && <p class="mb-8 inline-flex rounded-full bg-blue-50 px-4 py-2 text-sm font-medium text-[#2563EB]">{article.primaryKeyword}</p>}
+        {article.secondaryKeywords?.length ? (
+          <ul class="mb-10 flex list-none flex-wrap gap-2 p-0">
+            {article.secondaryKeywords.map((keyword) => <li class="rounded-full border border-slate-200 px-3 py-1 text-sm text-slate-600">{keyword}</li>)}
+          </ul>
+        ) : null}
+
+        {article.articleImages?.length ? (
+          <div class="article-gallery">
+            {article.articleImages.map((image) => (
+              <figure class="overflow-hidden rounded-[14px] bg-slate-100">
+                <img src={image.url} alt={image.alt} width="1600" height="900" class="aspect-video size-full object-cover" loading="lazy" decoding="async" />
+              </figure>
+            ))}
+          </div>
+        ) : null}
+
+        <div class="article-body"><PortableText value={article.body} /></div>
+      </div>
+
+      {relatedArticles.length ? (
+        <aside class="article-sidebar" aria-labelledby="related-news-heading">
+          <section class="related-news">
+            <p class="related-news__eyebrow">// Keep reading</p>
+            <h2 id="related-news-heading">Related news</h2>
+            <ul>
+              {relatedArticles.map((related) => (
+                <li>
+                  <a class="related-card" href={`/news/${related.id}`}>
+                    <img src={related.featuredImage.url} alt={related.featuredImage.alt} width="160" height="120" loading="lazy" decoding="async" />
+                    <span class="related-card__copy">
+                      <span class="related-card__category">{related.category}</span>
+                      <span class="related-card__title">{related.title}</span>
+                      <time datetime={related.publishedAt}>{formatDate(related.publishedAt)}</time>
+                    </span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </section>
+        </aside>
+      ) : null}
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .article-grid { display: grid; gap: 3rem; grid-template-columns: minmax(0, 1fr); }
+  .article-main { min-width: 0; }
+  .article-gallery { display: grid; gap: 1.5rem; margin: 0 0 2.5rem; }
+  .article-sidebar { min-width: 0; }
+  .related-news { border: 1px solid #e2e8f0; border-radius: 1rem; background: #fff; box-shadow: 0 14px 38px rgb(15 23 42 / 0.07); padding: 1.5rem; }
+  .related-news__eyebrow { margin: 0 0 .5rem; color: #3b82f6; font-size: .72rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+  .related-news h2 { margin: 0; color: #1e293b; font-size: 1.5rem; line-height: 1.2; }
+  .related-news ul { display: grid; gap: 1rem; list-style: none; margin: 1.5rem 0 0; padding: 0; }
+  .related-card { align-items: flex-start; border-radius: .75rem; color: inherit; display: grid; gap: .875rem; grid-template-columns: 5rem minmax(0, 1fr); padding: .5rem; text-decoration: none; transition: background-color .2s ease, transform .2s ease; }
+  .related-card:hover { background: #f8fafc; transform: translateY(-2px); }
+  .related-card:focus-visible { outline: 3px solid #3b82f6; outline-offset: 2px; }
+  .related-card img { aspect-ratio: 4 / 3; border-radius: .5rem; height: auto; object-fit: cover; width: 100%; }
+  .related-card__copy { display: grid; gap: .3rem; min-width: 0; }
+  .related-card__category { color: #3b82f6; font-size: .7rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+  .related-card__title { color: #1e293b; display: -webkit-box; font-size: .94rem; font-weight: 700; line-height: 1.35; overflow: hidden; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+  .related-card time { color: #64748b; font-size: .78rem; }
+  .article-body { margin-top: 2.5rem; }
+  .article-body :global(h2) { margin-top: 2.5rem; color: #1e293b; font-size: 1.75rem; font-weight: 700; }
+  .article-body :global(h3) { margin-top: 2rem; color: #1e293b; font-size: 1.35rem; font-weight: 700; }
+  .article-body :global(p), .article-body :global(li) { color: #475569; font-size: 1.0625rem; line-height: 1.8; }
+  .article-body :global(a) { color: #2563eb; text-decoration: underline; }
+  .article-body :global(ul), .article-body :global(ol) { margin: 1.5rem 0; padding-inline-start: 1.5rem; }
+  .article-body :global(blockquote) { margin: 2rem 0; border-inline-start: 4px solid #3b82f6; padding-inline-start: 1.25rem; color: #334155; font-style: italic; }
+  @media (min-width: 1024px) {
+    .article-grid { align-items: start; column-gap: clamp(2.5rem, 5vw, 5rem); grid-template-columns: minmax(0, 1fr) 20rem; }
+    .article-sidebar { position: sticky; top: 7rem; }
+  }
+  @media (max-width: 639px) {
+    .related-news { padding: 1.25rem; }
+    .related-card { grid-template-columns: 4.5rem minmax(0, 1fr); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .related-card { transition: none; }
+  }
+</style>

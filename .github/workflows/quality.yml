@@ -19,4 +19,10 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run check
-      - run: npm run build
+      - name: Build with published Sanity content
+        if: ${{ secrets.SANITY_API_READ_TOKEN != '' }}
+        env:
+          SANITY_PROJECT_ID: f7kbpxr2
+          SANITY_DATASET: production
+          SANITY_API_READ_TOKEN: ${{ secrets.SANITY_API_READ_TOKEN }}
+        run: npm run build

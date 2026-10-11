@@ -1,6 +1,9 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import NewsPage from '@/components/sites/sendian-news/NewsPage.astro';
+import {getNewsArticles} from '@/lib/sanity/news';
+
+const articles = await getNewsArticles();
 ---
 
 <BaseLayout title="News and Updates | Sendian Integrated Security Services" description="Latest news and updates from Sendian Integrated Security Services: ongoing projects, partnerships, and security technology in Qatar." socialImage="/images/home/hero.webp">
@@ -18,7 +21,7 @@ import NewsPage from '@/components/sites/sendian-news/NewsPage.astro';
     </div>
   </nav>
 
-  <NewsPage />
+  <NewsPage articles={articles} />
 </BaseLayout>
 
 <style is:global>
