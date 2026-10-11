@@ -5,7 +5,7 @@
 - Source: `https://sendiansecurity.com/contact/`
 - Authorization: user confirmed permission in this session.
 - Destination: existing local `/contact` route.
-- Runtime boundary: local-only; no remote forms, maps, analytics, social links, chat, or other external services.
+- Runtime boundary: contact forms, analytics, social links, chat, and other external services remain disabled. The user explicitly approved the supplied lazy-loaded Google Maps embed for `/contact`.
 
 ## Downloaded assets
 
@@ -16,7 +16,7 @@
 
 ## Explicit substitutions and omissions
 
-- The source Google Map iframe is replaced with a local location panel; no map tiles or iframe load at runtime.
+- The user supplied and explicitly approved a Google Maps iframe for Sendian Integrated Security Services. It is lazy-loaded, uses `referrerpolicy="strict-origin-when-cross-origin"`, and is the only external service activated on `/contact`.
 - Source web fonts are replaced by local system-font fallbacks because local font files and license evidence were not supplied.
 - Icon-library marks are replaced with text/semantic UI; no icon-library CSS is loaded.
 - Source contact-form submission, social links, email links, WhatsApp, analytics, and back-to-top widget are omitted to preserve the local-only boundary.
