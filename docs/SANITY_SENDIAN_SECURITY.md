@@ -39,6 +39,16 @@ SANITY_DEVELOPER_API_KEY=<write-token> npm run import:security-cctv-full
 
 Its source evidence and authorized-asset provenance are recorded in `docs/research/sendiansecurity/cctv-source-article.md`.
 
+To upsert the full authorized `/news/` archive without deleting or unpublishing other Sanity content:
+
+```bash
+cd /Users/farsin/sendiangroup/Sanity-studio
+SANITY_DEVELOPER_API_KEY=<write-token> npm run sync:security-news
+SANITY_DEVELOPER_API_KEY=<write-token> npm run sync:security-news:write
+```
+
+The archive inventory and asset provenance are recorded in `docs/research/sendiansecurity/news-archive-inventory.md`.
+
 ## Deployment configuration
 
 Set these values in the website's local `.env` and in the deployment environment:
