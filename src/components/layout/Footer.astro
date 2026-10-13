@@ -6,6 +6,11 @@ import LinkedInIcon from '@/components/ui/LinkedInIcon.astro';
 import MailIcon from '@/components/ui/MailIcon.astro';
 import ChevronIcon from '@/components/ui/ChevronIcon.astro';
 
+interface Props {
+  localOnly?: boolean;
+}
+
+const { localOnly = false } = Astro.props;
 const year = new Date().getFullYear();
 const quickLinks = [
   { href: '/about', label: 'About us' },
@@ -25,9 +30,19 @@ const moreLinks = [
       <img class="mb-6 h-20 w-auto" src="/images/home/brand-logo.png" alt={site.name} width="1080" height="1080" loading="lazy" decoding="async" />
       <p class="mb-6 text-sm leading-relaxed text-gray-400">Ministry of Interior-approved security solutions provider. Protecting Qatar’s infrastructure with cutting-edge CCTV, access control, and enterprise security systems for more than a decade.</p>
       <div class="flex gap-3">
-        <a class="flex h-8 w-8 items-center justify-center rounded-full bg-white text-[#1c243b] transition hover:bg-gray-200" href="https://www.facebook.com/" rel="noopener" aria-label="Facebook"><FacebookIcon class="h-3.5 w-3.5" /></a>
-        <a class="flex h-8 w-8 items-center justify-center rounded-full bg-white text-[#1c243b] transition hover:bg-gray-200" href="https://www.instagram.com/" rel="noopener" aria-label="Instagram"><InstagramIcon class="h-3.5 w-3.5" /></a>
-        <a class="flex h-8 w-8 items-center justify-center rounded-full bg-white text-[#1c243b] transition hover:bg-gray-200" href="https://www.linkedin.com/" rel="noopener" aria-label="LinkedIn"><LinkedInIcon class="h-3.5 w-3.5" /></a>
+        {localOnly ? (
+          <>
+            <span class="flex h-8 w-8 items-center justify-center rounded-full bg-white text-[#1c243b] opacity-70" role="img" aria-label="Facebook is unavailable in the local preview" title="Unavailable in local preview"><FacebookIcon class="h-3.5 w-3.5" /></span>
+            <span class="flex h-8 w-8 items-center justify-center rounded-full bg-white text-[#1c243b] opacity-70" role="img" aria-label="Instagram is unavailable in the local preview" title="Unavailable in local preview"><InstagramIcon class="h-3.5 w-3.5" /></span>
+            <span class="flex h-8 w-8 items-center justify-center rounded-full bg-white text-[#1c243b] opacity-70" role="img" aria-label="LinkedIn is unavailable in the local preview" title="Unavailable in local preview"><LinkedInIcon class="h-3.5 w-3.5" /></span>
+          </>
+        ) : (
+          <>
+            <a class="flex h-8 w-8 items-center justify-center rounded-full bg-white text-[#1c243b] transition hover:bg-gray-200" href="https://www.facebook.com/" rel="noopener" aria-label="Facebook"><FacebookIcon class="h-3.5 w-3.5" /></a>
+            <a class="flex h-8 w-8 items-center justify-center rounded-full bg-white text-[#1c243b] transition hover:bg-gray-200" href="https://www.instagram.com/" rel="noopener" aria-label="Instagram"><InstagramIcon class="h-3.5 w-3.5" /></a>
+            <a class="flex h-8 w-8 items-center justify-center rounded-full bg-white text-[#1c243b] transition hover:bg-gray-200" href="https://www.linkedin.com/" rel="noopener" aria-label="LinkedIn"><LinkedInIcon class="h-3.5 w-3.5" /></a>
+          </>
+        )}
       </div>
     </section>
 
@@ -52,9 +67,15 @@ const moreLinks = [
     <section>
       <div class="mb-6">
         <h2 class="mb-2 text-sm font-semibold text-gray-300">E-Mail:</h2>
-        <a class="flex items-center gap-3 text-sm text-white transition hover:text-gray-300" href={`mailto:${site.email}`}>
-          <MailIcon class="h-4 w-4" />{site.email}
-        </a>
+        {localOnly ? (
+          <span class="flex items-center gap-3 text-sm text-white" title="Email is unavailable in the local preview">
+            <MailIcon class="h-4 w-4" />{site.email}
+          </span>
+        ) : (
+          <a class="flex items-center gap-3 text-sm text-white transition hover:text-gray-300" href={`mailto:${site.email}`}>
+            <MailIcon class="h-4 w-4" />{site.email}
+          </a>
+        )}
       </div>
       <div>
         <h2 class="mb-2 text-sm font-semibold text-gray-300">Address:</h2>

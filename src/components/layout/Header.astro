@@ -52,21 +52,52 @@ const isActive = (href: string) =>
       ))}
     </ul>
   </nav>
-  <ActionLink variant="header" badge class="header-cta" href="/vendor-registration">Vendor registration</ActionLink>
+  <ActionLink variant="header" badge class="header-cta hidden md:inline-flex" href="/vendor-registration">Vendor registration</ActionLink>
+  <button class="mobile-menu-toggle md:hidden" type="button" aria-controls="mobile-menu" aria-expanded="false" aria-label="Open navigation menu" data-mobile-menu-trigger>
+    <span></span><span></span><span></span>
+  </button>
+
+  <dialog class="mobile-menu" id="mobile-menu" aria-label="Mobile navigation" data-mobile-menu>
+    <div class="mobile-menu__panel">
+      <div class="mobile-menu__top">
+        <span class="text-sm font-semibold text-[var(--brand-dark)]">Menu</span>
+        <form method="dialog">
+          <button class="mobile-menu__close" type="submit" aria-label="Close navigation menu">×</button>
+        </form>
+      </div>
+      <nav aria-label="Mobile navigation">
+        <ul class="m-0 grid list-none gap-1 p-0">
+          {navigation.map(({ href, label, submenu }) => (
+            <li>
+              {submenu ? (
+                <details class="mobile-menu__details">
+                  <summary>{label}<ChevronIcon class="h-3 w-3" /></summary>
+                  <ul class="m-0 grid list-none gap-1 px-4 pb-2 pt-1">
+                    <li><a class:list={['mobile-menu__link mobile-menu__sublink', isActive(href) && 'is-current']} href={href}>All services</a></li>
+                    {submenu.map(({ href: subHref, label: subLabel }) => (
+                      <li><a class:list={['mobile-menu__link mobile-menu__sublink', isActive(subHref) && 'is-current']} href={subHref}>{subLabel}</a></li>
+                    ))}
+                  </ul>
+                </details>
+              ) : (
+                <a class:list={['mobile-menu__link', isActive(href) && 'is-current']} href={href}>{label}</a>
+              )}
+            </li>
+          ))}
+        </ul>
+      </nav>
+      <ActionLink variant="header" badge class="mt-8 w-full justify-between" href="/vendor-registration">Vendor registration</ActionLink>
+    </div>
+  </dialog>
 </header>
 
 <style>
-  /* Menu items stretch the full header height (source: .navbar-nav height:100%),
-     so the dropdown panel opens flush with the bar's bottom edge. */
   .header-nav-item {
     align-self: stretch;
     display: flex;
     align-items: center;
   }
 
-  /* Header CTA: same gradient pill + white arrow chip as the home buttons,
-     sized down 10px from the shared .btn base (owner request);
-     a.btn--header out-specifies the shared .btn base regardless of load order */
   :global(a.btn--header) {
     background: linear-gradient(88deg, #2a3f5f 0%, #427dd5 100%);
     color: white;
@@ -85,15 +116,8 @@ const isActive = (href: string) =>
     opacity: 0.92;
   }
 
-  /* Below sm the oversized CTA and logo do not share a 360–480px row (the
-     source shows a logo-only bar with an offcanvas hamburger there). */
-  @media (max-width: 39.9375rem) {
-    :global(a.btn.header-cta) {
-      display: none;
-    }
-  }
+  :global(a.btn.header-cta) { display: none; }
 
-  /* Invisible bridge so hover survives the gap between the link and the panel */
   .header-nav-item--parent::after {
     content: '';
     position: absolute;
@@ -101,8 +125,6 @@ const isActive = (href: string) =>
     height: 15px;
   }
 
-  /* Source (sendiansecurity.com PGS theme): white panel, radius 7, soft shadow,
-     min-width 260, slides down from under the link on hover/focus */
   .header-dropdown {
     position: absolute;
     left: -20px;
@@ -117,7 +139,7 @@ const isActive = (href: string) =>
     padding: 20px 0;
     visibility: hidden;
     opacity: 0;
-    transition: all 0.3s ease-in-out;
+    transition: opacity 0.3s ease-in-out, margin 0.3s ease-in-out, visibility 0.3s ease-in-out;
   }
 
   .header-nav-item:hover > .header-dropdown,
@@ -133,9 +155,7 @@ const isActive = (href: string) =>
     transform: rotate(180deg);
   }
 
-  .submenu-chevron {
-    transition: transform 0.3s ease-in-out;
-  }
+  .submenu-chevron { transition: transform 0.3s ease-in-out; }
 
   .header-dropdown-link {
     color: #3e4a5c;
@@ -145,11 +165,10 @@ const isActive = (href: string) =>
     line-height: 28px;
     padding: 5px 25px;
     position: relative;
-    transition: all 0.3s ease-in-out;
+    transition: color 0.3s ease-in-out, padding 0.3s ease-in-out;
     white-space: nowrap;
   }
 
-  /* Source hover: link tucks right, colour deepens, 50px rule grows underneath */
   .header-dropdown-link::before {
     content: '';
     position: absolute;
@@ -170,14 +189,96 @@ const isActive = (href: string) =>
 
   .header-dropdown li:hover > .header-dropdown-link::before,
   .header-dropdown-link:focus-visible::before,
-  .header-dropdown-link.is-current::before {
-    width: 50px;
+  .header-dropdown-link.is-current::before { width: 50px; }
+
+  .mobile-menu-toggle {
+    align-items: center;
+    background: var(--brand);
+    border: 0;
+    border-radius: 50%;
+    color: white;
+    display: inline-flex;
+    flex-direction: column;
+    gap: 4px;
+    height: 2.75rem;
+    justify-content: center;
+    width: 2.75rem;
+  }
+
+  .mobile-menu-toggle span { background: currentColor; height: 2px; width: 1.125rem; }
+
+  .mobile-menu {
+    background: transparent;
+    border: 0;
+    height: 100dvh;
+    margin: 0 0 0 auto;
+    max-width: min(22rem, 92vw);
+    padding: 0;
+    width: 100%;
+  }
+
+  .mobile-menu::backdrop { background: rgb(26 37 71 / .55); }
+
+  .mobile-menu__panel {
+    background: white;
+    box-shadow: -12px 0 32px rgb(0 0 0 / .16);
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow-y: auto;
+    padding: 1.5rem;
+  }
+
+  .mobile-menu__top { align-items: center; display: flex; justify-content: space-between; margin-bottom: 1.5rem; }
+
+  .mobile-menu__close {
+    align-items: center;
+    background: var(--brand-gray);
+    border: 0;
+    border-radius: 50%;
+    color: var(--brand-dark);
+    display: flex;
+    font-size: 1.75rem;
+    height: 2.75rem;
+    justify-content: center;
+    line-height: 1;
+    width: 2.75rem;
+  }
+
+  .mobile-menu__link,
+  .mobile-menu__details summary {
+    align-items: center;
+    border-radius: .5rem;
+    color: #3e4a5c;
+    display: flex;
+    font-size: 1rem;
+    font-weight: 600;
+    justify-content: space-between;
+    min-height: 2.75rem;
+    padding: .625rem .75rem;
+    text-decoration: none;
+  }
+
+  .mobile-menu__link:hover,
+  .mobile-menu__link:focus-visible,
+  .mobile-menu__link.is-current,
+  .mobile-menu__details summary:hover { background: #f0f5fd; color: var(--brand); }
+
+  .mobile-menu__details summary { cursor: pointer; list-style: none; }
+  .mobile-menu__details summary::-webkit-details-marker { display: none; }
+  .mobile-menu__details[open] summary svg { transform: rotate(180deg); }
+  .mobile-menu__details summary svg { transition: transform 180ms ease; }
+  .mobile-menu__sublink { font-size: .875rem; font-weight: 500; min-height: 2.25rem; }
+
+  @media (min-width: 48rem) {
+    :global(a.btn.header-cta) { display: inline-flex; }
+    .mobile-menu-toggle,
+    .mobile-menu { display: none; }
   }
 </style>
 
 <script>
-  // Touch devices have no hover: toggle the panel on tap. Also close on
-  // outside tap and Escape so keyboard users can dismiss it.
   document.querySelectorAll<HTMLAnchorElement>('[aria-haspopup="true"]').forEach((trigger) => {
     const item = trigger.closest('li');
     if (!item) return;
@@ -186,7 +287,6 @@ const isActive = (href: string) =>
       trigger.setAttribute('aria-expanded', String(open));
     };
     trigger.addEventListener('click', (event) => {
-      // Let real navigation through on devices with hover support.
       if (window.matchMedia('(hover: hover)').matches) return;
       event.preventDefault();
       setOpen(!item.classList.contains('is-open'));
@@ -212,4 +312,21 @@ const isActive = (href: string) =>
     openItem.querySelector('[aria-haspopup="true"]')?.setAttribute('aria-expanded', 'false');
     (openItem.querySelector('a') as HTMLElement | null)?.focus();
   });
+
+  const menu = document.querySelector<HTMLDialogElement>('[data-mobile-menu]');
+  const menuTrigger = document.querySelector<HTMLButtonElement>('[data-mobile-menu-trigger]');
+  if (menu && menuTrigger) {
+    menuTrigger.addEventListener('click', () => {
+      menu.showModal();
+      menuTrigger.setAttribute('aria-expanded', 'true');
+      menu.querySelector<HTMLButtonElement>('.mobile-menu__close')?.focus();
+    });
+    menu.addEventListener('close', () => {
+      menuTrigger.setAttribute('aria-expanded', 'false');
+      menuTrigger.focus();
+    });
+    menu.addEventListener('click', (event) => {
+      if (event.target === menu) menu.close();
+    });
+  }
 </script>

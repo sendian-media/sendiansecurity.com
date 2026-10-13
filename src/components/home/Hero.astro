@@ -29,21 +29,21 @@ const heroSlides = [
 
   <div class="hero-inner absolute inset-0 z-10 mx-auto flex w-full max-w-none flex-col justify-center gap-8 px-6 md:px-10 lg:items-start lg:px-6 lg:-translate-y-8">
     <div class="hero-copy max-w-[1040px]">
-      <p class="m-0 inline-block rounded-full border border-white/30 bg-black/10 px-4 py-1.5 text-sm uppercase tracking-wider backdrop-blur-sm fade-up d1">// {home.hero.eyebrow}</p>
-      <h1 class="m-0 text-[2.5rem] font-bold uppercase leading-tight tracking-normal sm:text-[49px] lg:text-[51px] lg:leading-[1.5] fade-up">{home.hero.title}</h1>
-      <p class="m-0 max-w-[820px] text-lg leading-relaxed text-gray-200 fade-up d6">{home.hero.description}</p>
-      <div class="hero-actions fade-up d8">
+      <p class="m-0 inline-block rounded-full border border-white/30 bg-black/10 px-4 py-1.5 text-sm uppercase tracking-wider backdrop-blur-sm home-reveal d1">// {home.hero.eyebrow}</p>
+      <h1 class="m-0 text-[2.5rem] font-bold uppercase leading-tight tracking-normal sm:text-[49px] lg:text-[51px] lg:leading-[1.5] home-reveal d2">{home.hero.title}</h1>
+      <p class="m-0 max-w-[820px] text-lg leading-relaxed text-gray-200 home-reveal d3">{home.hero.description}</p>
+      <div class="hero-actions home-reveal d4">
         <ActionLink href="/about" badge class="hero-cta">Request a consultation</ActionLink>
         <ActionLink href="/services" variant="secondary" class="hero-cta">Explore our solutions</ActionLink>
       </div>
     </div>
 
     <div class="hidden gap-4 md:grid md:grid-cols-2 lg:absolute lg:right-6 lg:bottom-10 lg:w-80 lg:grid-cols-1" aria-label="Contact details">
-      <div class="contact-card fade-right d5">
+      <div class="contact-card home-reveal home-reveal--right d5">
         <span class="contact-card__icon"><PhoneIcon /></span>
         <span><span class="contact-card__label block">Call Us</span><b class="font-semibold">{site.phone}</b></span>
       </div>
-      <div class="contact-card fade-right d7">
+      <div class="contact-card home-reveal home-reveal--right d6">
         <span class="contact-card__icon"><MailIcon /></span>
         <span><span class="contact-card__label block">Email</span><b class="font-semibold">{site.email}</b></span>
       </div>

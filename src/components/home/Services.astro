@@ -6,49 +6,89 @@ import ActionLink from '@/components/ui/ActionLink.astro';
 
 <section id="services" class="scroll-mt-20 bg-white py-20">
   <div class="container mx-auto px-8 text-center">
-    <Eyebrow class="fade-up d1">Our Services</Eyebrow>
-    <h2 class="section-title mx-auto max-w-3xl fade-up d2">Comprehensive <span class="text-[var(--brand)]">Security &amp; Technology</span> Solutions</h2>
-    <p class="mx-auto max-w-3xl text-gray-600 fade-up d3">From Ministry of Interior-approved CCTV surveillance to enterprise networking and smart infrastructure, SISS delivers integrated security solutions tailored to Qatar’s government, commercial, and industrial sectors.</p>
+    <Eyebrow class="home-reveal d1">Our Services</Eyebrow>
+    <h2 class="section-title home-reveal d2 mx-auto max-w-3xl">Comprehensive <span class="text-[var(--brand)]">Security &amp; Technology</span> Solutions</h2>
+    <p class="home-reveal d3 mx-auto max-w-3xl text-gray-600">From Ministry of Interior-approved CCTV surveillance to enterprise networking and smart infrastructure, SISS delivers integrated security solutions tailored to Qatar’s government, commercial, and industrial sectors.</p>
   </div>
 
-  <div class="services-viewport fade-up d5" data-service-carousel aria-label="Our services">
-    <div class="services-track" data-service-track>
-      {home.services.map((service) => (
-        <a class="service-card group" href={service.href}>
-          <img src={service.image} alt={service.alt} width="800" height="950" loading="lazy" decoding="async" />
+  <div class="services-viewport home-reveal d5" data-service-carousel role="region" aria-roledescription="carousel" aria-label="Our services">
+    <button class="services-arrow services-arrow--previous" type="button" data-service-previous aria-controls="services-track" aria-label="Show previous services card">
+      <span aria-hidden="true">←</span>
+    </button>
+    <div class="services-track" id="services-track" data-service-track>
+      {home.services.map((service, index) => (
+        <a class:list={['service-card home-reveal home-reveal--media', `d${index + 1}`]} href={service.href}>
+          <span class="service-card__media">
+            <img src={service.image} alt={service.alt} width="800" height="950" loading="lazy" decoding="async" />
+          </span>
           <span class="service-card__overlay">
             <span>{service.title}</span>
           </span>
         </a>
       ))}
     </div>
+    <button class="services-arrow services-arrow--next" type="button" data-service-next aria-controls="services-track" aria-label="Show next services card">
+      <span aria-hidden="true">→</span>
+    </button>
   </div>
 
-  <p class="mt-12 text-center fade-up d8"><ActionLink href="/services" badge>View All Services</ActionLink></p>
+  <p class="home-reveal d8 mt-12 text-center"><ActionLink href="/services" badge>View All Services</ActionLink></p>
 </section>
 
 <script>
   document.querySelectorAll<HTMLElement>('[data-service-carousel]').forEach((carousel) => {
     const track = carousel.querySelector<HTMLElement>('[data-service-track]');
-    const firstCard = track?.querySelector<HTMLElement>('.service-card');
-    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (!track || !firstCard || reducedMotion) return;
+    const previous = carousel.querySelector<HTMLButtonElement>('[data-service-previous]');
+    const next = carousel.querySelector<HTMLButtonElement>('[data-service-next]');
+    const cards = Array.from(carousel.querySelectorAll<HTMLElement>('.service-card'));
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    if (!track || !previous || !next || !cards.length) return;
 
     let timer: number | undefined;
-    const advance = () => {
+    const pause = () => {
+      if (timer !== undefined) window.clearInterval(timer);
+      timer = undefined;
+    };
+    const cardStep = () => {
       const styles = window.getComputedStyle(track);
       const gap = Number.parseFloat(styles.columnGap || styles.gap || '0');
-      const step = firstCard.getBoundingClientRect().width + gap;
-      const atEnd = track.scrollLeft + track.clientWidth >= track.scrollWidth - step / 2;
-      track.scrollTo({ left: atEnd ? 0 : track.scrollLeft + step, behavior: 'smooth' });
+      return cards[0].getBoundingClientRect().width + gap;
     };
-    const stop = () => { if (timer) window.clearInterval(timer); };
-    const start = () => { stop(); timer = window.setInterval(advance, 3500); };
+    const hasOverflow = () => track.scrollWidth - track.clientWidth > 1;
+    const setCurrentCard = () => {
+      const step = cardStep();
+      const currentIndex = step ? Math.round(track.scrollLeft / step) % cards.length : 0;
+      cards.forEach((card, index) => card.classList.toggle('is-current', index === currentIndex));
+    };
+    const move = (direction: 1 | -1) => {
+      if (!hasOverflow()) return;
+      const step = cardStep();
+      const atStart = track.scrollLeft <= step / 2;
+      const atEnd = track.scrollLeft + track.clientWidth >= track.scrollWidth - step / 2;
+      let target = track.scrollLeft + direction * step;
+      if (direction === 1 && atEnd) target = 0;
+      if (direction === -1 && atStart) target = track.scrollWidth - track.clientWidth;
+      track.scrollTo({ left: target, behavior: reducedMotion.matches ? 'auto' : 'smooth' });
+      window.setTimeout(setCurrentCard, reducedMotion.matches ? 0 : 360);
+    };
+    const start = () => {
+      pause();
+      if (reducedMotion.matches || !hasOverflow()) return;
+      timer = window.setInterval(() => move(1), 3500);
+    };
 
-    carousel.addEventListener('pointerenter', stop);
+    previous.addEventListener('click', () => move(-1));
+    next.addEventListener('click', () => move(1));
+    carousel.addEventListener('pointerenter', pause);
     carousel.addEventListener('pointerleave', start);
-    carousel.addEventListener('focusin', stop);
-    carousel.addEventListener('focusout', start);
+    carousel.addEventListener('focusin', pause);
+    carousel.addEventListener('focusout', () => window.setTimeout(() => {
+      if (!carousel.contains(document.activeElement)) start();
+    }));
+    track.addEventListener('scroll', setCurrentCard, { passive: true });
+    reducedMotion.addEventListener('change', start);
+    window.addEventListener('resize', start, { passive: true });
+    setCurrentCard();
     start();
   });
 </script>
@@ -57,7 +97,7 @@ import ActionLink from '@/components/ui/ActionLink.astro';
   .services-viewport {
     margin: 3rem auto 0;
     max-width: 80rem;
-    overflow: hidden;
+    position: relative;
   }
 
   .services-track {
@@ -81,15 +121,24 @@ import ActionLink from '@/components/ui/ActionLink.astro';
     border-radius: 0.625rem;
   }
 
+  .service-card__media,
   .service-card img {
+    display: block;
     height: 100%;
+    width: 100%;
+  }
+
+  .service-card img {
     object-fit: cover;
     transition: transform 500ms ease;
-    width: 100%;
   }
 
   .service-card:hover img,
   .service-card:focus-visible img { transform: scale(1.1); }
+
+  .service-card.is-current .service-card__media {
+    animation: service-media-fade 520ms cubic-bezier(.2, .65, .3, 1) both;
+  }
 
   .service-card__overlay {
     align-items: end;
@@ -106,13 +155,49 @@ import ActionLink from '@/components/ui/ActionLink.astro';
 
   .service-card__overlay > span { max-width: 75%; }
 
+  .services-arrow {
+    align-items: center;
+    background: var(--brand);
+    border: 0;
+    border-radius: 50%;
+    box-shadow: 0 8px 20px rgb(26 37 71 / .2);
+    color: white;
+    cursor: pointer;
+    display: flex;
+    font-size: 1.75rem;
+    height: 3rem;
+    justify-content: center;
+    line-height: 1;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: background-color 180ms ease, scale 180ms ease, opacity 180ms ease;
+    width: 3rem;
+    z-index: 2;
+  }
+
+  .services-arrow:hover { background: var(--brand-hover); }
+  .services-arrow:active { scale: .96; }
+  .services-arrow--previous { left: .5rem; }
+  .services-arrow--next { right: .5rem; }
+
+  @keyframes service-media-fade {
+    from { opacity: .45; transform: scale(1.025); }
+    to { opacity: 1; transform: scale(1); }
+  }
+
   @media (max-width: 767px) {
     .services-viewport { margin-top: 2.5rem; }
     .services-track { gap: 1rem; padding-inline: 1rem; }
-    .service-card { flex-basis: calc(100vw - 2rem); }
+    .service-card { flex-basis: calc(100vw - 4rem); }
+    .services-arrow { height: 2.75rem; width: 2.75rem; }
+    .services-arrow--previous { left: .25rem; }
+    .services-arrow--next { right: .25rem; }
   }
 
   @media (prefers-reduced-motion: reduce) {
+    .services-track { scroll-behavior: auto; }
     .service-card img { transition: none; }
+    .service-card.is-current .service-card__media { animation: none; }
   }
 </style>

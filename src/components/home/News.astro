@@ -5,13 +5,13 @@ import Eyebrow from './Eyebrow.astro';
 
 <section id="news" class="scroll-mt-20 bg-white py-20">
   <div class="container mx-auto px-8 text-center">
-    <Eyebrow class="fade-up d1">Latest news</Eyebrow>
-    <h2 class="section-title fade-up d2">Ongoing <span class="text-[var(--brand)]">Projects And Updates</span></h2>
+    <Eyebrow class="home-reveal d1">Latest news</Eyebrow>
+    <h2 class="section-title home-reveal d2">Ongoing <span class="text-[var(--brand)]">Projects And Updates</span></h2>
   </div>
 
   <div class="container mx-auto grid grid-cols-1 gap-8 px-8 md:grid-cols-3">
     {home.news.map((article, index) => (
-      <article class:list={['group', 'fade-up', `d${index + 3}`]}>
+      <article class:list={['group home-reveal home-reveal--media', `d${index + 3}`]}>
         <div class="relative mb-6 aspect-video overflow-hidden rounded-[10px]">
           <a href="/news" aria-label={article.title}>
             <img class={article.image.endsWith('.jpeg') ? 'size-full object-contain transition duration-500 group-hover:scale-105 motion-reduce:transition-none' : 'size-full object-cover transition duration-500 group-hover:scale-105 motion-reduce:transition-none'} src={article.image} alt={article.alt} width="768" height="432" loading="lazy" decoding="async" />

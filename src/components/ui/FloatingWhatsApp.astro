@@ -1,7 +1,19 @@
 ---
 import WhatsAppIcon from '@/components/ui/WhatsAppIcon.astro';
+
+interface Props {
+  localOnly?: boolean;
+}
+
+const { localOnly = false } = Astro.props;
 ---
 
-<a class="whatsapp-btn" href="https://wa.me/97444866766" rel="noopener" aria-label="Chat on WhatsApp">
-  <WhatsAppIcon />
-</a>
+{localOnly ? (
+  <span class="whatsapp-btn" role="img" aria-label="WhatsApp chat is unavailable in the local preview" title="WhatsApp chat is unavailable in the local preview">
+    <WhatsAppIcon />
+  </span>
+) : (
+  <a class="whatsapp-btn" href="https://wa.me/97444866766" rel="noopener" aria-label="Chat on WhatsApp">
+    <WhatsAppIcon />
+  </a>
+)}

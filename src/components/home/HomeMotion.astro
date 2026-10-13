@@ -1,0 +1,78 @@
+<script>
+  const revealSelector = '.home-reveal';
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const reveal = (element: Element) => element.classList.add('is-revealed');
+
+  if (reducedMotion || !('IntersectionObserver' in window)) {
+    document.querySelectorAll(revealSelector).forEach(reveal);
+  } else {
+    document.documentElement.dataset.homeMotion = 'ready';
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          reveal(entry.target);
+          observer.unobserve(entry.target);
+        });
+      },
+      { rootMargin: '0px 0px -10%', threshold: 0.12 },
+    );
+
+    document.querySelectorAll(revealSelector).forEach((element) => observer.observe(element));
+  }
+</script>
+
+<style is:global>
+  @media (prefers-reduced-motion: no-preference) {
+    html[data-home-motion='ready'] .home-reveal:not(.is-revealed) {
+      opacity: 0;
+      transform: translate3d(0, 2rem, 0);
+    }
+
+    html[data-home-motion='ready'] .home-reveal.home-reveal--media:not(.is-revealed) {
+      opacity: 0;
+      transform: translate3d(0, 1.5rem, 0) scale(.97);
+    }
+
+    html[data-home-motion='ready'] .home-reveal.home-reveal--right:not(.is-revealed) {
+      opacity: 0;
+      transform: translate3d(2rem, 0, 0);
+    }
+
+    html[data-home-motion='ready'] .home-reveal.is-revealed {
+      animation: home-fade-up 700ms cubic-bezier(.2, .65, .3, 1) var(--reveal-delay, 0ms) both;
+    }
+
+    html[data-home-motion='ready'] .home-reveal.home-reveal--media.is-revealed {
+      animation-name: home-media-reveal;
+    }
+
+    html[data-home-motion='ready'] .home-reveal.home-reveal--right.is-revealed {
+      animation-name: home-fade-right;
+    }
+  }
+
+  .home-reveal.d1 { --reveal-delay: 100ms; }
+  .home-reveal.d2 { --reveal-delay: 200ms; }
+  .home-reveal.d3 { --reveal-delay: 300ms; }
+  .home-reveal.d4 { --reveal-delay: 400ms; }
+  .home-reveal.d5 { --reveal-delay: 500ms; }
+  .home-reveal.d6 { --reveal-delay: 600ms; }
+  .home-reveal.d7 { --reveal-delay: 700ms; }
+  .home-reveal.d8 { --reveal-delay: 800ms; }
+
+  @keyframes home-fade-up {
+    from { opacity: 0; transform: translate3d(0, 2rem, 0); }
+    to { opacity: 1; transform: translate3d(0, 0, 0); }
+  }
+
+  @keyframes home-media-reveal {
+    from { opacity: 0; transform: translate3d(0, 1.5rem, 0) scale(.97); }
+    to { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
+  }
+
+  @keyframes home-fade-right {
+    from { opacity: 0; transform: translate3d(2rem, 0, 0); }
+    to { opacity: 1; transform: translate3d(0, 0, 0); }
+  }
+</style>

@@ -15,18 +15,18 @@
     <section class="contact-form-card fade-up" aria-labelledby="form-title">
       <p class="contact-eyebrow">Get in touch</p>
       <h2 id="form-title">Ready to get started?</h2>
-      <p class="contact-preview-note" id="preview-note">Local preview only. Messages cannot be sent.</p>
-      <fieldset aria-describedby="preview-note">
-        <legend class="sr-only">Contact details</legend>
+      <form class="contact-form" data-hubspot-contact-form>
         <div class="contact-name-fields">
-          <label>First Name*<input autocomplete="given-name" maxlength="400" aria-required="true" /></label>
-          <label>Last Name*<input autocomplete="family-name" maxlength="400" aria-required="true" /></label>
+          <label>First Name*<input name="firstname" autocomplete="given-name" maxlength="400" required /></label>
+          <label>Last Name*<input name="lastname" autocomplete="family-name" maxlength="400" required /></label>
         </div>
-        <label>Email*<input type="email" autocomplete="email" maxlength="400" aria-required="true" /></label>
-        <label>Phone*<input type="tel" autocomplete="tel" maxlength="400" aria-required="true" /></label>
-        <label>Message<textarea rows="4" maxlength="2000"></textarea></label>
-        <button type="button" disabled>Send Message — unavailable</button>
-      </fieldset>
+        <label>Email*<input name="email" type="email" autocomplete="email" maxlength="400" required /></label>
+        <label>Phone number<input name="phone" type="tel" autocomplete="tel" maxlength="400" /></label>
+        <label>Message<textarea name="message" rows="4" maxlength="2000"></textarea></label>
+        <input name="contact_from" type="hidden" value="Sendian_Security" />
+        <p class="contact-form-status" data-form-status role="status" aria-live="polite" hidden></p>
+        <button type="submit">Send Message</button>
+      </form>
     </section>
   </div>
 </section>
@@ -54,7 +54,7 @@
   .contact-section { margin: auto; max-width: 1530px; padding: 0 50px 120px; }
   .contact-grid { display: grid; gap: 24px; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
   .contact-information { align-self: start; padding: 1rem 7% 1rem 0; position: sticky; top: 120px; }
-  .contact-eyebrow { border: 1px solid var(--highlight); border-radius: 999px; color: var(--highlight); display: inline-block; font: 700 .72rem/1.2 "DM Sans", ui-sans-serif, system-ui, sans-serif; letter-spacing: .12em; margin: 0 0 1.2rem; padding: 7px 19px; text-transform: uppercase; }
+  .contact-eyebrow { border: 1px solid #3a6ade; border-radius: 999px; color: #3a6ade; display: inline-block; font: 700 .72rem/1.2 "DM Sans", ui-sans-serif, system-ui, sans-serif; letter-spacing: .12em; margin: 0 0 1.2rem; padding: 7px 19px; text-transform: uppercase; }
   .contact-heading { font-size: clamp(2.5rem, 3.65vw, 3.25rem); line-height: 1.19; margin: 0; max-width: 12ch; }
   .contact-heading span { background: linear-gradient(216deg, #1c2e4a, #427dd5); background-clip: text; -webkit-background-clip: text; color: transparent; }
   .contact-intro { color: #596174; font: 400 1.125rem/1.67 "DM Sans", ui-sans-serif, system-ui, sans-serif; margin: 1.5rem 0 3rem; max-width: 38ch; }
@@ -63,13 +63,18 @@
   .contact-office p { color: #596174; font: 400 1rem/1.7 "DM Sans", ui-sans-serif, system-ui, sans-serif; margin: .15rem 0; }
   .contact-form-card { background: #f7f7fa; border-radius: 30px; padding: 50px 60px; }
   .contact-form-card h2 { color: var(--brand-dark); font-family: "Wix Madefor Display", ui-sans-serif, system-ui, sans-serif; font-size: clamp(1.75rem, 3vw, 2.625rem); line-height: 1.25; margin: 0 0 .75rem; }
-  .contact-preview-note { color: #596174; font: 400 .95rem/1.55 "DM Sans", ui-sans-serif, system-ui, sans-serif; margin: 0 0 1.5rem; }
-  fieldset { border: 0; margin: 0; min-inline-size: 0; padding: 0; }
+  .contact-form { margin: 1.5rem 0 0; }
   label { color: var(--brand-dark); display: grid; font: 600 .9rem/1.4 "DM Sans", ui-sans-serif, system-ui, sans-serif; gap: .45rem; margin-bottom: 1.25rem; }
   input, textarea { background: #fff; border: 1px solid transparent; border-radius: 6px; color: var(--brand-dark); font: 400 1rem/1.5 "DM Sans", ui-sans-serif, system-ui, sans-serif; min-width: 0; padding: 15px 20px; resize: vertical; }
   input:focus, textarea:focus { border-color: #0078d4; outline: 3px solid rgb(0 120 212 / 24%); outline-offset: 2px; }
   .contact-name-fields { display: grid; gap: 1rem; grid-template-columns: 1fr 1fr; }
-  button { background: linear-gradient(90deg, #2a3f5f, #3e4a5c); border: 0; border-radius: 999px; color: #fff; cursor: not-allowed; font: 700 .9rem/1.2 "DM Sans", ui-sans-serif, system-ui, sans-serif; opacity: .65; padding: 1rem 1.5rem; width: 100%; }
+  .contact-form-status { border-radius: 6px; font: 500 .9rem/1.5 "DM Sans", ui-sans-serif, system-ui, sans-serif; margin: 0 0 1.25rem; padding: .875rem 1rem; }
+  .contact-form-status.is-success { background: #eaf8ef; color: #166534; }
+  .contact-form-status.is-error { background: #fef2f2; color: #b91c1c; }
+  .contact-form button { background: linear-gradient(90deg, #2a3f5f, #3e4a5c); border: 0; border-radius: 999px; color: #fff; cursor: pointer; font: 700 .9rem/1.2 "DM Sans", ui-sans-serif, system-ui, sans-serif; padding: 1rem 1.5rem; transition: opacity 180ms ease, transform 180ms ease; width: 100%; }
+  .contact-form button:hover:not(:disabled) { opacity: .9; }
+  .contact-form button:active:not(:disabled) { transform: scale(.96); }
+  .contact-form button:disabled { cursor: wait; opacity: .65; }
   .contact-map-section { padding: 0 50px 120px; }
   .contact-map { align-items: center; background: #d9dce3; border-radius: 20px; display: grid; min-height: 549px; overflow: hidden; padding: clamp(2rem, 6vw, 7rem); position: relative; }
   .contact-map__frame { border: 0; height: 100%; inset: 0; position: absolute; width: 100%; }
@@ -83,3 +88,55 @@
   @media (max-width: 1024px) { .contact-section { padding: 0 30px 70px; } .contact-grid { grid-template-columns: 1fr; } .contact-information { padding-right: 0; position: static; } .contact-form-card { margin-top: 50px; padding: 40px; } .contact-map-section { padding: 0 30px 70px; } .contact-map { min-height: 350px; } }
   @media (max-width: 767px) { .contact-section { padding: 0 15px 60px; } .contact-form-card { padding: 25px; } .contact-name-fields { grid-template-columns: 1fr; } .contact-map-section { padding: 0 15px 60px; } .contact-map { align-items: end; min-height: 360px; padding: 1.5rem; } .contact-map__details { padding: 1.5rem; } }
 </style>
+
+<script>
+  const hubSpotEndpoint = 'https://api.hsforms.com/submissions/v3/integration/submit/148999608/0ec48611-6e4a-4d9e-bf9a-7f51f9c7d061';
+
+  document.querySelectorAll<HTMLFormElement>('[data-hubspot-contact-form]').forEach((form) => {
+    const submitButton = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+    const status = form.querySelector<HTMLElement>('[data-form-status]');
+    if (!submitButton || !status) return;
+
+    const showStatus = (message: string, state: 'success' | 'error') => {
+      status.textContent = message;
+      status.className = `contact-form-status is-${state}`;
+      status.hidden = false;
+    };
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      if (!form.reportValidity()) return;
+
+      const formData = new FormData(form);
+      const fields = ['firstname', 'lastname', 'email', 'phone', 'message', 'contact_from'].map((name) => ({
+        name,
+        value: String(formData.get(name) ?? ''),
+      }));
+
+      submitButton.disabled = true;
+      submitButton.textContent = 'Sending…';
+      status.hidden = true;
+
+      try {
+        const response = await fetch(hubSpotEndpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            fields,
+            context: { pageUri: window.location.href, pageName: document.title },
+          }),
+        });
+
+        if (!response.ok) throw new Error(`HubSpot submission failed (${response.status})`);
+        form.reset();
+        showStatus('Thank you. Your message has been sent.', 'success');
+      } catch (error) {
+        console.error('HubSpot contact form submission failed.', error);
+        showStatus('Unable to send your message. Please try again.', 'error');
+      } finally {
+        submitButton.disabled = false;
+        submitButton.textContent = 'Send Message';
+      }
+    });
+  });
+</script>
