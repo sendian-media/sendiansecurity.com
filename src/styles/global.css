@@ -139,16 +139,15 @@ body { margin: 0; }
   .home-page .service-card { flex-basis: 26rem; }
   .home-page .service-card__overlay { font-size: 1.375rem; padding: 1.75rem; }
 
-  .home-page .stat-item > p:first-child { font-size: clamp(3rem, 3vw, 4rem); }
-  .home-page .stat-item .stat-suffix { font-size: 2.5rem; }
-  .home-page .stat-item > p:last-child { font-size: .9375rem; }
+  .home-page .stat-item > p:first-child { font-size: clamp(3.5rem, 3.6vw, 4.25rem); }
+  .home-page .stat-item > p:last-child { font-size: 1.25rem; }
 
   .home-page #about,
   .home-page #services,
   .home-page #projects,
   .home-page #news { padding-block: 6.5rem; }
 
-  .home-page .stats-grid { gap: 3rem; }
+  .home-page .stats-grid { gap: 1.5rem; }
   .home-page .trust-panel { padding: 3.5rem; }
   .home-page .trust-card { padding: 2rem; }
   .home-page .trust-card img { height: 5.5rem; }

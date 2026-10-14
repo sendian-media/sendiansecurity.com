@@ -5,7 +5,7 @@ import { about } from '@/data/about';
 
 <BaseLayout title="About Us | Sendian Integrated Security Services" description="Sendian Integrated Security Services (SISS) is a Qatar-based systems integrator delivering integrated security, ELV, ICT, and automation solutions." socialImage={about.intro.mainImage}>
   <section class="about-hero relative flex h-[350px] w-full items-center overflow-hidden rounded-b-[30px] shadow-lg md:h-[400px]" aria-label="About banner">
-    <div class="relative z-10 mx-auto w-full max-w-7xl px-6 md:px-20">
+    <div class="relative z-10 mx-auto w-full max-w-7xl px-6 md:px-20 home-reveal d1">
       <h1 class="text-5xl font-bold leading-tight text-white md:text-[68px]">{about.hero.title}</h1>
     </div>
   </section>
@@ -23,12 +23,12 @@ import { about } from '@/data/about';
     <section class="mx-auto mb-24 max-w-7xl px-6 md:px-12">
       <div class="flex flex-col items-stretch gap-16 lg:flex-row">
         <div class="w-full lg:w-5/12">
-          <img class="fade-up d1 h-auto w-full rounded-[16px] object-cover" src={about.intro.mainImage} alt={about.intro.mainAlt} width="1024" height="1536" loading="lazy" decoding="async" />
+          <img class="home-reveal d1 h-auto w-full rounded-[16px] object-cover" src={about.intro.mainImage} alt={about.intro.mainAlt} width="1024" height="1536" loading="lazy" decoding="async" />
         </div>
         <div class="w-full lg:w-7/12">
-          <p class="mb-6 fade-up d3"><span class="badge-outline uppercase">// {about.intro.badge}</span></p>
-          <h2 class="mb-8 text-4xl font-bold leading-[1.1] text-[var(--link)] sm:text-[52px] fade-up d3" set:html={about.intro.title} />
-          <div class="mb-8 text-[17px] leading-relaxed text-[#8f91ab] fade-up d4">
+          <p class="mb-6 home-reveal d3"><span class="badge-outline uppercase">// {about.intro.badge}</span></p>
+          <h2 class="mb-8 text-4xl font-bold leading-[1.1] text-[var(--link)] sm:text-[52px] home-reveal d3" set:html={about.intro.title} />
+          <div class="mb-8 text-[17px] leading-relaxed text-[#8f91ab] home-reveal d4">
             {about.intro.paragraphs.map((paragraph) => <p class="mb-6 last:mb-0">{paragraph}</p>)}
           </div>
         </div>
@@ -39,11 +39,11 @@ import { about } from '@/data/about';
     <section class="mb-24 bg-[#F8F9FA] px-6 py-20 md:px-12">
       <div class="mx-auto max-w-7xl">
         <div class="mb-16 text-center">
-          <h2 class="mx-auto max-w-3xl text-4xl font-bold leading-tight text-[var(--link)] fade-up d1" set:html={about.approach.title} />
+          <h2 class="mx-auto max-w-3xl text-4xl font-bold leading-tight text-[var(--link)] home-reveal d1" set:html={about.approach.title} />
         </div>
         <div class="grid grid-cols-1 gap-8 md:grid-cols-3">
           {about.approach.highlights.map((highlight) => (
-            <div class="approach-card fade-up d3">
+            <div class="approach-card home-reveal d3">
               <h3 class="text-lg font-bold text-[var(--link)]">{highlight.title}</h3>
               <span class="approach-divider" aria-hidden="true"></span>
               <p class="m-0 text-[15px] leading-relaxed text-[#8f91ab]">{highlight.caption}</p>
@@ -57,17 +57,17 @@ import { about } from '@/data/about';
     <section class="mx-auto mb-24 max-w-7xl px-6 md:px-12">
       <div class="flex flex-col items-center gap-16 lg:flex-row">
         <div class="w-full lg:w-1/2">
-          <img class="fade-up d2 mx-auto w-full max-w-md rounded-[16px] object-cover" src={about.visionMission.image} alt={about.visionMission.imageAlt} width="850" height="930" loading="lazy" decoding="async" />
+          <img class="home-reveal d2 mx-auto w-full max-w-md rounded-[16px] object-cover" src={about.visionMission.image} alt={about.visionMission.imageAlt} width="850" height="930" loading="lazy" decoding="async" />
         </div>
         <div class="grid w-full gap-10 lg:w-1/2">
-          <div class="flex items-start gap-6 fade-up d8">
+          <div class="flex items-start gap-6 home-reveal d8">
             <img class="size-14 shrink-0" src={about.visionMission.vision.icon} alt="" width="200" height="200" loading="lazy" decoding="async" />
             <div>
               <h3 class="mb-2 text-2xl font-bold text-[var(--link)]">{about.visionMission.vision.title}</h3>
               <p class="m-0 text-[15px] leading-relaxed text-[#8f91ab]">{about.visionMission.vision.caption}</p>
             </div>
           </div>
-          <div class="flex items-start gap-6 fade-up d6">
+          <div class="flex items-start gap-6 home-reveal d6">
             <img class="size-14 shrink-0" src={about.visionMission.mission.icon} alt="" width="200" height="200" loading="lazy" decoding="async" />
             <div>
               <h3 class="mb-2 text-2xl font-bold text-[var(--link)]">{about.visionMission.mission.title}</h3>
@@ -82,14 +82,14 @@ import { about } from '@/data/about';
     <section class="mb-24 px-6 md:px-12">
       <div class="mx-auto max-w-7xl">
         <div class="mb-16 text-center">
-          <p class="mb-6 fade-up d1"><span class="badge-outline uppercase">// {about.capability.badge}</span></p>
-          <h2 class="mx-auto max-w-3xl text-4xl font-bold leading-tight text-[var(--link)] fade-up d1" set:html={about.capability.title} />
+          <p class="mb-6 home-reveal d1"><span class="badge-outline uppercase">// {about.capability.badge}</span></p>
+          <h2 class="mx-auto max-w-3xl text-4xl font-bold leading-tight text-[var(--link)] home-reveal d1" set:html={about.capability.title} />
         </div>
 
         <div class="grid grid-cols-1 items-center gap-10 lg:grid-cols-3 lg:gap-8">
           <div class="grid gap-10">
             {about.capability.cards.slice(0, 3).map((card) => (
-              <div class="capability-card fade-up-left d3">
+              <div class="capability-card home-reveal home-reveal--left d3">
                 <img class="size-12 wobble-skew" src={card.icon} alt="" width="60" height="60" loading="lazy" decoding="async" />
                 <h3 class="mb-2 mt-4 text-lg font-bold text-[var(--link)]">{card.title}</h3>
                 <p class="m-0 text-[15px] leading-relaxed text-[#8f91ab]">{card.caption}</p>
@@ -98,12 +98,12 @@ import { about } from '@/data/about';
           </div>
 
           <div class="order-first flex items-center justify-center lg:order-none">
-            <img class="fade-up-slide mx-auto w-full max-w-xs object-contain" src={about.capability.image} alt={about.capability.imageAlt} width="688" height="713" loading="lazy" decoding="async" />
+            <img class="home-reveal d1 mx-auto w-full max-w-xs object-contain" src={about.capability.image} alt={about.capability.imageAlt} width="688" height="713" loading="lazy" decoding="async" />
           </div>
 
           <div class="grid gap-10">
             {about.capability.cards.slice(3).map((card) => (
-              <div class="capability-card fade-up-left d3">
+              <div class="capability-card home-reveal home-reveal--left d3">
                 <img class="size-12 wobble-skew" src={card.icon} alt="" width="60" height="60" loading="lazy" decoding="async" />
                 <h3 class="mb-2 mt-4 text-lg font-bold text-[var(--link)]">{card.title}</h3>
                 <p class="m-0 text-[15px] leading-relaxed text-[#8f91ab]">{card.caption}</p>
@@ -176,16 +176,4 @@ import { about } from '@/data/about';
     100% { transform: skew(0); }
   }
   .wobble-skew:hover { animation: wobble-skew 1s ease-in-out; }
-
-  @keyframes fade-up-left {
-    from { opacity: 0; transform: translateX(-2rem); }
-    to { opacity: 1; transform: translateX(0); }
-  }
-  .fade-up-left { animation: fade-up-left 2s ease both; }
-
-  @keyframes fade-up-slide {
-    from { opacity: 0; transform: translateY(4rem); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  .fade-up-slide { animation: fade-up-slide 2s ease both; }
 </style>

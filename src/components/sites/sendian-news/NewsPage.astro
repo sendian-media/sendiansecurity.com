@@ -20,7 +20,7 @@ const formatDate = (date: string) => new Intl.DateTimeFormat('en', {dateStyle: '
   {articles.length ? (
     <div class="news-grid">
       {articles.map((article, index) => (
-        <article class:list={['news-card fade-up', `news-card--${index + 1}`]}>
+        <article class:list={['news-card home-reveal', `news-card--${index + 1}`]}>
           <div class="relative mb-6 aspect-video overflow-hidden rounded-[10px]">
             <img class="size-full object-cover transition duration-500 group-hover:scale-105 motion-reduce:transition-none" src={article.featuredImage.url} alt={article.featuredImage.alt} width="1024" height="576" loading="lazy" decoding="async" />
             <p class="absolute right-4 top-4 m-0 rounded-full border border-gray-200 bg-white/90 px-3 py-1 text-xs font-medium backdrop-blur-sm">{article.category}</p>
@@ -47,15 +47,8 @@ const formatDate = (date: string) => new Intl.DateTimeFormat('en', {dateStyle: '
     :global(.news-page-wide) { max-width: 90rem; }
     .news-card h3 { font-size: 1.375rem; }
   }
-  @media (prefers-reduced-motion: no-preference) {
-    .fade-up { animation: news-fade-up 2s ease both; }
-    .news-card--2 { animation-delay: 200ms; }
-    .news-card--3 { animation-delay: 300ms; }
-    .news-card--4 { animation-delay: 400ms; }
-    .news-card--5 { animation-delay: 500ms; }
-  }
-  @keyframes news-fade-up {
-    from { opacity: 0; transform: translateY(3rem); }
-    to { opacity: 1; transform: translateY(0); }
-  }
+  .news-card--2 { --reveal-delay: 140ms; }
+  .news-card--3 { --reveal-delay: 280ms; }
+  .news-card--4 { --reveal-delay: 420ms; }
+  .news-card--5 { --reveal-delay: 420ms; }
 </style>

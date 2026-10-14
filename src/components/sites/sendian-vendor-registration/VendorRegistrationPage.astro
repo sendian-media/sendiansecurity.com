@@ -1,6 +1,6 @@
 <section class="vendor-registration" aria-labelledby="vendor-registration-title">
   <div class="vendor-registration__grid">
-    <div class="vendor-registration__introduction">
+    <div class="vendor-registration__introduction home-reveal d1">
       <p class="vendor-registration__eyebrow">// Partner with SISS</p>
       <h2 id="vendor-registration-title">Become A Partner. <span>Join Our Vendor Network!</span></h2>
       <p class="vendor-registration__summary">We are looking for qualified vendors, suppliers, and contractors to join our network. Register today to explore partnership opportunities with Qatar&apos;s leading MOI-approved security solutions provider.</p>
@@ -16,7 +16,7 @@
       </section>
     </div>
 
-    <section class="vendor-registration__card" aria-labelledby="registration-form-title">
+    <section class="vendor-registration__card home-reveal d3" aria-labelledby="registration-form-title">
       <p class="vendor-registration__eyebrow">// Vendor Registration</p>
       <h2 id="registration-form-title">Register <span>Your</span> Company</h2>
       <p class="vendor-registration__notice" id="registration-notice" role="status">Local preview only. Registration cannot be submitted.</p>
@@ -115,7 +115,6 @@
   .vendor-registration button:focus-visible, .vendor-registration__acceptance:focus-within { outline: 3px solid var(--focus); outline-offset: 3px; }
   .sr-only { clip: rect(0, 0, 0, 0); height: 1px; margin: -1px; overflow: hidden; position: absolute; white-space: nowrap; width: 1px; }
 
-  @media (prefers-reduced-motion: no-preference) { .vendor-registration__introduction, .vendor-registration__card { animation: vendor-fade-up 900ms ease both; } .vendor-registration__card { animation-delay: 150ms; } @keyframes vendor-fade-up { from { opacity: 0; transform: translateY(2rem); } to { opacity: 1; transform: translateY(0); } } }
   @media (max-width: 63.9375rem) { .vendor-registration { margin-block: 4.5rem 6rem; } .vendor-registration__grid { grid-template-columns: minmax(0, 1fr); } .vendor-registration__introduction { padding: 0; } .vendor-registration__summary { margin-top: 2rem; } .vendor-registration__card { max-width: 34rem; } }
   @media (max-width: 47.9375rem) { .vendor-registration { margin-block: 3.5rem 5rem; padding-inline: .5rem; } .vendor-registration__grid { gap: 2.5rem; } .vendor-registration h2 { font-size: 1.6rem; max-width: none; } .vendor-registration__summary { font-size: 1rem; margin: 2rem 0; } .vendor-registration__card { border-radius: 1.4rem; padding: 1.5rem; } .vendor-registration__fields { grid-template-columns: 1fr; } .vendor-registration__field--full, .vendor-registration__acceptance { grid-column: auto; } .vendor-registration input:not([type='checkbox']), .vendor-registration select { font-size: 1rem; } }
 </style>

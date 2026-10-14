@@ -3,9 +3,23 @@
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const reveal = (element: Element) => element.classList.add('is-revealed');
 
+  const revealVisible = () => {
+    document.querySelectorAll(revealSelector).forEach((element) => {
+      if (element.classList.contains('is-revealed')) return;
+      // Hero entrances can start beyond the clipped viewport and must not wait for intersection.
+      if (element.closest('.home-hero')) {
+        reveal(element);
+        return;
+      }
+      const bounds = element.getBoundingClientRect();
+      if (bounds.top < window.innerHeight && bounds.bottom > 0) reveal(element);
+    });
+  };
+
   if (reducedMotion || !('IntersectionObserver' in window)) {
     document.querySelectorAll(revealSelector).forEach(reveal);
   } else {
+    revealVisible();
     document.documentElement.dataset.homeMotion = 'ready';
     const observer = new IntersectionObserver(
       (entries) => {
@@ -15,64 +29,96 @@
           observer.unobserve(entry.target);
         });
       },
-      { rootMargin: '0px 0px -10%', threshold: 0.12 },
+      { rootMargin: '0px 0px 120px', threshold: 0 },
     );
 
-    document.querySelectorAll(revealSelector).forEach((element) => observer.observe(element));
+    document.querySelectorAll(revealSelector).forEach((element) => {
+      if (!element.classList.contains('is-revealed')) observer.observe(element);
+    });
   }
 </script>
 
 <style is:global>
   @media (prefers-reduced-motion: no-preference) {
+    /* Keep pending elements in their final layout position for accurate intersection checks. */
     html[data-home-motion='ready'] .home-reveal:not(.is-revealed) {
       opacity: 0;
-      transform: translate3d(0, 2rem, 0);
-    }
-
-    html[data-home-motion='ready'] .home-reveal.home-reveal--media:not(.is-revealed) {
-      opacity: 0;
-      transform: translate3d(0, 1.5rem, 0) scale(.97);
-    }
-
-    html[data-home-motion='ready'] .home-reveal.home-reveal--right:not(.is-revealed) {
-      opacity: 0;
-      transform: translate3d(2rem, 0, 0);
     }
 
     html[data-home-motion='ready'] .home-reveal.is-revealed {
-      animation: home-fade-up 700ms cubic-bezier(.2, .65, .3, 1) var(--reveal-delay, 0ms) both;
+      animation: home-fade-up 1100ms cubic-bezier(.22, .8, .2, 1) min(var(--reveal-delay, 0ms), 200ms) both;
+    }
+
+    /* Match the source hero: slow fade-up content with deliberate 600/800ms staging. */
+    html[data-home-motion='ready'] .home-hero .home-reveal.is-revealed {
+      animation-duration: 2s;
+      animation-timing-function: ease;
+      animation-delay: var(--reveal-delay, 0ms);
+    }
+
+    html[data-home-motion='ready'] .home-hero .home-reveal.home-reveal--right.is-revealed {
+      animation-duration: 1.6s;
+      animation-timing-function: cubic-bezier(.16, 1, .3, 1);
     }
 
     html[data-home-motion='ready'] .home-reveal.home-reveal--media.is-revealed {
       animation-name: home-media-reveal;
     }
 
+    html[data-home-motion='ready'] .home-reveal.home-reveal--left.is-revealed {
+      animation-name: home-fade-right;
+    }
+
     html[data-home-motion='ready'] .home-reveal.home-reveal--right.is-revealed {
       animation-name: home-fade-right;
     }
+
+    html[data-home-motion='ready'] .home-hero .home-reveal.home-reveal--right.is-revealed {
+      animation-name: home-hero-card-reveal;
+    }
+
+    html[data-home-motion='ready'] .home-hero .hero-copy .home-reveal.is-revealed {
+      animation-name: home-hero-copy-reveal;
+    }
   }
 
-  .home-reveal.d1 { --reveal-delay: 100ms; }
-  .home-reveal.d2 { --reveal-delay: 200ms; }
-  .home-reveal.d3 { --reveal-delay: 300ms; }
-  .home-reveal.d4 { --reveal-delay: 400ms; }
-  .home-reveal.d5 { --reveal-delay: 500ms; }
-  .home-reveal.d6 { --reveal-delay: 600ms; }
-  .home-reveal.d7 { --reveal-delay: 700ms; }
-  .home-reveal.d8 { --reveal-delay: 800ms; }
+  .home-reveal.d1 { --reveal-delay: 140ms; }
+  .home-reveal.d2 { --reveal-delay: 280ms; }
+  .home-reveal.d3 { --reveal-delay: 420ms; }
+  .home-reveal.d4 { --reveal-delay: 560ms; }
+  .home-reveal.d5 { --reveal-delay: 700ms; }
+  .home-reveal.d6 { --reveal-delay: 840ms; }
+  .home-reveal.d7 { --reveal-delay: 980ms; }
+  .home-reveal.d8 { --reveal-delay: 1120ms; }
+
+  .home-hero .home-reveal.d1 { --reveal-delay: 0ms; }
+  .home-hero .home-reveal.d3 { --reveal-delay: 600ms; }
+  .home-hero .home-reveal.d4 { --reveal-delay: 800ms; }
+  .home-hero .home-reveal.d5 { --reveal-delay: 500ms; }
+  .home-hero .home-reveal.d6 { --reveal-delay: 700ms; }
 
   @keyframes home-fade-up {
-    from { opacity: 0; transform: translate3d(0, 2rem, 0); }
+    from { opacity: 0; transform: translate3d(0, 7rem, 0); }
     to { opacity: 1; transform: translate3d(0, 0, 0); }
   }
 
   @keyframes home-media-reveal {
-    from { opacity: 0; transform: translate3d(0, 1.5rem, 0) scale(.97); }
+    from { opacity: 0; transform: translate3d(0, 7rem, 0) scale(.97); }
     to { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
   }
 
   @keyframes home-fade-right {
     from { opacity: 0; transform: translate3d(2rem, 0, 0); }
+    to { opacity: 1; transform: translate3d(0, 0, 0); }
+  }
+
+  @keyframes home-hero-card-reveal {
+    from { opacity: 0; transform: translate3d(calc(100% + 8rem), 0, 0); }
+    to { opacity: 1; transform: translate3d(0, 0, 0); }
+  }
+
+  @keyframes home-hero-copy-reveal {
+    from { opacity: 0; transform: translate3d(0, 45svh, 0); }
     to { opacity: 1; transform: translate3d(0, 0, 0); }
   }
 </style>
