@@ -23,88 +23,566 @@ const { service } = Astro.props;
     { name: service.heroTitle, path: Astro.url.pathname },
   ]}
 >
-  <section class="detail-hero relative flex h-[350px] w-full items-center overflow-hidden rounded-b-[30px] shadow-lg md:h-[400px]" aria-label={`${service.heroTitle} banner`}>
-    <div class="relative z-10 mx-auto w-full max-w-7xl px-6 md:px-20 fade-up">
-      <h1 class="mb-4 text-5xl font-bold leading-tight text-white md:text-[68px]">{service.heroTitle}</h1>
+  <section class="page-header" aria-label={`${service.heroTitle} banner`}>
+    <div class="page-header-inner">
+      <h1 class="page-header-title">{service.heroTitle}</h1>
     </div>
+    <nav class="page-breadcrumb" aria-label="Breadcrumb">
+      <div class="page-breadcrumb-inner">
+        <a href="/">Home</a>
+        <span class="page-breadcrumb-sep" aria-hidden="true"> / </span>
+        <a href="/services">Services</a>
+        <span class="page-breadcrumb-sep" aria-hidden="true"> / </span>
+        <span aria-current="page">{service.heroTitle}</span>
+      </div>
+    </nav>
   </section>
 
-  <nav class="mb-20 w-full bg-[#F9FAFB] px-6 py-4 md:px-20" aria-label="Breadcrumb">
-    <div class="mx-auto max-w-7xl text-sm">
-      <a class="font-medium text-[#ef3e4a] hover:underline" href="/">Home</a>
-      <span class="mx-2 text-gray-400" aria-hidden="true">/</span>
-      <a class="font-medium text-[#ef3e4a] hover:underline" href="/services">Services</a>
-      <span class="mx-2 text-gray-400" aria-hidden="true">/</span>
-      <span class="text-gray-700" aria-current="page">{service.heroTitle}</span>
-    </div>
-  </nav>
+  <section class="svc-intro">
+    <h2 class="svc-intro-heading svc-reveal" style="--svc-delay: 200ms">{service.introHeading}<span class="pgs-text-gradient">&nbsp;{service.introHighlight}</span></h2>
+    {service.introParagraphs.map((paragraph) => <p class="svc-reveal" style="--svc-delay: 300ms">{paragraph}</p>)}
+    <hr class="pgs-hr" />
+  </section>
 
-  <div class="mx-auto w-full max-w-7xl flex-grow px-6 py-16 md:px-8">
-    <!-- Intro -->
-    <section class="mb-24 fade-up d1">
-      <h2 class="mb-6 text-3xl font-bold md:text-[36px]">
-        {service.introHeading} <span class="text-[#4b7cd3]">{service.introHighlight}</span>
-      </h2>
-      <div class="max-w-4xl space-y-6 text-lg leading-relaxed text-gray-500">
-        {service.introParagraphs.map((paragraph) => <p>{paragraph}</p>)}
+  {service.categories.map((category) => (
+    <section class="svc-cat">
+      <div class="svc-cat-left svc-reveal" style="--svc-delay: 200ms">
+        <div class="svc-cat-sticky">
+          <div class="svc-eyebrow"><span class="pgs-text-gradient">{'// Securty Services  '}</span></div>
+          <h3 class="svc-cat-title pgs-text-gradient">{category.name}</h3>
+          <p class="svc-cat-blurb">{category.blurb}</p>
+          <hr class="pgs-hr" />
+        </div>
       </div>
-    </section>
-
-    <!-- Categories with accordions -->
-    <div class="space-y-32">
-      {service.categories.map((category) => (
-        <section class="fade-up d2 grid grid-cols-1 items-start gap-12 lg:grid-cols-12">
-          <div class="lg:sticky lg:top-24 lg:col-span-4">
-            <h3 class="pgs-heading mb-4 text-[32px] font-bold leading-tight md:text-[48px]">
-              <span class="pgs-text-gradient">{category.name}</span>
-            </h3>
-            <p class="text-sm leading-relaxed text-gray-500">{category.blurb}</p>
-          </div>
-
-          <div class="space-y-4 lg:col-span-8">
-            {category.subServices.map((subService, index) => (
-              <details class="detail-item group overflow-hidden rounded-[10px] border border-gray-100 bg-gray-50 shadow-sm" open={index === 0}>
-                <summary class="flex cursor-pointer list-none items-center justify-between p-5 text-left text-lg font-semibold text-gray-800 transition-colors hover:bg-gray-100 group-open:bg-[#4b7cd3] group-open:text-white">
-                  <span>{subService.title}</span>
-                  <ChevronIcon class="h-4 w-4 shrink-0 text-gray-500 transition-transform group-open:rotate-180 group-open:text-white" />
-                </summary>
-                <div class="flex flex-col items-start gap-6 border-t border-gray-100 bg-white p-6 md:flex-row">
-                  <p class="flex-1 text-sm leading-relaxed text-gray-600">{subService.description}</p>
-                  <div class="w-full shrink-0 md:w-48">
-                    <img class="h-auto w-full rounded-lg object-cover" src={subService.image} alt={subService.alt} width="640" height="360" loading="lazy" decoding="async" />
+      <div class="svc-cat-right svc-reveal" style="--svc-delay: 400ms">
+        {category.subServices.map((subService, index) => (
+          <details class="pgs-acc" open={index === 0}>
+            <summary class="pgs-acc-summary">
+              <span class="pgs-acc-title">{subService.title}</span>
+              <ChevronIcon class="pgs-acc-chevron" />
+            </summary>
+            <div class="pgs-acc-body">
+              <div class="pgs-acc-body-inner">
+              {subService.image ? (
+                <div class="siss-two-column">
+                  <div class="siss-text">
+                    <p>{subService.description}</p>
+                  </div>
+                  <div class="siss-image">
+                    <img src={subService.image} alt={subService.alt} width="300" height="169" loading="lazy" decoding="async" />
                   </div>
                 </div>
-              </details>
-            ))}
-          </div>
-        </section>
-      ))}
-    </div>
-  </div>
+              ) : (
+                <p class="pgs-acc-text">{subService.description}</p>
+              )}
+              </div>
+            </div>
+          </details>
+        ))}
+      </div>
+    </section>
+  ))}
 
 </BaseLayout>
 
+<script>
+  // Accordion mirror of the live Elementor behaviour: jQuery slideDown/slideUp
+  // (~400ms measured on the source page) + one-open-per-category-group, accompanied
+  // by an immediate title gradient switch and chevron rotation.
+  const SLIDE_MS = 400;
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Slides the padding-free .pgs-acc-body wrapper (mirrors the jQuery slideUp/down
+  // the live page uses, ~400ms measured). Each details gets a per-item cancel
+  // token so rapid clicks never leave a half-finished state.
+  const slide = (item: HTMLDetailsElement, body: HTMLElement, from: number, to: number, done: () => void) => {
+    if (reduceMotion) {
+      done();
+      return;
+    }
+    item.dataset.slideId = String((Number(item.dataset.slideId) || 0) + 1);
+    const id = item.dataset.slideId;
+    body.style.overflow = 'hidden';
+    body.style.height = `${from}px`;
+    body.offsetHeight; // force reflow so the start height is committed before transitioning
+    body.style.transition = `height ${SLIDE_MS}ms ease`;
+    body.style.height = `${to}px`;
+    window.setTimeout(() => {
+      if (item.dataset.slideId !== id) return; // superseded by a newer interaction
+      body.style.removeProperty('height');
+      body.style.removeProperty('transition');
+      body.style.removeProperty('overflow');
+      done();
+    }, SLIDE_MS);
+  };
+
+  document.querySelectorAll<HTMLElement>('.svc-cat-right').forEach((group) => {
+    const items = Array.from(group.querySelectorAll<HTMLDetailsElement>('details.pgs-acc'));
+    items.forEach((item) => {
+      const body = item.querySelector<HTMLElement>('.pgs-acc-body');
+      const summary = item.querySelector<HTMLElement>('summary');
+      if (!body || !summary) return;
+
+      summary.addEventListener('click', (event) => {
+        event.preventDefault(); // take over the instant toggle so the slide can run
+        const opening = !item.open;
+
+        // Mirror accordion exclusivity: a newly-opened item closes its open sibling.
+        const openSibling = items.find((other) => other !== item && other.open);
+        if (opening && openSibling) {
+          const siblingBody = openSibling.querySelector<HTMLElement>('.pgs-acc-body')!;
+          openSibling.classList.add('is-closing');
+          slide(openSibling, siblingBody, siblingBody.offsetHeight, 0, () => {
+            openSibling.open = false;
+            openSibling.classList.remove('is-closing');
+          });
+        }
+
+        if (opening) {
+          item.open = true;
+          slide(item, body, 0, body.scrollHeight, () => {});
+        } else {
+          item.classList.add('is-closing');
+          slide(item, body, body.offsetHeight, 0, () => {
+            item.open = false;
+            item.classList.remove('is-closing');
+          });
+        }
+      });
+    });
+  });
+
+  // Entrance motion: mirrors the live Elementor scroll choreography — each block
+  // fades up from 100% once it enters the viewport, with the measured stagger
+  // (intro heading 200ms / paragraphs 300ms / category left 200ms / accordions 400ms).
+  const revealSelector = '.svc-reveal';
+  const reveal = (element: Element) => element.classList.add('svc-reveal--in');
+
+  if (reduceMotion || !('IntersectionObserver' in window)) {
+    document.querySelectorAll(revealSelector).forEach(reveal);
+  } else {
+    document.documentElement.dataset.svcMotion = 'ready';
+    // Blocks already inside the viewport animate on load (Elementor does the same).
+    document.querySelectorAll(revealSelector).forEach((element) => {
+      const bounds = element.getBoundingClientRect();
+      if (bounds.top < window.innerHeight && bounds.bottom > 0) reveal(element);
+    });
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          reveal(entry.target);
+          observer.unobserve(entry.target);
+        });
+      },
+      { rootMargin: '0px 0px -10%', threshold: 0.12 },
+    );
+    document.querySelectorAll(revealSelector).forEach((element) => {
+      if (!element.classList.contains('svc-reveal--in')) observer.observe(element);
+    });
+  }
+</script>
+
 <style is:global>
-  .pgs-heading { font-family: 'Wix Madefor Display', sans-serif; text-transform: capitalize; }
+  /* ================= Entrance motion (mirrors live Elementor) =================
+     Live: widgets get .elementor-invisible, then `.animated fadeInUp` when they
+     enter the viewport; animate.css keyframes fadeInUp run `from translate3d(0,100%,0)`
+     at Elementor's `.animated` default duration of 1.25s; per-widget delays from
+     data-settings (intro heading 200ms / paragraphs 300ms / category cols 200 & 400ms). */
+  /* Hidden state gated on a script-set marker: without JS everything renders statically. */
+  @media (prefers-reduced-motion: no-preference) {
+    html[data-svc-motion='ready'] .svc-reveal:not(.svc-reveal--in) {
+      opacity: 0;
+      transform: translate3d(0, 100%, 0);
+    }
+    html[data-svc-motion='ready'] .svc-reveal.svc-reveal--in {
+      animation: svc-fade-in-up 1.25s ease var(--svc-delay, 0ms) both;
+    }
+  }
+  @keyframes svc-fade-in-up {
+    from {
+      opacity: 0;
+      transform: translate3d(0, 100%, 0);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  /* Shared gradient text token (per live computed values) */
   .pgs-text-gradient {
-    background: linear-gradient(135deg, #2a3f5f 0%, #3e4a5c 50%, #0078d4 100%);
+    background: linear-gradient(216deg, #1c2e4a 15%, #427dd5 72%);
     background-clip: text;
     -webkit-background-clip: text;
     color: transparent;
   }
-  .detail-hero {
-    background-color: #2c3a55;
-    background-image:
-      linear-gradient(rgba(26 37 71 / 0.78), rgba(26 37 71 / 0.78)),
-      url('/images/services/services-banner.jpg');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
+
+  .pgs-hr {
+    height: 1px;
+    border: 0;
+    background-color: #e9eaf1;
+    margin: 0;
   }
 
-  @media (min-width: 96rem) {
-    .detail-hero ~ .mx-auto.w-full.max-w-7xl { max-width: 90rem; }
-    .detail-hero ~ .mx-auto.w-full.max-w-7xl > section h2 { font-size: 2.5rem; }
-    .detail-hero ~ .mx-auto.w-full.max-w-7xl .pgs-heading { font-size: 3.25rem; }
+  /* ---- Page-header band ---- */
+  .page-header {
+    margin: 0 30px;
+    border-radius: 20px;
+    overflow: hidden;
+    height: 480px;
+    display: flex;
+    flex-direction: column;
+    background-color: #1a2547;
+    background-image:
+      linear-gradient(rgba(26, 37, 71, 0.86), rgba(26, 37, 71, 0.86)),
+      url('/images/services/services-banner.jpg');
+    background-size: cover;
+    background-position: left top;
+    background-repeat: no-repeat;
+  }
+  .page-header-inner {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    max-width: 1430px;
+    margin: 0 auto;
+    padding: 0 15px;
+  }
+  .page-header-title {
+    color: #ffffff;
+    font-family: 'Wix Madefor Display', ui-sans-serif, system-ui, sans-serif;
+    font-weight: 700;
+    font-size: 68px;
+    line-height: 78px;
+  }
+  .page-breadcrumb {
+    flex: none;
+    height: 55px;
+    background-color: #f7f7fa;
+  }
+  .page-breadcrumb-inner {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    max-width: 1430px;
+    margin: 0 auto;
+    padding: 0 15px;
+    font-family: 'DM Sans', ui-sans-serif, system-ui, sans-serif;
+    font-size: 15px;
+  }
+  .page-breadcrumb a {
+    color: #eb3437;
+  }
+  .page-breadcrumb a:hover {
+    text-decoration: underline;
+  }
+  .page-breadcrumb-sep {
+    margin: 0 10px;
+    color: #b6bac6;
+  }
+  .page-breadcrumb [aria-current='page'] {
+    color: #2c3a55;
+  }
+
+  /* ---- Intro ---- */
+  .svc-intro {
+    max-width: 1430px;
+    margin: 0 auto;
+    padding: 100px 15px 0;
+  }
+  .svc-intro-heading {
+    font-family: 'Wix Madefor Display', ui-sans-serif, system-ui, sans-serif;
+    font-weight: 700;
+    text-transform: capitalize;
+    font-size: 52px;
+    line-height: 62px;
+    color: #1a2547;
+    margin-bottom: 20px;
+  }
+  .svc-intro p {
+    font-family: 'DM Sans', ui-sans-serif, system-ui, sans-serif;
+    font-size: 18px;
+    line-height: 30px;
+    color: #8f91ab;
+    margin: 0;
+  }
+  .svc-intro p + p {
+    margin-top: 10px;
+  }
+  .svc-intro .pgs-hr {
+    margin-top: 40px;
+  }
+
+  /* ---- Category rows ---- */
+  .svc-cat {
+    display: flex;
+    max-width: 1430px;
+    margin: 0 auto;
+    padding: 80px 15px;
+  }
+  .svc-cat-left {
+    width: 41.666%;
+    padding: 0 65px 0 15px;
+  }
+  .svc-cat-sticky {
+    position: sticky;
+    top: 0;
+    z-index: 1020;
+  }
+  .svc-cat-right {
+    width: 58.333%;
+    padding: 0 15px;
+  }
+  .svc-eyebrow {
+    display: inline-block;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 9999px;
+    background-color: #ffffff;
+    padding: 7px 19px;
+    margin-bottom: 20px;
+    font-family: 'Wix Madefor Display', ui-sans-serif, system-ui, sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+    letter-spacing: 2.3px;
+    text-transform: uppercase;
+  }
+  .svc-cat-title {
+    padding-top: 30px;
+    margin-bottom: 16px;
+    font-family: 'Wix Madefor Display', ui-sans-serif, system-ui, sans-serif;
+    font-weight: 700;
+    text-transform: capitalize;
+    font-size: 48px;
+    line-height: 1.4em;
+  }
+  .svc-cat-blurb {
+    font-family: 'DM Sans', ui-sans-serif, system-ui, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    /* Live blurbs render via .elementor-widget-text-editor -> color: var(--e-global-color-text) = #8F91AB
+       (kit-13547 in captured CSS, css/3e9b5c41a4fff169323f86e87aaced3f.css). */
+    color: #8f91ab;
+    padding-left: 10px;
+  }
+  .svc-cat-left .pgs-hr {
+    margin-top: 30px;
+  }
+
+  /* ---- Accordion ---- */
+  .pgs-acc {
+    border-radius: 20px;
+    overflow: hidden;
+    margin-bottom: 15px;
+  }
+  /* While the close slide runs the item is technically still [open]; keep its
+     summary in the closed look until the slide finishes (matches live: the row
+     reverts as the panel slides up). */
+  .pgs-acc.is-closing > .pgs-acc-summary {
+    background-color: #f0f0f3;
+    background-image: none;
+    color: #364556;
+  }
+  .pgs-acc.is-closing > .pgs-acc-summary .pgs-acc-chevron {
+    color: #364556;
+    transform: none;
+  }
+  .pgs-acc-summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    list-style: none;
+    cursor: pointer;
+    padding: 25px 30px;
+    border-radius: 20px;
+    background-color: #f0f0f3;
+    color: #364556;
+    font-family: 'Wix Madefor Display', ui-sans-serif, system-ui, sans-serif;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 30px;
+    text-transform: capitalize;
+  }
+  .pgs-acc-summary::-webkit-details-marker {
+    display: none;
+  }
+  .pgs-acc-chevron {
+    width: 20px;
+    height: 20px;
+    flex: none;
+    color: #364556;
+    transition: transform 0.3s ease;
+  }
+  .pgs-acc[open] > .pgs-acc-summary {
+    background-image: linear-gradient(90deg, #3e4a5c 0%, #427dd5 100%);
+    color: #ffffff;
+  }
+  .pgs-acc[open] > .pgs-acc-summary .pgs-acc-chevron {
+    color: #ffffff;
+    transform: rotate(180deg);
+  }
+  /* .pgs-acc-body is the slide wrapper (padding-free so height:0 fully collapses
+     during the slide, mirroring the jQuery slideUp live behavior). The actual
+     padding/typography lives on the inner block. */
+  .pgs-acc-body {
+    overflow: hidden;
+  }
+  .pgs-acc-body-inner {
+    padding: 30px 20px 10px;
+    font-family: 'DM Sans', ui-sans-serif, system-ui, sans-serif;
+    font-size: 18px;
+    line-height: 30px;
+    color: #8f91ab;
+  }
+  .pgs-acc-text {
+    margin: 0;
+  }
+
+  /* Image-bearing item content */
+  .siss-two-column {
+    display: flex;
+    align-items: flex-start;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  .siss-text {
+    flex: 1 1 300px;
+    min-width: 0;
+  }
+  .siss-text p {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.7;
+    color: #333333;
+  }
+  .siss-image {
+    flex: 0 0 300px;
+    text-align: right;
+    order: 2;
+  }
+  .siss-image img {
+    width: 300px;
+    height: auto;
+    border-radius: 8px;
+    object-fit: cover;
+    display: block;
+    margin-left: auto;
+  }
+
+  /* ---- Breakpoints ---- */
+  @media (max-width: 87.5em) {
+    .page-header-title {
+      font-size: 48px;
+      line-height: 58px;
+    }
+    .svc-intro {
+      padding-top: 80px;
+    }
+    .svc-intro-heading {
+      font-size: 48px;
+      line-height: 58px;
+    }
+  }
+
+  @media (max-width: 64em) {
+    .page-header {
+      height: 300px;
+    }
+    .page-header-title {
+      font-size: 42px;
+      line-height: 52px;
+    }
+    .svc-intro {
+      padding-top: 70px;
+    }
+    .svc-intro-heading {
+      font-size: 40px;
+      line-height: 50px;
+    }
+    .svc-cat {
+      display: block;
+      padding-block: 70px;
+    }
+    .svc-cat-left,
+    .svc-cat-right {
+      width: 100%;
+    }
+    .svc-cat-left {
+      padding: 0 0 30px;
+    }
+    .svc-cat-sticky {
+      position: static;
+    }
+    .svc-eyebrow {
+      font-size: 14px;
+      line-height: 17px;
+      letter-spacing: 1px;
+    }
+    .svc-cat-title {
+      font-size: 40px;
+    }
+    .svc-cat-blurb {
+      padding-left: 50px;
+    }
+    .pgs-acc-body {
+      font-size: 16px;
+      line-height: 28px;
+    }
+  }
+
+  @media (max-width: 47.99em) {
+    .page-header-title {
+      font-size: 36px;
+      line-height: 46px;
+    }
+    .svc-intro {
+      padding-top: 70px;
+    }
+    .svc-intro-heading {
+      font-size: 28px;
+      line-height: 38px;
+    }
+    .svc-intro p {
+      font-size: 16px;
+      line-height: 28px;
+    }
+    .svc-cat {
+      padding-block: 60px;
+    }
+    .svc-cat-title {
+      font-size: 34px;
+    }
+    .svc-cat-blurb {
+      padding-left: 0;
+    }
+    .pgs-acc-summary {
+      font-size: 20px;
+      line-height: 28px;
+      padding: 20px 20px;
+    }
+    .pgs-acc-body-inner {
+      padding: 20px 20px 0 15px;
+    }
+    .siss-two-column {
+      display: flex;
+      flex-direction: column;
+    }
+    .siss-text {
+      flex: none;
+      width: 100%;
+      order: 1;
+    }
+    .siss-image {
+      order: -1;
+      flex: none;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .siss-image img {
+      margin-left: auto;
+      margin-right: auto;
+    }
   }
 </style>

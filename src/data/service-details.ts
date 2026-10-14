@@ -1,8 +1,8 @@
 export interface SubService {
   title: string;
   description: string;
-  image: string;
-  alt: string;
+  image?: string;
+  alt?: string;
 }
 
 export interface ServiceCategory {
@@ -41,42 +41,42 @@ export const serviceDetails: ServiceDetail[] = [
             description:
               'Expert security system design services that meet Ministry of Interior Safety and Security Department standards. We handle complete documentation, technical specifications, and approval coordination to ensure your surveillance system complies with Qatar’s regulatory requirements.',
             image: '/images/services/detail-siss-service.jpeg',
-            alt: 'MOI-SSD security system design and approval',
+            alt: 'MOI-SSD Design & Approval',
           },
           {
             title: 'MOI-SSD Inspection Approval and Certification',
             description:
               'Comprehensive inspection and certification services ensuring your installed systems meet all MOI-SSD requirements. We coordinate site inspections, conduct pre-testing, and manage the certification process to minimize delays.',
             image: '/images/services/detail-inspection.jpeg',
-            alt: 'MOI-SSD inspection approval and certification',
+            alt: 'Inspection service',
           },
           {
             title: 'IP Cameras',
             description:
               'High-definition network cameras with advanced surveillance capabilities. Our solutions include dome, bullet, PTZ, and fisheye cameras with night vision, wide dynamic range, and weather-resistant housings.',
             image: '/images/services/detail-ip-camera.jpeg',
-            alt: 'High-definition IP surveillance cameras',
+            alt: 'High Definition IP Cameras',
           },
           {
             title: 'Video Management System',
             description:
               'Centralized platforms for monitoring and managing all cameras from a single interface. Features include intelligent analytics, automated alerts, multi-site management, and support for leading platforms like Milestone and Genetec.',
             image: '/images/services/detail-video-service.jpeg',
-            alt: 'Video management system platform',
+            alt: 'Video Management Systems',
           },
           {
             title: 'ANPR Systems',
             description:
               'Centralized platforms for monitoring and managing all cameras from a single interface. Features include intelligent analytics, automated alerts, multi-site management, and support for leading platforms like Milestone and Genetec.',
             image: '/images/services/detail-video-service.jpeg',
-            alt: 'ANPR systems (VMS screenshot)',
+            alt: 'Video Management Systems',
           },
           {
             title: 'Storage System',
             description:
               'Scalable storage infrastructure for continuous video recording with redundancy and reliability. Our solutions combine NVRs, SAN, and hybrid cloud storage to meet retention requirements while maintaining performance.',
             image: '/images/services/detail-data-center.jpeg',
-            alt: 'Surveillance video storage system',
+            alt: 'Scalable Storage Solutions',
           },
         ],
       },
@@ -90,35 +90,27 @@ export const serviceDetails: ServiceDetail[] = [
             description:
               'Comprehensive electronic access management using RFID cards, biometrics (fingerprint, facial recognition), PIN codes, and mobile credentials. Centralized software controls user permissions, access schedules, and real-time monitoring across multiple doors and locations with full audit trails for compliance.',
             image: '/images/services/detail-access-control.jpeg',
-            alt: 'Electronic access control systems',
+            alt: 'Electronic Access Control Systems',
           },
           {
             title: 'Automated Turnstiles',
             description:
               'High-traffic pedestrian access control with tripod, swing, or full-height turnstiles. These systems enforce one-person-per-credential entry, reduce tailgating, and integrate with access control platforms for seamless authentication in lobbies, transit hubs, and high-security sites.',
-            image: '/images/services/detail-access-control.jpeg',
-            alt: 'Automated turnstiles',
           },
           {
             title: 'Biometric Access Systems',
             description:
-              'Close-up of facial recognition system scanning person’s face at building entrance, futuristic biometric terminal with digital display, modern access control technology, professional security installation.',
-            image: '/images/services/detail-access-control.jpeg',
-            alt: 'Biometric access systems',
+              'Close-up of facial recognition system scanning person’s face at building entrance, futuristic biometric terminal with digital display, modern access control technology, professional security installation',
           },
           {
             title: 'Bollard System',
             description:
-              'Automated rising bollards providing robust vehicle access control and perimeter protection. These crash-rated barriers retract into the ground when authorized, preventing unauthorized vehicle entry while maintaining pedestrian flow — ideal for embassies, government buildings, and critical infrastructure.',
-            image: '/images/services/detail-access-control.jpeg',
-            alt: 'Automated bollard system',
+              'Automated rising bollards providing robust vehicle access control and perimeter protection. These crash-rated barriers retract into the ground when authorized, preventing unauthorized vehicle entry while maintaining pedestrian flowideal for embassies, government buildings, and critical infrastructure.',
           },
           {
             title: 'Road Blockers',
             description:
               'Heavy-duty hydraulic barriers engineered to stop unauthorized vehicles including high-speed impacts. Our road blockers integrate with access control systems for automated operation, providing maximum security for high-risk facilities, checkpoints, and restricted zones with rapid deployment and retraction.',
-            image: '/images/services/detail-access-control.jpeg',
-            alt: 'Hydraulic road blockers',
           },
         ],
       },
@@ -132,35 +124,27 @@ export const serviceDetails: ServiceDetail[] = [
             description:
               'Comprehensive network protection architecture including next-generation firewalls, intrusion detection/prevention systems (IDS/IPS), and secure network segmentation. Our solutions defend against unauthorized access, malware, and cyber attacks while maintaining network performance and enabling secure remote connectivity.',
             image: '/images/services/detail-cyber-security.jpeg',
-            alt: 'Network security design and implementation',
+            alt: 'Network Security Solutions',
           },
           {
             title: 'Data Security',
             description:
               'Advanced data protection strategies including encryption at rest and in transit, data loss prevention (DLP), and secure backup solutions. We safeguard sensitive information from unauthorized access, theft, and breaches while ensuring regulatory compliance and business continuity through robust data governance frameworks.',
-            image: '/images/services/detail-cyber-security.jpeg',
-            alt: 'Data security protection',
           },
           {
             title: 'Email Security',
             description:
-              'Multi-layered email protection against phishing, malware, ransomware, and business email compromise (BEC). Our solutions include advanced threat detection, spam filtering, email encryption, and security awareness training to protect your organization from email-based cyber attacks — the most common attack vector.',
-            image: '/images/services/detail-cyber-security.jpeg',
-            alt: 'Email security protection',
+              'Multi-layered email protection against phishing, malware, ransomware, and business email compromise (BEC). Our solutions include advanced threat detection, spam filtering, email encryption, and security awareness training to protect your organization from email-based cyber attacks—the most common attack vector.',
           },
           {
             title: 'Mobile and End Point Security',
             description:
               'Comprehensive endpoint protection for laptops, desktops, mobile devices, and IoT endpoints. Our solutions include antivirus, anti-malware, mobile device management (MDM), endpoint detection and response (EDR), and application whitelisting to secure all devices accessing your network from modern threats.',
-            image: '/images/services/detail-cyber-security.jpeg',
-            alt: 'Mobile and endpoint security',
           },
           {
             title: 'Governance & Risk Compliance',
             description:
               'Strategic cybersecurity governance frameworks ensuring regulatory compliance and risk management. We provide security policy development, compliance audits (ISO 27001, NIST, PCI-DSS), risk assessments, and ongoing security posture monitoring to align your security program with business objectives and regulatory requirements.',
-            image: '/images/services/detail-cyber-security.jpeg',
-            alt: 'Governance and risk compliance',
           },
         ],
       },
