@@ -124,7 +124,7 @@ body { margin: 0; }
     font-size: clamp(2.5rem, 2.7vw, 3.25rem);
   }
 
-  .home-page .hero-inner { padding-inline: clamp(2rem, 3vw, 3rem); }
+  .home-page .hero-inner { padding-inline: clamp(4rem, 6vw, 7rem); }
   .home-page .hero-copy { max-width: 75rem; }
   .home-page .hero-copy h1 { font-size: clamp(3.2rem, 4vw, 4.5rem); line-height: 1.2; }
   .home-page .hero-copy > p:nth-of-type(2) { font-size: 1.25rem; max-width: 55rem; }
