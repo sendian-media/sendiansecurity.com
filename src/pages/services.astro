@@ -154,4 +154,10 @@ import { servicesPage } from '@/data/services';
     right: 20px;
     z-index: 2;
   }
+
+  @media (min-width: 96rem) {
+    .service-hero ~ .mx-auto.max-w-7xl { max-width: 90rem; }
+    .service-hero ~ .mx-auto.max-w-7xl h2 { font-size: clamp(3.2rem, 3.25vw, 3.5rem); }
+    .service-hero ~ .mx-auto.max-w-7xl .service-card-title { font-size: 1.625rem; }
+  }
 </style>

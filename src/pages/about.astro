@@ -160,6 +160,12 @@ import { about } from '@/data/about';
   }
   .capability-card { text-align: left; }
 
+  @media (min-width: 96rem) {
+    .about-hero + nav + div .mx-auto.max-w-7xl { max-width: 90rem; }
+    .about-hero + nav + div h2.text-4xl { font-size: clamp(2.5rem, 3.2vw, 3.6rem); }
+    .about-hero + nav + div .approach-card { padding: 2.25rem; }
+  }
+
   /* Source animations: card icons wobble on hover */
   @keyframes wobble-skew {
     16.65% { transform: skew(-12deg); }

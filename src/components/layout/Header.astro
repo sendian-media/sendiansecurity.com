@@ -276,6 +276,10 @@ const isActive = (href: string) =>
     .mobile-menu-toggle,
     .mobile-menu { display: none; }
   }
+
+  @media (min-width: 96rem) {
+    :global(.header) { padding-inline: clamp(2rem, 3vw, 4rem); }
+  }
 </style>
 
 <script>

@@ -101,4 +101,10 @@ const { service } = Astro.props;
     background-position: center;
     background-repeat: no-repeat;
   }
+
+  @media (min-width: 96rem) {
+    .detail-hero ~ .mx-auto.w-full.max-w-7xl { max-width: 90rem; }
+    .detail-hero ~ .mx-auto.w-full.max-w-7xl > section h2 { font-size: 2.5rem; }
+    .detail-hero ~ .mx-auto.w-full.max-w-7xl .pgs-heading { font-size: 3.25rem; }
+  }
 </style>

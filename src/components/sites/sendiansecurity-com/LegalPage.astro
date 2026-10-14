@@ -118,6 +118,17 @@ const hasSidebar = Astro.slots.has('sidebar');
     .legal-sidebar { margin-top: 3rem; }
   }
 
+  @media (min-width: 96rem) {
+    .legal-hero,
+    .legal-breadcrumb,
+    .legal-content { box-sizing: border-box; max-width: 90rem; }
+    .legal-hero,
+    .legal-breadcrumb { margin-inline: auto; }
+    .legal-hero__inner { max-width: 90rem; padding-inline: clamp(2rem, 3vw, 3rem); }
+    .legal-copy { max-width: 75ch; }
+    .legal-copy :global(h2) { font-size: clamp(1.6rem, 2.1vw, 2.2rem); }
+  }
+
   @media (max-width: 47.9375rem) {
     .legal-hero { margin: .5rem .5rem 0; min-height: 18.75rem; }
     .legal-hero__inner { padding: 1.25rem; }

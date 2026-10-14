@@ -102,6 +102,62 @@ body { margin: 0; }
 .section-title { color: var(--brand-dark); font-size: 2.25rem; font-weight: 700; line-height: 1.25; margin-bottom: 1rem; text-wrap: balance; }
 .media-frame { border-radius: .625rem; }
 
+/* Expand wide desktop layouts site-wide; the homepage gets a slightly wider override. */
+@media (min-width: 96rem) {
+  .container {
+    max-width: 90rem;
+    padding-inline: clamp(2rem, 3vw, 3rem);
+  }
+
+  :is(.about-hero, .contact-hero, .news-hero, .service-hero, .detail-hero) > div,
+  :is(.about-hero, .contact-hero, .news-hero, .service-hero, .detail-hero) + nav > div {
+    max-width: 90rem;
+    padding-inline: clamp(2rem, 3vw, 3rem);
+  }
+
+  .home-page .container {
+    max-width: 96rem;
+    padding-inline: clamp(2rem, 3vw, 3rem);
+  }
+
+  .home-page .section-title {
+    font-size: clamp(2.5rem, 2.7vw, 3.25rem);
+  }
+
+  .home-page .hero-inner { padding-inline: clamp(2rem, 3vw, 3rem); }
+  .home-page .hero-copy { max-width: 75rem; }
+  .home-page .hero-copy h1 { font-size: clamp(3.2rem, 4vw, 4.5rem); line-height: 1.2; }
+  .home-page .hero-copy > p:nth-of-type(2) { font-size: 1.25rem; max-width: 55rem; }
+  .home-page .hero-actions { gap: 1.25rem; }
+  .home-page .hero-cta { min-height: 4rem; }
+
+  .home-page #about .leading-relaxed,
+  .home-page #services > .container > p,
+  .home-page #news .text-gray-500 { font-size: 1.125rem; }
+
+  .home-page .services-viewport { max-width: 96rem; }
+  .home-page .service-card { flex-basis: 26rem; }
+  .home-page .service-card__overlay { font-size: 1.375rem; padding: 1.75rem; }
+
+  .home-page .stat-item > p:first-child { font-size: clamp(3rem, 3vw, 4rem); }
+  .home-page .stat-item .stat-suffix { font-size: 2.5rem; }
+  .home-page .stat-item > p:last-child { font-size: .9375rem; }
+
+  .home-page #about,
+  .home-page #services,
+  .home-page #projects,
+  .home-page #news { padding-block: 6.5rem; }
+
+  .home-page .stats-grid { gap: 3rem; }
+  .home-page .trust-panel { padding: 3.5rem; }
+  .home-page .trust-card { padding: 2rem; }
+  .home-page .trust-card img { height: 5.5rem; }
+  .home-page .trust-card h3 { font-size: 1rem; }
+  .home-page .trust-card p { font-size: .875rem; }
+  .home-page #projects .group h3 { font-size: 1rem; }
+  .home-page #news article h3 { font-size: 1.375rem; }
+}
+
 /* Hero */
 .home-hero { background-position: center; background-size: cover; }
 .camera-corner { border-color: rgb(255 255 255 / .7); height: 2.5rem; pointer-events: none; position: absolute; width: 2.5rem; }
