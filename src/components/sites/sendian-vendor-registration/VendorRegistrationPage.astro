@@ -19,66 +19,67 @@
     <section class="vendor-registration__card home-reveal d3" aria-labelledby="registration-form-title">
       <p class="vendor-registration__eyebrow">// Vendor Registration</p>
       <h2 id="registration-form-title">Register <span>Your</span> Company</h2>
-      <p class="vendor-registration__notice" id="registration-notice" role="status">Local preview only. Registration cannot be submitted.</p>
-
-      <fieldset aria-describedby="registration-notice">
-        <legend class="sr-only">Vendor registration details</legend>
-        <div class="vendor-registration__fields">
-          <div class="vendor-registration__field vendor-registration__field--full">
-            <label for="full-name">Full Name*</label>
-            <input id="full-name" name="full-name" type="text" autocomplete="name" required />
+      <form class="vendor-registration__form" data-hubspot-vendor-form aria-describedby="registration-notice">
+        <fieldset>
+          <legend class="sr-only">Vendor registration details</legend>
+          <div class="vendor-registration__fields">
+            <div class="vendor-registration__field vendor-registration__field--full">
+              <label for="full-name">Full Name*</label>
+              <input id="full-name" name="firstname" type="text" autocomplete="name" maxlength="400" required />
+            </div>
+            <div class="vendor-registration__field">
+              <label for="email-address">Email Address*</label>
+              <input id="email-address" name="email" type="email" autocomplete="email" inputmode="email" maxlength="400" required />
+            </div>
+            <div class="vendor-registration__field">
+              <label for="phone-number">Phone Number* (+974)</label>
+              <input id="phone-number" name="phone" type="tel" autocomplete="tel" inputmode="tel" maxlength="400" required />
+            </div>
+            <div class="vendor-registration__field vendor-registration__field--full">
+              <label for="company-name">Company Name*</label>
+              <input id="company-name" name="company" type="text" autocomplete="organization" maxlength="400" required />
+            </div>
+            <div class="vendor-registration__field vendor-registration__field--full">
+              <label for="company-type">Company Type*</label>
+              <select id="company-type" name="industry" required>
+                <option value="" selected disabled>Select company type</option>
+                <option value="supplier">Supplier</option>
+                <option value="Contractor">Contractor</option>
+                <option value="Service-Provider">Service Provider</option>
+                <option value="Manufacturer">Manufacturer</option>
+                <option value="Distributor">Distributor</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+            <div class="vendor-registration__field vendor-registration__field--full">
+              <label for="service-category">Products/Services Category*</label>
+              <select id="service-category" name="client_type" required>
+                <option value="" selected disabled>Select products/services category</option>
+                <option value="CCTV_Surveillance Systems">CCTV &amp; Surveillance Systems</option>
+                <option value="Access_Control_Systems">Access Control Systems</option>
+                <option value="Fire Detection_Alarms">Fire Detection &amp; Alarms</option>
+                <option value="Networking_Infrastructure">Networking &amp; IT Infrastructure</option>
+                <option value="ELV_Systems">ELV Systems</option>
+                <option value="Installation_Services">Installation Services</option>
+                <option value="Maintenance_Services">Maintenance Services</option>
+                <option value="Hardware_Equipment">Hardware &amp; Equipment</option>
+                <option value="Software_Solutions">Software Solutions</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+            <div class="vendor-registration__field vendor-registration__field--full">
+              <label for="company-overview">Company Overview* <span>(Brief description of your company)</span></label>
+              <input id="company-overview" name="message" type="text" maxlength="2000" required />
+            </div>
+            <label class="vendor-registration__acceptance" for="acceptance-terms">
+              <input id="acceptance-terms" name="acceptance-terms" type="checkbox" required />
+              <span>I agree to be contacted by SISS regarding vendor partnership opportunities*</span>
+            </label>
           </div>
-          <div class="vendor-registration__field">
-            <label for="email-address">Email Address*</label>
-            <input id="email-address" name="email-address" type="email" autocomplete="email" inputmode="email" required />
-          </div>
-          <div class="vendor-registration__field">
-            <label for="phone-number">Phone Number* (+974)</label>
-            <input id="phone-number" name="phone-number" type="tel" autocomplete="tel" inputmode="tel" required />
-          </div>
-          <div class="vendor-registration__field vendor-registration__field--full">
-            <label for="company-name">Company Name*</label>
-            <input id="company-name" name="company-name" type="text" autocomplete="organization" required />
-          </div>
-          <div class="vendor-registration__field vendor-registration__field--full">
-            <label for="company-type">Company Type*</label>
-            <select id="company-type" name="company-type" required>
-              <option value="" selected disabled>Select company type</option>
-              <option>Supplier</option>
-              <option>Contractor</option>
-              <option>Service Provider</option>
-              <option>Manufacturer</option>
-              <option>Distributor</option>
-              <option>Other</option>
-            </select>
-          </div>
-          <div class="vendor-registration__field vendor-registration__field--full">
-            <label for="service-category">Products/Services Category*</label>
-            <select id="service-category" name="service-category" required>
-              <option value="" selected disabled>Select products/services category</option>
-              <option>CCTV &amp; Surveillance Systems</option>
-              <option>Access Control Systems</option>
-              <option>Fire Detection &amp; Alarms</option>
-              <option>Networking &amp; IT Infrastructure</option>
-              <option>ELV Systems</option>
-              <option>Installation Services</option>
-              <option>Maintenance Services</option>
-              <option>Hardware &amp; Equipment</option>
-              <option>Software Solutions</option>
-              <option>Other</option>
-            </select>
-          </div>
-          <div class="vendor-registration__field vendor-registration__field--full">
-            <label for="company-overview">Company Overview* <span>(Brief description of your company)</span></label>
-            <input id="company-overview" name="company-overview" type="text" required />
-          </div>
-          <label class="vendor-registration__acceptance" for="acceptance-terms">
-            <input id="acceptance-terms" name="acceptance-terms" type="checkbox" required />
-            <span>I agree to be contacted by SISS regarding vendor partnership opportunities*</span>
-          </label>
-        </div>
-        <button type="button" disabled aria-describedby="registration-notice">Submit Registration</button>
-      </fieldset>
+          <p class="vendor-registration__notice" id="registration-notice" data-vendor-form-status role="status" aria-live="polite" hidden></p>
+          <button type="submit">Submit Registration</button>
+        </fieldset>
+      </form>
     </section>
   </div>
 </section>
@@ -100,7 +101,9 @@
   .vendor-registration__card { background: #f7f7fa; border-radius: 1.8rem; padding: 2.25rem 2.5rem 3rem; }
   .vendor-registration__card .vendor-registration__eyebrow { margin-bottom: .85rem; }
   .vendor-registration__card h2 { font-size: clamp(2rem, 3vw, 2.45rem); max-width: none; }
-  .vendor-registration__notice { color: #596174; font: 500 .875rem/1.45 'DM Sans', ui-sans-serif, system-ui, sans-serif; margin: .85rem 0 1.35rem; }
+  .vendor-registration__notice { border-radius: .35rem; font: 500 .875rem/1.45 'DM Sans', ui-sans-serif, system-ui, sans-serif; margin: 1.25rem 0 0; padding: .8rem 1rem; }
+  .vendor-registration__notice.is-success { background: #eaf8ef; color: #166534; }
+  .vendor-registration__notice.is-error { background: #fef2f2; color: #b91c1c; }
   fieldset { border: 0; margin: 0; min-inline-size: 0; padding: 0; }
   .vendor-registration__fields { display: grid; gap: .85rem; grid-template-columns: 1fr 1fr; }
   .vendor-registration__field { min-width: 0; }
@@ -111,10 +114,67 @@
   .vendor-registration input:not([type='checkbox']):focus, .vendor-registration select:focus { border-color: #0078d4; outline: 3px solid rgb(0 120 212 / 24%); outline-offset: 2px; }
   .vendor-registration__acceptance { align-items: start; background: white; border-radius: .35rem; color: #7c85a0; cursor: pointer; display: flex; font: 500 .9rem/1.5 'DM Sans', ui-sans-serif, system-ui, sans-serif; gap: .65rem; margin-top: .15rem; padding: 1rem 1.15rem; }
   .vendor-registration__acceptance input { accent-color: #405878; flex: none; height: 1.05rem; margin-top: .15rem; width: 1.05rem; }
-  .vendor-registration button { background: #405878; border: 0; border-radius: 999px; color: white; cursor: not-allowed; font: 700 .85rem/1.2 'DM Sans', ui-sans-serif, system-ui, sans-serif; margin-top: 1.25rem; opacity: .8; padding: 1rem 1.5rem; text-transform: uppercase; width: 100%; }
+  .vendor-registration button { background: #405878; border: 0; border-radius: 999px; color: white; cursor: pointer; font: 700 .85rem/1.2 'DM Sans', ui-sans-serif, system-ui, sans-serif; margin-top: 1.25rem; padding: 1rem 1.5rem; text-transform: uppercase; transition: opacity 180ms ease, transform 180ms ease; width: 100%; }
+  .vendor-registration button:hover:not(:disabled) { opacity: .9; }
+  .vendor-registration button:active:not(:disabled) { transform: scale(.98); }
+  .vendor-registration button:disabled { cursor: wait; opacity: .65; }
   .vendor-registration button:focus-visible, .vendor-registration__acceptance:focus-within { outline: 3px solid var(--focus); outline-offset: 3px; }
   .sr-only { clip: rect(0, 0, 0, 0); height: 1px; margin: -1px; overflow: hidden; position: absolute; white-space: nowrap; width: 1px; }
 
   @media (max-width: 63.9375rem) { .vendor-registration { margin-block: 4.5rem 6rem; } .vendor-registration__grid { grid-template-columns: minmax(0, 1fr); } .vendor-registration__introduction { padding: 0; } .vendor-registration__summary { margin-top: 2rem; } .vendor-registration__card { max-width: 34rem; } }
   @media (max-width: 47.9375rem) { .vendor-registration { margin-block: 3.5rem 5rem; padding-inline: .5rem; } .vendor-registration__grid { gap: 2.5rem; } .vendor-registration h2 { font-size: 1.6rem; max-width: none; } .vendor-registration__summary { font-size: 1rem; margin: 2rem 0; } .vendor-registration__card { border-radius: 1.4rem; padding: 1.5rem; } .vendor-registration__fields { grid-template-columns: 1fr; } .vendor-registration__field--full, .vendor-registration__acceptance { grid-column: auto; } .vendor-registration input:not([type='checkbox']), .vendor-registration select { font-size: 1rem; } }
 </style>
+
+<script>
+  const hubSpotVendorEndpoint = 'https://api.hsforms.com/submissions/v3/integration/submit/148999608/4b70dfe3-bd6b-461b-bdc9-344b19e50481';
+
+  document.querySelectorAll<HTMLFormElement>('[data-hubspot-vendor-form]').forEach((form) => {
+    const submitButton = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+    const status = form.querySelector<HTMLElement>('[data-vendor-form-status]');
+    if (!submitButton || !status) return;
+
+    const showStatus = (message: string, state: 'success' | 'error') => {
+      status.textContent = message;
+      status.className = `vendor-registration__notice is-${state}`;
+      status.hidden = false;
+    };
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      if (!form.reportValidity()) return;
+
+      const formData = new FormData(form);
+      const fields = ['firstname', 'email', 'phone', 'company', 'industry', 'client_type', 'message'].map((name) => ({
+        name,
+        value: String(formData.get(name) ?? ''),
+      }));
+
+      submitButton.disabled = true;
+      submitButton.textContent = 'Sending…';
+      form.setAttribute('aria-busy', 'true');
+      status.hidden = true;
+
+      try {
+        const response = await fetch(hubSpotVendorEndpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            fields,
+            context: { pageUri: window.location.href, pageName: document.title },
+          }),
+        });
+
+        if (!response.ok) throw new Error(`HubSpot vendor registration failed (${response.status})`);
+        form.reset();
+        showStatus('Thanks. Your vendor registration has been sent.', 'success');
+      } catch (error) {
+        console.error('HubSpot vendor registration failed.', error);
+        showStatus('Unable to send your registration. Check your connection and try again.', 'error');
+      } finally {
+        submitButton.disabled = false;
+        submitButton.textContent = 'Submit Registration';
+        form.removeAttribute('aria-busy');
+      }
+    });
+  });
+</script>

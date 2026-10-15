@@ -28,7 +28,7 @@ const moreLinks = [
   <div class="container mx-auto mb-16 grid grid-cols-1 gap-12 px-8 md:grid-cols-2 lg:grid-cols-4">
     <section>
       <img class="mb-6 h-20 w-auto" src="/images/home/brand-logo.png" alt={site.name} width="1080" height="1080" loading="lazy" decoding="async" />
-      <p class="mb-6 text-sm leading-relaxed text-gray-400">Ministry of Interior-approved security solutions provider. Protecting Qatar’s infrastructure with cutting-edge CCTV, access control, and enterprise security systems for more than a decade.</p>
+      <p class="mb-6 text-base leading-relaxed text-gray-400">Ministry of Interior-approved security solutions provider. Protecting Qatar’s infrastructure with cutting-edge CCTV, access control, and enterprise security systems for more than a decade.</p>
       <div class="flex gap-3">
         {localOnly ? (
           <>
@@ -48,7 +48,7 @@ const moreLinks = [
 
     <nav aria-label="Footer quick links">
       <h2 class="mb-6 text-lg font-bold">Quick Links</h2>
-      <ul class="m-0 grid list-none gap-4 p-0 text-sm text-gray-300">
+      <ul class="m-0 grid list-none gap-4 p-0 text-base text-gray-300">
         {quickLinks.map(({ href, label }) => (
           <li><a class="flex items-center gap-2 transition hover:text-white" href={href}><ChevronIcon class="h-2.5 w-2.5 rotate-[-90deg]" />{label}</a></li>
         ))}
@@ -57,7 +57,7 @@ const moreLinks = [
 
     <nav aria-label="Footer more links">
       <h2 class="mb-6 text-lg font-bold">Links</h2>
-      <ul class="m-0 grid list-none gap-4 p-0 text-sm text-gray-300">
+      <ul class="m-0 grid list-none gap-4 p-0 text-base text-gray-300">
         {moreLinks.map(({ href, label }) => (
           <li><a class="flex items-center gap-2 transition hover:text-white" href={href}><ChevronIcon class="h-2.5 w-2.5 rotate-[-90deg]" />{label}</a></li>
         ))}
@@ -66,27 +66,27 @@ const moreLinks = [
 
     <section>
       <div class="mb-6">
-        <h2 class="mb-2 text-sm font-semibold text-gray-300">E-Mail:</h2>
+        <h2 class="mb-2 text-base font-semibold text-gray-300">E-Mail:</h2>
         {localOnly ? (
-          <span class="flex items-center gap-3 text-sm text-white" title="Email is unavailable in the local preview">
+          <span class="flex items-center gap-3 text-base text-white" title="Email is unavailable in the local preview">
             <MailIcon class="h-4 w-4" />{site.email}
           </span>
         ) : (
-          <a class="flex items-center gap-3 text-sm text-white transition hover:text-gray-300" href={`mailto:${site.email}`}>
+          <a class="flex items-center gap-3 text-base text-white transition hover:text-gray-300" href={`mailto:${site.email}`}>
             <MailIcon class="h-4 w-4" />{site.email}
           </a>
         )}
       </div>
       <div>
-        <h2 class="mb-2 text-sm font-semibold text-gray-300">Address:</h2>
-        <p class="m-0 text-sm leading-relaxed text-white">
+        <h2 class="mb-2 text-base font-semibold text-gray-300">Address:</h2>
+        <p class="m-0 text-base leading-relaxed text-white">
           {site.address.map((line) => <span class="block">{line}</span>)}
         </p>
       </div>
     </section>
   </div>
 
-  <div class="container mx-auto flex flex-col items-center justify-between border-t border-gray-700/50 px-8 pt-6 text-xs text-gray-400 md:flex-row">
+  <div class="container mx-auto flex flex-col items-center justify-between border-t border-gray-700/50 px-8 pt-6 text-sm text-gray-400 md:flex-row">
     <p class="m-0">© Copyright {year} Sendian Security</p>
     <div class="mt-4 flex gap-4 md:mt-0">
       <a class="transition hover:text-white" href="/terms-and-conditions">Terms and Conditions</a>
