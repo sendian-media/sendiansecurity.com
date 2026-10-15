@@ -3,6 +3,8 @@ import {PortableText} from '@portabletext/astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import {getNewsArticle, getNewsArticles, getRelatedNewsArticles} from '@/lib/sanity/news';
 
+export const prerender = true;
+
 export async function getStaticPaths() {
   const articles = await getNewsArticles();
   return articles.map((article) => ({params: {slug: article.id}}));
