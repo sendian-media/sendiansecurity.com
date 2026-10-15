@@ -25,7 +25,16 @@ The local hero now uses source-aligned hero-specific duration/easing and delays 
 
 ## Site-wide extension
 
-The same reveal system was extended to all pages. `HomeMotion.astro` now loads from `BaseLayout.astro` so every route gets the IntersectionObserver reveal. Elements already in the viewport on load reveal immediately; the rest reveal on scroll entry. Pages converted from load-time `fade-up` animations to viewport reveals: About (`/about`, including `fade-up-left` cards as `home-reveal--left`), Services (`/services`), Contact (`/contact`), News (`/news`), Projects (`/projects`, staggered card delays preserved), and Vendor Registration (`/vendor-registration`). Service cards keep their per-index delay via inline `--reveal-delay`. No animation dependency was added.
+The same reveal system was extended to all pages. `HomeMotion.astro` now loads from `BaseLayout.astro` so every route gets the IntersectionObserver reveal. Elements already in the viewport on load reveal immediately; the rest reveal on scroll entry. Pages converted from load-time `fade-up` animations to viewport reveals: About (`/about`, including `fade-up-left` cards as `home-reveal--left`), Services (`/services`), Contact (`/contact`), News (`/news`), Projects (`/projects`, staggered card delays preserved), and Vendor Registration (`/vendor-registration`). Service cards keep their per-index delay via inline `--reveal-delay`. Service detail routes (`/services/[slug]`) retain their source-specific `svc-reveal` timings but now use the same reliable trigger rules. No animation dependency was added.
+
+## Remaining service detail pages clone (workflow)
+
+The six remaining detail pages (`/services/infrastructure-solutions`, `parking-systems`, `automation-solutions`, `communication-solutions`, `audio-visual-solutions`, `other-solutions`) were cloned/verified via a fanned-out multi-agent run (infrastructure, automation, other-solutions first; communication and audio-visual re-ran after early agent errors). Findings:
+
+- Live accordion copy matches `src/data/service-details.ts` verbatim on all six pages (`copyMatch: exact` per page).
+- On every source page only the FIRST accordion item of each category carries an image; the rest are text-only. Local entries previously repeated the category image on every item; entries were de-duplicated to match the live pattern (security-solutions kept as-is — its live page images 8 of 16 items and local already matched).
+- All live image URLs were byte-identical to existing local assets (e.g. `unified.png` ← `detail-unified.png`, `network.png` ← `detail-network.png`), so no new files were required.
+- The `svc-reveal` animation system in `src/pages/services/[slug].astro` applies to all seven detail routes automatically; no page-specific animation changes were needed.
 
 ## Trigger reliability fix
 

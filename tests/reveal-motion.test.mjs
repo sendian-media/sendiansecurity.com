@@ -4,7 +4,10 @@ import { runInNewContext } from 'node:vm';
 import test from 'node:test';
 
 const source = readFileSync(new URL('../src/components/home/HomeMotion.astro', import.meta.url), 'utf8');
-const script = source.match(/<script>([\s\S]*?)<\/script>/)[1].replace(/: Element/g, '');
+const script = source
+  .match(/<script>([\s\S]*?)<\/script>/)[1]
+  .replace(/ as [A-Za-z]+/g, '')
+  .replace(/: Element/g, '');
 
 function initialize(reduced = false, observerAvailable = true) {
   const dataset = {};
@@ -44,7 +47,11 @@ test('already visible content is measured before hiding is enabled', () => {
 test('scroll reveals trigger ahead of the viewport', () => {
   const { options } = initialize();
   assert.equal(options.rootMargin, '0px 0px 120px');
-  assert.equal(options.threshold, 0);
+  // A threshold of 0 fires for any positive intersection: within the 120px bottom
+  // margin the top edge of a tall below-fold element (e.g. the About SISS image
+  // holder at ~707px on a ~633px viewport) already intersects at load, so it
+  // revealed without any scroll. Require a minimum visible fraction instead.
+  assert.ok(options.threshold >= 0.1, 'must require a visible fraction');
 });
 
 test('reduced motion and missing observer leave all content visible', () => {

@@ -24,7 +24,7 @@ const { service } = Astro.props;
   ]}
 >
   <section class="page-header" aria-label={`${service.heroTitle} banner`}>
-    <div class="page-header-inner">
+    <div class="page-header-inner home-reveal d1">
       <h1 class="page-header-title">{service.heroTitle}</h1>
     </div>
     <nav class="page-breadcrumb" aria-label="Breadcrumb">
@@ -161,12 +161,12 @@ const { service } = Astro.props;
   if (reduceMotion || !('IntersectionObserver' in window)) {
     document.querySelectorAll(revealSelector).forEach(reveal);
   } else {
-    document.documentElement.dataset.svcMotion = 'ready';
-    // Blocks already inside the viewport animate on load (Elementor does the same).
+    // Measure final layout positions before enabling the hidden transform state.
     document.querySelectorAll(revealSelector).forEach((element) => {
       const bounds = element.getBoundingClientRect();
       if (bounds.top < window.innerHeight && bounds.bottom > 0) reveal(element);
     });
+    document.documentElement.dataset.svcMotion = 'ready';
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -175,7 +175,10 @@ const { service } = Astro.props;
           observer.unobserve(entry.target);
         });
       },
-      { rootMargin: '0px 0px -10%', threshold: 0.12 },
+      // Same trigger rules as HomeMotion: a visible-fraction threshold stops the
+      // 120px bottom margin from firing for the top sliver of tall below-fold
+      // elements at page load (reveal must be scroll-driven).
+      { rootMargin: '0px 0px 120px', threshold: 0.12 },
     );
     document.querySelectorAll(revealSelector).forEach((element) => {
       if (!element.classList.contains('svc-reveal--in')) observer.observe(element);
@@ -191,9 +194,9 @@ const { service } = Astro.props;
      data-settings (intro heading 200ms / paragraphs 300ms / category cols 200 & 400ms). */
   /* Hidden state gated on a script-set marker: without JS everything renders statically. */
   @media (prefers-reduced-motion: no-preference) {
+    /* Keep pending blocks in layout position so IntersectionObserver can trigger them reliably. */
     html[data-svc-motion='ready'] .svc-reveal:not(.svc-reveal--in) {
       opacity: 0;
-      transform: translate3d(0, 100%, 0);
     }
     html[data-svc-motion='ready'] .svc-reveal.svc-reveal--in {
       animation: svc-fade-in-up 1.25s ease var(--svc-delay, 0ms) both;

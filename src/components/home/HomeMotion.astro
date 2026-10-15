@@ -1,7 +1,8 @@
 <script>
   const revealSelector = '.home-reveal';
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const reveal = (element: Element) => element.classList.add('is-revealed');
+  const reveal = (element: Element) =>
+    (element as HTMLElement).classList.add('is-revealed');
 
   const revealVisible = () => {
     document.querySelectorAll(revealSelector).forEach((element) => {
@@ -25,11 +26,18 @@
       (entries) => {
         entries.forEach((entry) => {
           if (!entry.isIntersecting) return;
+          // Distinguish scroll-entry from load-time reveals so per-element
+          // scroll-only timings (e.g. the About image holder's beat and
+          // travel distance) can be applied without touching load choreography.
+          (entry.target as HTMLElement).dataset.revealOn = 'scroll';
           reveal(entry.target);
           observer.unobserve(entry.target);
         });
       },
-      { rootMargin: '0px 0px 120px', threshold: 0 },
+      // Threshold requires a real visible fraction: with threshold 0 the 120px
+      // bottom margin fires for the top sliver of tall below-fold elements at page
+      // load (e.g. the About SISS image holder), revealing them without any scroll.
+      { rootMargin: '0px 0px 120px', threshold: 0.12 },
     );
 
     document.querySelectorAll(revealSelector).forEach((element) => {
@@ -104,6 +112,19 @@
 
   @keyframes home-media-reveal {
     from { opacity: 0; transform: translate3d(0, 7rem, 0) scale(.97); }
+    to { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
+  }
+
+  /* About SISS image holder: when it enters on scroll, hold a short beat before
+     the animation, then travel in from a longer distance for a cinematic entry. */
+  html[data-home-motion='ready'] .home-reveal.home-reveal--media.home-reveal--far[data-reveal-on='scroll'].is-revealed {
+    animation-name: home-media-reveal-far;
+    animation-delay: 350ms;
+    animation-duration: 1200ms;
+  }
+
+  @keyframes home-media-reveal-far {
+    from { opacity: 0; transform: translate3d(0, 14rem, 0) scale(.96); }
     to { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
   }
 

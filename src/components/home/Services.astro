@@ -11,11 +11,8 @@ import ActionLink from '@/components/ui/ActionLink.astro';
     <p class="home-reveal d3 mx-auto max-w-3xl text-gray-600">From Ministry of Interior-approved CCTV surveillance to enterprise networking and smart infrastructure, SISS delivers integrated security solutions tailored to Qatar’s government, commercial, and industrial sectors.</p>
   </div>
 
-  <div class="services-viewport home-reveal d5" data-service-carousel role="region" aria-roledescription="carousel" aria-label="Our services">
-    <button class="services-arrow services-arrow--previous" type="button" data-service-previous aria-controls="services-track" aria-label="Show previous services card">
-      <span aria-hidden="true">←</span>
-    </button>
-    <div class="services-track" id="services-track" data-service-track>
+  <div class="services-viewport home-reveal d5" role="region" aria-label="Our services">
+    <div class="services-track" id="services-track">
       {home.services.map((service, index) => (
         <a class:list={['service-card home-reveal home-reveal--media', `d${index + 1}`]} href={service.href}>
           <span class="service-card__media">
@@ -27,97 +24,31 @@ import ActionLink from '@/components/ui/ActionLink.astro';
         </a>
       ))}
     </div>
-    <button class="services-arrow services-arrow--next" type="button" data-service-next aria-controls="services-track" aria-label="Show next services card">
-      <span aria-hidden="true">→</span>
-    </button>
   </div>
 
   <p class="home-reveal d8 mt-12 text-center"><ActionLink href="/services" badge>View All Services</ActionLink></p>
 </section>
-
-<script>
-  document.querySelectorAll<HTMLElement>('[data-service-carousel]').forEach((carousel) => {
-    const track = carousel.querySelector<HTMLElement>('[data-service-track]');
-    const previous = carousel.querySelector<HTMLButtonElement>('[data-service-previous]');
-    const next = carousel.querySelector<HTMLButtonElement>('[data-service-next]');
-    const cards = Array.from(carousel.querySelectorAll<HTMLElement>('.service-card'));
-    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-    if (!track || !previous || !next || !cards.length) return;
-
-    let timer: number | undefined;
-    const pause = () => {
-      if (timer !== undefined) window.clearInterval(timer);
-      timer = undefined;
-    };
-    const cardStep = () => {
-      const styles = window.getComputedStyle(track);
-      const gap = Number.parseFloat(styles.columnGap || styles.gap || '0');
-      return cards[0].getBoundingClientRect().width + gap;
-    };
-    const hasOverflow = () => track.scrollWidth - track.clientWidth > 1;
-    const setCurrentCard = () => {
-      const step = cardStep();
-      const currentIndex = step ? Math.round(track.scrollLeft / step) % cards.length : 0;
-      cards.forEach((card, index) => card.classList.toggle('is-current', index === currentIndex));
-    };
-    const move = (direction: 1 | -1) => {
-      if (!hasOverflow()) return;
-      const step = cardStep();
-      const atStart = track.scrollLeft <= step / 2;
-      const atEnd = track.scrollLeft + track.clientWidth >= track.scrollWidth - step / 2;
-      let target = track.scrollLeft + direction * step;
-      if (direction === 1 && atEnd) target = 0;
-      if (direction === -1 && atStart) target = track.scrollWidth - track.clientWidth;
-      track.scrollTo({ left: target, behavior: reducedMotion.matches ? 'auto' : 'smooth' });
-      window.setTimeout(setCurrentCard, reducedMotion.matches ? 0 : 360);
-    };
-    const start = () => {
-      pause();
-      if (reducedMotion.matches || !hasOverflow()) return;
-      timer = window.setInterval(() => move(1), 3500);
-    };
-
-    previous.addEventListener('click', () => move(-1));
-    next.addEventListener('click', () => move(1));
-    carousel.addEventListener('pointerenter', pause);
-    carousel.addEventListener('pointerleave', start);
-    carousel.addEventListener('focusin', pause);
-    carousel.addEventListener('focusout', () => window.setTimeout(() => {
-      if (!carousel.contains(document.activeElement)) start();
-    }));
-    track.addEventListener('scroll', setCurrentCard, { passive: true });
-    reducedMotion.addEventListener('change', start);
-    window.addEventListener('resize', start, { passive: true });
-    setCurrentCard();
-    start();
-  });
-</script>
 
 <style>
   .services-viewport {
     margin: 3rem auto 0;
     max-width: 80rem;
     position: relative;
+    width: 100%;
   }
 
   .services-track {
-    display: flex;
+    display: grid;
     gap: 1.5rem;
-    overflow-x: auto;
-    padding: 0 2rem 0.5rem;
-    scroll-behavior: smooth;
-    scroll-snap-type: x mandatory;
-    scrollbar-width: none;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    width: 100%;
   }
-
-  .services-track::-webkit-scrollbar { display: none; }
 
   .service-card {
     aspect-ratio: 800 / 950;
-    flex: 0 0 23.6875rem;
+    min-width: 0;
     overflow: hidden;
     position: relative;
-    scroll-snap-align: start;
     border-radius: 0.625rem;
   }
 
@@ -136,10 +67,6 @@ import ActionLink from '@/components/ui/ActionLink.astro';
   .service-card:hover img,
   .service-card:focus-visible img { transform: scale(1.1); }
 
-  .service-card.is-current .service-card__media {
-    animation: service-media-fade 520ms cubic-bezier(.2, .65, .3, 1) both;
-  }
-
   .service-card__overlay {
     align-items: end;
     background: linear-gradient(to top, rgb(0 0 0 / 0.8) 0%, transparent 70%);
@@ -155,49 +82,21 @@ import ActionLink from '@/components/ui/ActionLink.astro';
 
   .service-card__overlay > span { max-width: 75%; }
 
-  .services-arrow {
-    align-items: center;
-    background: var(--brand);
-    border: 0;
-    border-radius: 50%;
-    box-shadow: 0 8px 20px rgb(26 37 71 / .2);
-    color: white;
-    cursor: pointer;
-    display: flex;
-    font-size: 1.75rem;
-    height: 3rem;
-    justify-content: center;
-    line-height: 1;
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    transition: background-color 180ms ease, scale 180ms ease, opacity 180ms ease;
-    width: 3rem;
-    z-index: 2;
-  }
-
-  .services-arrow:hover { background: var(--brand-hover); }
-  .services-arrow:active { scale: .96; }
-  .services-arrow--previous { left: .5rem; }
-  .services-arrow--next { right: .5rem; }
-
-  @keyframes service-media-fade {
-    from { opacity: .45; transform: scale(1.025); }
-    to { opacity: 1; transform: scale(1); }
-  }
-
   @media (max-width: 767px) {
     .services-viewport { margin-top: 2.5rem; }
-    .services-track { gap: 1rem; padding-inline: 1rem; }
-    .service-card { flex-basis: calc(100vw - 4rem); }
-    .services-arrow { height: 2.75rem; width: 2.75rem; }
-    .services-arrow--previous { left: .25rem; }
-    .services-arrow--next { right: .25rem; }
+    .services-track {
+      display: flex;
+      gap: 1rem;
+      overflow-x: auto;
+      padding-inline: 1rem;
+      scrollbar-width: none;
+    }
+
+    .services-track::-webkit-scrollbar { display: none; }
+    .service-card { flex: 0 0 calc(100vw - 4rem); }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .services-track { scroll-behavior: auto; }
     .service-card img { transition: none; }
-    .service-card.is-current .service-card__media { animation: none; }
   }
 </style>

@@ -2,6 +2,7 @@
 import Footer from '@/components/layout/Footer.astro';
 import Header from '@/components/layout/Header.astro';
 import FloatingWhatsApp from '@/components/ui/FloatingWhatsApp.astro';
+import CursorFollower from '@/components/ui/CursorFollower.astro';
 import SeoHead from '@/components/seo/SeoHead.astro';
 import HomeMotion from '@/components/home/HomeMotion.astro';
 import '@/styles/global.css';
@@ -42,6 +43,7 @@ const { title, description, noindex, socialImage, breadcrumbs, localOnly = false
     <main id="main-content"><slot /></main>
     <Footer localOnly={localOnly} />
     <FloatingWhatsApp localOnly={localOnly} />
+    <CursorFollower />
     <HomeMotion />
   </body>
 </html>
