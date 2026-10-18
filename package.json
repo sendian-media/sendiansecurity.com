@@ -10,17 +10,14 @@
     "dev": "astro dev --host 127.0.0.1 --port 3888",
     "check": "astro check",
     "build": "astro build",
-    "preview": "astro preview",
-    "start": "node ./dist/server/entry.mjs"
+    "preview": "astro preview"
   },
   "dependencies": {
-    "@astrojs/node": "^11.1.7",
     "@astrojs/sitemap": "^3.7.4",
     "@portabletext/astro": "^0.2.0",
     "@sanity/client": "^8.9.0",
     "@tailwindcss/vite": "^4.2.4",
     "astro": "^7.3.5",
-    "resend": "^6.33.0",
     "tailwindcss": "^4.2.4"
   },
   "devDependencies": {

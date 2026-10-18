@@ -24,9 +24,6 @@
         <label>Phone number<input name="phone" type="tel" autocomplete="tel" maxlength="400" /></label>
         <label>Message<textarea name="message" rows="4" maxlength="2000"></textarea></label>
         <input name="contact_from" type="hidden" value="Sendian_Security" />
-        <div class="contact-honeypot" aria-hidden="true">
-          <label>Website<input name="website" type="text" tabindex="-1" autocomplete="off" /></label>
-        </div>
         <p class="contact-form-status" data-form-status role="status" aria-live="polite" hidden></p>
         <button type="submit">Send Message</button>
       </form>
@@ -71,7 +68,6 @@
   input, textarea { background: #fff; border: 1px solid transparent; border-radius: 6px; color: var(--brand-dark); font: 400 1rem/1.5 "DM Sans", ui-sans-serif, system-ui, sans-serif; min-width: 0; padding: 15px 20px; resize: vertical; }
   input:focus, textarea:focus { border-color: #0078d4; outline: 3px solid rgb(0 120 212 / 24%); outline-offset: 2px; }
   .contact-name-fields { display: grid; gap: 1rem; grid-template-columns: 1fr 1fr; }
-  .contact-honeypot { height: 1px; left: -9999px; overflow: hidden; position: absolute; width: 1px; }
   .contact-form-status { border-radius: 6px; font: 500 .9rem/1.5 "DM Sans", ui-sans-serif, system-ui, sans-serif; margin: 0 0 1.25rem; padding: .875rem 1rem; }
   .contact-form-status.is-success { background: #eaf8ef; color: #166534; }
   .contact-form-status.is-error { background: #fef2f2; color: #b91c1c; }
@@ -122,8 +118,6 @@
       submitButton.textContent = 'Sending…';
       status.hidden = true;
 
-      let hubSpotSubmitted = false;
-
       try {
         const response = await fetch(hubSpotEndpoint, {
           method: 'POST',
@@ -135,33 +129,11 @@
         });
 
         if (!response.ok) throw new Error(`HubSpot submission failed (${response.status})`);
-        hubSpotSubmitted = true;
-
-        const emailResponse = await fetch('/api/contact-emails', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            firstname: formData.get('firstname'),
-            lastname: formData.get('lastname'),
-            email: formData.get('email'),
-            phone: formData.get('phone'),
-            message: formData.get('message'),
-            website: formData.get('website'),
-          }),
-        });
-
-        if (!emailResponse.ok) throw new Error(`Contact email submission failed (${emailResponse.status})`);
         form.reset();
         showStatus('Thank you. Your message has been sent.', 'success');
       } catch (error) {
-        console.error('Contact form submission failed.', error);
-        form.reset();
-        showStatus(
-          hubSpotSubmitted
-            ? 'Your message has been sent, but we could not send your email confirmation. Please contact us at info@sendiansecurity.com if needed.'
-            : 'Unable to send your message. Please try again.',
-          'error',
-        );
+        console.error('HubSpot contact form submission failed.', error);
+        showStatus('Unable to send your message. Please try again.', 'error');
       } finally {
         submitButton.disabled = false;
         submitButton.textContent = 'Send Message';
