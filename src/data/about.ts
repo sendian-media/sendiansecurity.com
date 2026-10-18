@@ -92,4 +92,36 @@ export const about = {
       },
     ],
   },
+  certifications: {
+    badge: 'Our Certifications',
+    title: 'Certified <span class="text-[var(--highlight)]">for Excellence</span>',
+    description: 'Our independently certified management systems reflect our commitment to quality, safety, continuity, facilities, and environmental responsibility.',
+    items: [
+      {
+        title: 'ISO 9001:2015',
+        caption: 'Quality Management System',
+        image: '/images/about/certifications/iso-9001-2015.png',
+      },
+      {
+        title: 'ISO 14001:2015',
+        caption: 'Environmental Management System',
+        image: '/images/about/certifications/iso-14001-2015.png',
+      },
+      {
+        title: 'ISO 22301:2019',
+        caption: 'Business Continuity Management System',
+        image: '/images/about/certifications/iso-22301-2019.png',
+      },
+      {
+        title: 'ISO 41001:2018',
+        caption: 'Facility Management System',
+        image: '/images/about/certifications/iso-41001-2018.png',
+      },
+      {
+        title: 'ISO 45001:2018',
+        caption: 'Occupational Health and Safety Management System',
+        image: '/images/about/certifications/iso-45001-2018.png',
+      },
+    ],
+  },
 };

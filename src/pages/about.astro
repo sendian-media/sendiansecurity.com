@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
+import ActionLink from '@/components/ui/ActionLink.astro';
 import { about } from '@/data/about';
 ---
 
@@ -113,6 +114,37 @@ import { about } from '@/data/about';
         </div>
       </div>
     </section>
+
+    <!-- Certifications -->
+    <section class="bg-[#F8F9FA] px-6 py-20 md:px-12">
+      <div class="mx-auto max-w-7xl">
+        <div class="mx-auto mb-12 max-w-3xl text-center">
+          <p class="mb-6 home-reveal d1"><span class="badge-outline uppercase">// {about.certifications.badge}</span></p>
+          <h2 class="text-4xl font-bold leading-tight text-[var(--link)] home-reveal d2" set:html={about.certifications.title} />
+          <p class="mt-6 text-[17px] leading-relaxed text-[#8f91ab] home-reveal d3">{about.certifications.description}</p>
+        </div>
+
+        <div class="grid grid-cols-2 gap-5 md:grid-cols-3 lg:gap-6 xl:grid-cols-5">
+          {about.certifications.items.map((certificate, index) => (
+            <article class:list={['certificate-card home-reveal', `d${index + 1}`]}>
+              <img class="w-full" src={certificate.image} alt={`${certificate.title} certificate for Sendian Group`} width="955" height="1350" loading="lazy" decoding="async" />
+              <div class="p-4 text-center">
+                <h3 class="text-base font-bold text-[var(--link)]">{certificate.title}</h3>
+                <p class="mt-1 text-xs leading-relaxed text-[#8f91ab]">{certificate.caption}</p>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="px-6 py-20 text-center md:px-12">
+      <div class="mx-auto max-w-2xl">
+        <h2 class="text-3xl font-bold leading-tight text-[var(--link)] home-reveal d1">Ready to discuss your requirements?</h2>
+        <p class="mt-4 text-[17px] leading-relaxed text-[#8f91ab] home-reveal d2">Our team is ready to help you plan a secure, integrated solution.</p>
+        <ActionLink href="/contact" badge class="mt-8 home-reveal d3">Contact us</ActionLink>
+      </div>
+    </section>
   </div>
 
 </BaseLayout>
@@ -159,6 +191,14 @@ import { about } from '@/data/about';
     border-radius: 999px;
   }
   .capability-card { text-align: left; }
+  .certificate-card {
+    background: #fff;
+    border: 1px solid rgb(0 0 0 / 0.1);
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgb(44 58 85 / 0.08);
+    overflow: hidden;
+  }
+  .certificate-card img { aspect-ratio: 955 / 1350; object-fit: cover; }
 
   @media (min-width: 96rem) {
     .about-hero + nav + div .mx-auto.max-w-7xl { max-width: 90rem; }
