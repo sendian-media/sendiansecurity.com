@@ -4,7 +4,7 @@ import ActionLink from '@/components/ui/ActionLink.astro';
 import { about } from '@/data/about';
 ---
 
-<BaseLayout title="About Us | Sendian Integrated Security Services" description="Sendian Integrated Security Services (SISS) is a Qatar-based systems integrator delivering integrated security, ELV, ICT, and automation solutions." socialImage={about.intro.mainImage}>
+<BaseLayout title="About SISS | Qatar Security Systems Integrator" description="Meet SISS, a Qatar-based systems integrator delivering security, ELV, ICT and automation projects from design and approvals to long-term support." socialImage={about.intro.mainImage} breadcrumbs={[{ name: 'Home', path: '/' }, { name: 'About us', path: '/about' }]}>
   <section class="about-hero relative flex h-[350px] w-full items-center overflow-hidden rounded-b-[30px] shadow-lg md:h-[400px]" aria-label="About banner">
     <div class="relative z-10 mx-auto w-full max-w-7xl px-6 md:px-20 home-reveal d1">
       <h1 class="text-5xl font-bold leading-tight text-white md:text-[68px]">{about.hero.title}</h1>

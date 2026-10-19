@@ -4,6 +4,11 @@ export const site = {
   phone: '+974 44866766',
   email: 'info@sendiansecurity.com',
   address: ['1st Floor, Office 01, Building 60', 'Mekkah Al Mukarramah Street', 'Luqta, Doha'],
+  socialProfiles: [
+    'https://www.facebook.com/people/Sendian-Integrated-Security-Systems-SISS/61559597141821/',
+    'https://www.instagram.com/siss.qatar',
+    'https://www.linkedin.com/company/sendian-integrated-security-services',
+  ],
 };
 
 export const serviceSubmenu = [

@@ -1,5 +1,6 @@
 ---
 import {PortableText} from '@portabletext/astro';
+import type { PageSchema } from '@/components/seo/SeoHead.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import {getNewsArticle, getNewsArticles, getRelatedNewsArticles} from '@/lib/sanity/news';
 
@@ -21,9 +22,12 @@ const description = article.seo?.description || article.summary;
 const socialImage = article.seo?.imageUrl || article.featuredImage.url;
 const formatDate = (date: string) => new Intl.DateTimeFormat('en', {dateStyle: 'long'}).format(new Date(`${date}T00:00:00Z`));
 const publishedDate = formatDate(article.publishedAt);
+const schemas: PageSchema[] = article.title && description && socialImage && article.publishedAt
+  ? [{ type: 'blogPosting', headline: article.title, description, image: socialImage, datePublished: article.publishedAt }]
+  : [];
 ---
 
-<BaseLayout title={title} description={description} socialImage={socialImage} breadcrumbs={[{name: 'Home', path: '/'}, {name: 'News', path: '/news'}, {name: article.title, path: `/news/${article.id}`}]}>
+<BaseLayout title={title} description={description} socialImage={socialImage} schemas={schemas} breadcrumbs={[{name: 'Home', path: '/'}, {name: 'News', path: '/news'}, {name: article.title, path: `/news/${article.id}`}]}>
   <article class="mx-auto max-w-7xl px-6 py-16 md:px-10 md:py-24">
     <div class="article-grid">
       <div class="article-main">

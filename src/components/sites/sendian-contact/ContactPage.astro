@@ -1,3 +1,9 @@
+---
+import { site } from '@/data/site';
+
+const address = site.address.join(', ');
+---
+
 <section class="contact-section" aria-labelledby="contact-title">
   <div class="contact-grid">
     <div class="contact-information">
@@ -6,7 +12,7 @@
       <p class="contact-intro home-reveal d3">We are here to assist you with all your inquiries.</p>
       <section class="contact-office home-reveal d3" aria-labelledby="office-title">
         <h3 id="office-title">Head office</h3>
-        <p>P.O. Box 1805, 60 Makkah St., Doha, Qatar</p>
+        <p>{address}</p>
         <p>+974 44866766</p>
         <p>+974 74720643</p>
         <p>info@sendiansecurity.com</p>
@@ -45,7 +51,7 @@
     <div class="contact-map__details">
       <p class="contact-eyebrow">Our location</p>
       <h2 id="location-title">Visit our head office</h2>
-      <p>Sendian Group building 60, zone 52, street 850, Doha, Qatar</p>
+      <p>{address}</p>
     </div>
   </div>
 </section>

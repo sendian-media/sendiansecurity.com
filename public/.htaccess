@@ -1,0 +1,13 @@
+RewriteEngine On
+
+# Legacy URLs indexed before the /news and /projects routes were introduced.
+# Keep these first so www requests reach their apex replacement in one hop.
+RewriteRule ^security/ai-security-solutions-qatar/$ https://sendiansecurity.com/news/ai-security-solutions-qatar [R=301,L]
+RewriteRule ^security/ongoing-project-cctv-surveillance-system-installation-at-qatar-finland-international-school/$ https://sendiansecurity.com/news/ongoing-project-cctv-surveillance-system-installation-at-qatar-finland-international-school [R=301,L]
+RewriteRule ^security/ongoing-project-moi-regulated-cctv-system-deployment-at-kreeq-sports-club-al-wakra/$ https://sendiansecurity.com/news/ongoing-project-moi-regulated-cctv-system-deployment-at-kreeq-sports-club-al-wakra [R=301,L]
+RewriteRule ^portfolios/$ https://sendiansecurity.com/projects [R=301,L]
+RewriteRule ^portfolio/towers/$ https://sendiansecurity.com/projects [R=301,L]
+
+# Use the apex host selected by the Astro site configuration.
+RewriteCond %{HTTP_HOST} ^www\.sendiansecurity\.com(?::[0-9]+)?$ [NC]
+RewriteRule ^ https://sendiansecurity.com%{REQUEST_URI} [R=301,L]

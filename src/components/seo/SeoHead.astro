@@ -6,33 +6,48 @@ interface BreadcrumbItem {
   path: string;
 }
 
+export type PageSchema =
+  | { type: 'service'; name: string; description: string }
+  | { type: 'blogPosting'; headline: string; description: string; image: string; datePublished: string };
+
 interface Props {
   title: string;
   description: string;
   noindex?: boolean;
   socialImage?: string;
   breadcrumbs?: BreadcrumbItem[];
+  schemas?: PageSchema[];
 }
 
-const { title, description, noindex = false, socialImage, breadcrumbs } = Astro.props;
+const { title, description, noindex = false, socialImage, breadcrumbs, schemas = [] } = Astro.props;
 const site = new URL(import.meta.env.SITE_URL || 'https://sendiansecurity.com');
 const canonical = new URL(Astro.url.pathname, site).href;
 const image = new URL(socialImage || '/images/home/hero.webp', site).href;
+const organizationId = new URL('/#organization', site).href;
 const structuredData: Record<string, unknown>[] = [];
+const jsonLd = (schema: Record<string, unknown>) => JSON.stringify(schema)
+  .replace(/</g, '\\u003c')
+  .replace(/>/g, '\\u003e')
+  .replace(/&/g, '\\u0026')
+  .replace(/\u2028/g, '\\u2028')
+  .replace(/\u2029/g, '\\u2029');
 
 if (!noindex && Astro.url.pathname === '/') {
   structuredData.push(
     {
       '@context': 'https://schema.org',
       '@type': 'Organization',
+      '@id': organizationId,
       name: siteDetails.name,
+      alternateName: siteDetails.shortName,
       url: site.href,
       logo: new URL('/images/home/logo-header.png', site).href,
       telephone: siteDetails.phone,
       email: siteDetails.email,
+      sameAs: siteDetails.socialProfiles,
       address: {
         '@type': 'PostalAddress',
-        streetAddress: `${siteDetails.address[0]}, ${siteDetails.address[1]}`,
+        streetAddress: siteDetails.address.join(', '),
         addressLocality: 'Doha',
         addressCountry: 'QA',
       },
@@ -58,6 +73,45 @@ if (!noindex && breadcrumbs?.length) {
     })),
   });
 }
+
+if (!noindex) {
+  for (const schema of schemas) {
+    if (schema.type === 'service') {
+      structuredData.push({
+        '@context': 'https://schema.org',
+        '@type': 'Service',
+        name: schema.name,
+        serviceType: schema.name,
+        description: schema.description,
+        url: canonical,
+        provider: { '@id': organizationId },
+        areaServed: { '@type': 'Country', name: 'Qatar' },
+      });
+    }
+
+    if (schema.type === 'blogPosting') {
+      structuredData.push({
+        '@context': 'https://schema.org',
+        '@type': 'BlogPosting',
+        headline: schema.headline,
+        description: schema.description,
+        url: canonical,
+        mainEntityOfPage: { '@type': 'WebPage', '@id': canonical },
+        image: new URL(schema.image, site).href,
+        datePublished: schema.datePublished,
+        publisher: {
+          '@type': 'Organization',
+          '@id': organizationId,
+          name: siteDetails.name,
+          logo: {
+            '@type': 'ImageObject',
+            url: new URL('/images/home/logo-header.png', site).href,
+          },
+        },
+      });
+    }
+  }
+}
 ---
 
 <title>{title}</title>
@@ -74,4 +128,4 @@ if (!noindex && breadcrumbs?.length) {
 <meta name="twitter:description" content={description} />
 <meta name="twitter:image" content={image} />
 {noindex && <meta name="robots" content="noindex,follow" />}
-{structuredData.map((schema) => <script type="application/ld+json" set:html={JSON.stringify(schema)} />)}
+{structuredData.map((schema) => <script type="application/ld+json" set:html={jsonLd(schema)} />)}

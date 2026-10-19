@@ -3,7 +3,7 @@ import Footer from '@/components/layout/Footer.astro';
 import Header from '@/components/layout/Header.astro';
 import FloatingWhatsApp from '@/components/ui/FloatingWhatsApp.astro';
 import CursorFollower from '@/components/ui/CursorFollower.astro';
-import SeoHead from '@/components/seo/SeoHead.astro';
+import SeoHead, { type PageSchema } from '@/components/seo/SeoHead.astro';
 import HomeMotion from '@/components/home/HomeMotion.astro';
 import '@/styles/global.css';
 
@@ -18,10 +18,11 @@ interface Props {
   noindex?: boolean;
   socialImage?: string;
   breadcrumbs?: BreadcrumbItem[];
+  schemas?: PageSchema[];
   localOnly?: boolean;
 }
 
-const { title, description, noindex, socialImage, breadcrumbs, localOnly = false } = Astro.props;
+const { title, description, noindex, socialImage, breadcrumbs, schemas, localOnly = false } = Astro.props;
 ---
 
 <!doctype html>
@@ -35,7 +36,7 @@ const { title, description, noindex, socialImage, breadcrumbs, localOnly = false
     <link rel="icon" href="/android-chrome-192x192.png" type="image/png" sizes="192x192" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
     <link rel="manifest" href="/site.webmanifest" />
-    <SeoHead title={title} description={description} noindex={noindex} socialImage={socialImage} breadcrumbs={breadcrumbs} />
+    <SeoHead title={title} description={description} noindex={noindex} socialImage={socialImage} breadcrumbs={breadcrumbs} schemas={schemas} />
   </head>
   <body>
     <a class="skip-link" href="#main-content">Skip to content</a>

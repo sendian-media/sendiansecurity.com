@@ -14,6 +14,10 @@ export interface ServiceCategory {
 export interface ServiceDetail {
   slug: string;
   heroTitle: string;
+  seo: {
+    title: string;
+    description: string;
+  };
   introHeading: string;
   introHighlight: string;
   introParagraphs: string[];
@@ -24,6 +28,10 @@ export const serviceDetails: ServiceDetail[] = [
   {
     slug: 'security-solutions',
     heroTitle: 'Security Solutions',
+    seo: {
+      title: 'CCTV, Access Control & Security Systems Qatar | SISS',
+      description: 'SISS designs, installs and maintains CCTV, access control, ANPR, intrusion and integrated security systems for organisations across Qatar.',
+    },
     introHeading: 'Comprehensive',
     introHighlight: 'Security Ecosystem',
     introParagraphs: [
@@ -153,6 +161,10 @@ export const serviceDetails: ServiceDetail[] = [
   {
     slug: 'infrastructure-solutions',
     heroTitle: 'Infrastructure Solutions',
+    seo: {
+      title: 'ELV & Data Infrastructure Solutions Qatar | SISS',
+      description: 'Plan and deploy structured cabling, data infrastructure and integrated ELV systems for reliable, scalable operations across Qatar.',
+    },
     introHeading: 'Enterprise-Grade',
     introHighlight: 'Infrastructure Solutions',
     introParagraphs: [
@@ -282,6 +294,10 @@ export const serviceDetails: ServiceDetail[] = [
   {
     slug: 'parking-systems',
     heroTitle: 'Parking Systems',
+    seo: {
+      title: 'Smart Parking & ANPR Systems Qatar | SISS',
+      description: 'SISS delivers parking management, ANPR, barriers, guidance and vehicle-access systems for commercial, government and residential sites in Qatar.',
+    },
     introHeading: 'Advanced Vehicle',
     introHighlight: 'Management & Access Control Solutions',
     introParagraphs: [
@@ -406,6 +422,10 @@ export const serviceDetails: ServiceDetail[] = [
   {
     slug: 'automation-solutions',
     heroTitle: 'Automation Solutions',
+    seo: {
+      title: 'Building & Home Automation Qatar | SISS',
+      description: 'Integrated building and home automation systems for control, comfort, efficiency and operational visibility across Qatar.',
+    },
     introHeading: 'Smart',
     introHighlight: 'Building & Home Automation Solutions',
     introParagraphs: [
@@ -467,6 +487,10 @@ export const serviceDetails: ServiceDetail[] = [
   {
     slug: 'communication-solutions',
     heroTitle: 'Communication Solutions',
+    seo: {
+      title: 'Network & Communication Solutions Qatar | SISS',
+      description: 'Secure enterprise networking, structured cabling, wireless and communications systems designed, installed and supported in Qatar.',
+    },
     introHeading: 'Enterprise',
     introHighlight: 'Communication Systems',
     introParagraphs: [
@@ -562,6 +586,10 @@ export const serviceDetails: ServiceDetail[] = [
   {
     slug: 'audio-visual-solutions',
     heroTitle: 'Audio-Visual Solutions',
+    seo: {
+      title: 'Audio-Visual & Video Wall Solutions Qatar | SISS',
+      description: 'Professional AV, video-wall and monitoring-room solutions designed and integrated for organisations across Qatar.',
+    },
     introHeading: 'Professional',
     introHighlight: 'Audio-Visual Solutions',
     introParagraphs: [
@@ -642,6 +670,10 @@ export const serviceDetails: ServiceDetail[] = [
   {
     slug: 'other-solutions',
     heroTitle: 'Maintenance And Others',
+    seo: {
+      title: 'Security System Maintenance & AMC Qatar | SISS',
+      description: 'Keep CCTV, access control and integrated systems reliable with SISS preventive maintenance, upgrades and annual maintenance support in Qatar.',
+    },
     introHeading: 'Specialized',
     introHighlight: 'Technology Solutions',
     introParagraphs: [

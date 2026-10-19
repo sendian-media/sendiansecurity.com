@@ -1,4 +1,5 @@
 ---
+import type { PageSchema } from '@/components/seo/SeoHead.astro';
 import ChevronIcon from '@/components/ui/ChevronIcon.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { serviceDetails } from '@/data/service-details';
@@ -11,12 +12,14 @@ export async function getStaticPaths() {
 }
 
 const { service } = Astro.props;
+const schemas = [{ type: 'service', name: service.heroTitle, description: service.introParagraphs[0] }] satisfies PageSchema[];
 ---
 
 <BaseLayout
-  title={`${service.heroTitle} | Sendian Integrated Security Services`}
-  description={service.introParagraphs[0]}
+  title={service.seo.title}
+  description={service.seo.description}
   socialImage="/images/services/services-banner.jpg"
+  schemas={schemas}
   breadcrumbs={[
     { name: 'Home', path: '/' },
     { name: 'Services', path: '/services' },
@@ -48,7 +51,7 @@ const { service } = Astro.props;
     <section class="svc-cat">
       <div class="svc-cat-left svc-reveal" style="--svc-delay: 200ms">
         <div class="svc-cat-sticky">
-          <div class="svc-eyebrow"><span class="pgs-text-gradient">{'// Securty Services  '}</span></div>
+          <div class="svc-eyebrow"><span class="pgs-text-gradient">{'// Security Services  '}</span></div>
           <h3 class="svc-cat-title pgs-text-gradient">{category.name}</h3>
           <p class="svc-cat-blurb">{category.blurb}</p>
           <hr class="pgs-hr" />
