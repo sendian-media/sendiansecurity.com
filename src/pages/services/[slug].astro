@@ -4,6 +4,8 @@ import ChevronIcon from '@/components/ui/ChevronIcon.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { serviceDetails } from '@/data/service-details';
 
+export const prerender = true;
+
 export async function getStaticPaths() {
   return serviceDetails.map((service) => ({
     params: { slug: service.slug },

@@ -30,6 +30,7 @@ const address = site.address.join(', ');
         <label>Phone number<input name="phone" type="tel" autocomplete="tel" maxlength="400" /></label>
         <label>Message<textarea name="message" rows="4" maxlength="2000"></textarea></label>
         <input name="contact_from" type="hidden" value="Sendian_Security" />
+        <input name="_gotcha" tabindex="-1" autocomplete="off" class="sr-only" aria-hidden="true" />
         <p class="contact-form-status" data-form-status role="status" aria-live="polite" hidden></p>
         <button type="submit">Send Message</button>
       </form>
@@ -97,7 +98,7 @@ const address = site.address.join(', ');
 </style>
 
 <script>
-  const hubSpotEndpoint = 'https://api.hsforms.com/submissions/v3/integration/submit/148999608/0ec48611-6e4a-4d9e-bf9a-7f51f9c7d061';
+  const contactFormEndpoint = '/api/forms';
 
   document.querySelectorAll<HTMLFormElement>('[data-hubspot-contact-form]').forEach((form) => {
     const submitButton = form.querySelector<HTMLButtonElement>('button[type="submit"]');
@@ -115,30 +116,23 @@ const address = site.address.join(', ');
       if (!form.reportValidity()) return;
 
       const formData = new FormData(form);
-      const fields = ['firstname', 'lastname', 'email', 'phone', 'message', 'contact_from'].map((name) => ({
-        name,
-        value: String(formData.get(name) ?? ''),
-      }));
+      formData.set('form', 'contact');
 
       submitButton.disabled = true;
       submitButton.textContent = 'Sending…';
       status.hidden = true;
 
       try {
-        const response = await fetch(hubSpotEndpoint, {
+        const response = await fetch(contactFormEndpoint, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            fields,
-            context: { pageUri: window.location.href, pageName: document.title },
-          }),
+          body: formData,
         });
 
-        if (!response.ok) throw new Error(`HubSpot submission failed (${response.status})`);
+        if (!response.ok) throw new Error(`Contact submission failed (${response.status})`);
         form.reset();
         showStatus('Thank you. Your message has been sent.', 'success');
       } catch (error) {
-        console.error('HubSpot contact form submission failed.', error);
+        console.error('Contact form submission failed.', error);
         showStatus('Unable to send your message. Please try again.', 'error');
       } finally {
         submitButton.disabled = false;

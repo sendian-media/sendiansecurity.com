@@ -10,9 +10,11 @@
     "dev": "astro dev --host 127.0.0.1 --port 3888",
     "check": "astro check",
     "build": "astro build",
+    "start": "node ./dist/server/entry.mjs",
     "preview": "astro preview"
   },
   "dependencies": {
+    "@astrojs/node": "^11.1.9",
     "@astrojs/sitemap": "^3.7.4",
     "@portabletext/astro": "^0.2.0",
     "@sanity/client": "^8.9.0",

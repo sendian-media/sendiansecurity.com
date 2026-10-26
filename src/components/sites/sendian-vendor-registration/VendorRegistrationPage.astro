@@ -76,6 +76,7 @@
               <span>I agree to be contacted by SISS regarding vendor partnership opportunities*</span>
             </label>
           </div>
+          <input name="_gotcha" tabindex="-1" autocomplete="off" class="sr-only" aria-hidden="true" />
           <p class="vendor-registration__notice" id="registration-notice" data-vendor-form-status role="status" aria-live="polite" hidden></p>
           <button type="submit">Submit Registration</button>
         </fieldset>
@@ -126,7 +127,7 @@
 </style>
 
 <script>
-  const hubSpotVendorEndpoint = 'https://api.hsforms.com/submissions/v3/integration/submit/148999608/4b70dfe3-bd6b-461b-bdc9-344b19e50481';
+  const vendorFormEndpoint = '/api/forms';
 
   document.querySelectorAll<HTMLFormElement>('[data-hubspot-vendor-form]').forEach((form) => {
     const submitButton = form.querySelector<HTMLButtonElement>('button[type="submit"]');
@@ -144,10 +145,7 @@
       if (!form.reportValidity()) return;
 
       const formData = new FormData(form);
-      const fields = ['firstname', 'email', 'phone', 'company', 'industry', 'client_type', 'message'].map((name) => ({
-        name,
-        value: String(formData.get(name) ?? ''),
-      }));
+      formData.set('form', 'vendor');
 
       submitButton.disabled = true;
       submitButton.textContent = 'Sending…';
@@ -155,20 +153,16 @@
       status.hidden = true;
 
       try {
-        const response = await fetch(hubSpotVendorEndpoint, {
+        const response = await fetch(vendorFormEndpoint, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            fields,
-            context: { pageUri: window.location.href, pageName: document.title },
-          }),
+          body: formData,
         });
 
-        if (!response.ok) throw new Error(`HubSpot vendor registration failed (${response.status})`);
+        if (!response.ok) throw new Error(`Vendor registration failed (${response.status})`);
         form.reset();
         showStatus('Thanks. Your vendor registration has been sent.', 'success');
       } catch (error) {
-        console.error('HubSpot vendor registration failed.', error);
+        console.error('Vendor registration failed.', error);
         showStatus('Unable to send your registration. Check your connection and try again.', 'error');
       } finally {
         submitButton.disabled = false;
