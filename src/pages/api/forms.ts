@@ -1,4 +1,5 @@
 import type { APIRoute } from 'astro';
+import { isAllowedFormOrigin } from '@/lib/form-origin';
 import { sendMailjetNotification } from '@/lib/mailjet';
 
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -45,9 +46,9 @@ function getFormValue(formData: FormData, name: string, required: boolean, maxLe
 }
 
 export const POST: APIRoute = async ({ request }) => {
-  const requestOrigin = new URL(request.url).origin;
-  const origin = request.headers.get('origin');
-  if (origin && origin !== requestOrigin) return Response.json({ error: 'Invalid request origin.' }, { status: 403 });
+  if (!isAllowedFormOrigin(request.headers.get('origin'), request.url, import.meta.env.SITE_URL)) {
+    return Response.json({ error: 'Invalid request origin.' }, { status: 403 });
+  }
 
   let formData: FormData;
   try {
