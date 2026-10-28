@@ -20,6 +20,15 @@
   --muted: #4b5563;
   --line: #e5e7eb;
   --focus: #f59e0b;
+  /* Analytics consent theme aliases, matched to the security site's blue/navy palette. */
+  --accent: var(--brand);
+  --accent-light: var(--brand-hover);
+  --accent-text: var(--brand-dark);
+  --surface: var(--brand-gray);
+  --surface-raised: #ffffff;
+  --border: var(--line);
+  --text-primary: var(--brand-dark);
+  --text-secondary: var(--muted);
 }
 
 html {

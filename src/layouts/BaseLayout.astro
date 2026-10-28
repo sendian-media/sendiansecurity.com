@@ -5,7 +5,8 @@ import FloatingWhatsApp from '@/components/ui/FloatingWhatsApp.astro';
 import CursorFollower from '@/components/ui/CursorFollower.astro';
 import SeoHead, { type PageSchema } from '@/components/seo/SeoHead.astro';
 import HomeMotion from '@/components/home/HomeMotion.astro';
-import AnalyticsConsent from '@/components/analytics/AnalyticsConsent.astro';
+import AnalyticsConsent from '@/components/analytics/AnalyticsConsent';
+import { analyticsEnabled, CLARITY_PROJECT_ID, GA_MEASUREMENT_ID } from '@/lib/analytics';
 import '@/styles/global.css';
 
 interface BreadcrumbItem {
@@ -24,6 +25,7 @@ interface Props {
 }
 
 const { title, description, noindex, socialImage, breadcrumbs, schemas, localOnly = false } = Astro.props;
+const showAnalytics = analyticsEnabled(Astro.url.hostname) && Boolean(CLARITY_PROJECT_ID || GA_MEASUREMENT_ID);
 ---
 
 <!doctype html>
@@ -47,6 +49,12 @@ const { title, description, noindex, socialImage, breadcrumbs, schemas, localOnl
     <FloatingWhatsApp localOnly={localOnly} />
     <CursorFollower />
     <HomeMotion />
-    <AnalyticsConsent />
+    {showAnalytics && (
+      <AnalyticsConsent
+        clarityProjectId={CLARITY_PROJECT_ID}
+        gaMeasurementId={GA_MEASUREMENT_ID}
+        client:load
+      />
+    )}
   </body>
 </html>

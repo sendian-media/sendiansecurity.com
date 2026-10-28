@@ -1,6 +1,7 @@
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import node from '@astrojs/node';
+import react from '@astrojs/react';
 import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
@@ -17,6 +18,7 @@ export default defineConfig({
     plugins: [tailwindcss()],
   },
   integrations: [
+    react(),
     sitemap({
       filter: (page) => !['/contact/thanks', '/privacy', '/terms'].includes(new URL(page).pathname),
     }),
