@@ -5,6 +5,7 @@ import InstagramIcon from '@/components/ui/InstagramIcon.astro';
 import LinkedInIcon from '@/components/ui/LinkedInIcon.astro';
 import MailIcon from '@/components/ui/MailIcon.astro';
 import ChevronIcon from '@/components/ui/ChevronIcon.astro';
+import { analyticsEnabled } from '@/lib/analytics';
 
 interface Props {
   localOnly?: boolean;
@@ -12,6 +13,7 @@ interface Props {
 
 const { localOnly = false } = Astro.props;
 const year = new Date().getFullYear();
+const showCookieSettings = analyticsEnabled(Astro.url.hostname);
 const quickLinks = [
   { href: '/about', label: 'About us' },
   { href: '/services', label: 'Services' },
@@ -81,6 +83,9 @@ const moreLinks = [
     <div class="mt-4 flex gap-4 md:mt-0">
       <a class="transition hover:text-white" href="/terms-and-conditions">Terms and Conditions</a>
       <a class="transition hover:text-white" href="/privacy-policy-2">Privacy policy</a>
+      {showCookieSettings && (
+        <button type="button" id="cookie-settings-link" class="transition hover:text-white">Cookie settings</button>
+      )}
       <a class="transition hover:text-white" href="/contact">Help</a>
     </div>
   </div>

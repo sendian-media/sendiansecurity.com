@@ -5,6 +5,11 @@ import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
   site: process.env.SITE_URL || 'https://sendiansecurity.com',
+  // Without host validation the node adapter falls back to `localhost` for Astro.url,
+  // which would disable the analytics host gate in src/lib/analytics.ts.
+  security: {
+    allowedDomains: [{ hostname: 'sendiansecurity.com' }, { hostname: 'www.sendiansecurity.com' }],
+  },
   output: 'server',
   adapter: node({ mode: 'standalone' }),
   trailingSlash: 'never',

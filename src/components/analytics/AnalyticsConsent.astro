@@ -1,0 +1,192 @@
+---
+import { analyticsEnabled, CLARITY_PROJECT_ID, GA_MEASUREMENT_ID } from '@/lib/analytics';
+
+const enabled = analyticsEnabled(Astro.url.hostname);
+---
+
+{
+  enabled && (
+    <>
+      <aside
+        id="cookie-banner"
+        class="fixed bottom-24 right-5 z-[60] w-[min(calc(100vw-2.5rem),22rem)] rounded-2xl border border-[var(--line)] bg-white p-5 shadow-xl"
+        hidden
+        aria-label="Cookie consent"
+      >
+        <p class="m-0 text-sm leading-relaxed text-[var(--brand-dark)]">
+          We use analytics cookies (Google&nbsp;Analytics and Microsoft&nbsp;Clarity) to improve this site. No cookies are set until you choose.
+        </p>
+        <div class="mt-4 flex flex-wrap items-center gap-2">
+          <button type="button" class="btn btn--primary" data-consent-accept>Accept all</button>
+          <button type="button" class="btn btn--secondary" data-consent-reject>Reject all</button>
+          <button type="button" class="text-sm font-semibold text-[var(--brand)] underline-offset-2 hover:underline" data-consent-manage>Manage</button>
+        </div>
+      </aside>
+
+      <dialog
+        id="cookie-dialog"
+        class="w-[min(calc(100vw-2.5rem),26rem)] rounded-2xl border border-[var(--line)] p-6 text-left shadow-xl backdrop:bg-black/50"
+        aria-labelledby="cookie-dialog-title"
+      >
+        <h2 id="cookie-dialog-title" class="text-lg font-bold text-[var(--brand-dark)]">Cookie settings</h2>
+        <p class="mt-2 text-sm leading-relaxed text-[var(--brand-dark)]">
+          Analytics cookies (Google Analytics and Microsoft Clarity) help us understand how the site is used. No cookies are set until you accept.
+        </p>
+        <label class="mt-4 flex items-center gap-2 text-sm font-semibold text-[var(--brand-dark)]">
+          <input type="checkbox" id="cookie-analytics" checked />
+          Analytics cookies
+        </label>
+        <div class="mt-5 flex flex-wrap gap-2">
+          <button type="button" class="btn btn--primary" data-consent-save>Save settings</button>
+          <button type="button" class="btn btn--secondary" data-consent-close>Close</button>
+        </div>
+      </dialog>
+
+      <script is:inline define:vars={{ gaId: GA_MEASUREMENT_ID, clarityId: CLARITY_PROJECT_ID }}>
+        (() => {
+          'use strict';
+          const KEY = 'sendian.analytics-consent';
+          const VERSION = 1; // bump to re-ask every visitor when the policy changes
+          const EXPIRY_MS = 180 * 86400000;
+          const banner = document.getElementById('cookie-banner');
+          const dialog = document.getElementById('cookie-dialog');
+          const analyticsToggle = document.getElementById('cookie-analytics');
+
+          function readChoice() {
+            try {
+              const stored = JSON.parse(localStorage.getItem(KEY) || 'null');
+              if (!stored || stored.v !== VERSION || Date.now() - stored.at > EXPIRY_MS) return null;
+              return stored.analytics === 'granted' ? 'granted' : 'denied';
+            } catch {
+              return null;
+            }
+          }
+
+          function saveChoice(analytics) {
+            try {
+              localStorage.setItem(KEY, JSON.stringify({ v: VERSION, analytics, at: Date.now() }));
+            } catch {}
+          }
+
+          function deleteCookie(name, domain) {
+            document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/' + (domain ? '; domain=' + domain : '');
+          }
+
+          function clearTrackingCookies() {
+            const domains = new Set(['', location.hostname, '.' + location.hostname]);
+            const labels = location.hostname.split('.');
+            if (labels.length > 2) domains.add('.' + labels.slice(1).join('.'));
+            for (const part of document.cookie.split(';')) {
+              const name = part.split('=')[0].trim();
+              if (!/^(?:_ga|_gid|_gat|_clck|_clsk)/.test(name)) continue;
+              for (const domain of domains) deleteCookie(name, domain);
+            }
+          }
+
+          let trackersLoaded = false;
+          function ensureTrackers() {
+            if (trackersLoaded) return;
+            trackersLoaded = true;
+            // GA4 Consent Mode v2: everything denied by default, granted only via grantAnalytics().
+            window.dataLayer = window.dataLayer || [];
+            const gtag = function () {
+              window.dataLayer.push(arguments);
+            };
+            window.gtag = gtag;
+            gtag('consent', 'default', {
+              ad_storage: 'denied',
+              ad_user_data: 'denied',
+              ad_personalization: 'denied',
+              analytics_storage: 'denied',
+            });
+            // Clarity official snippet; tracking state follows consentv2 below.
+            (function (c, l, a, r, i, t, y) {
+              c[a] = c[a] || function () {
+                (c[a].q = c[a].q || []).push(arguments);
+              };
+              t = l.createElement(r);
+              t.async = 1;
+              t.src = 'https://www.clarity.ms/tag/' + i;
+              y = l.getElementsByTagName(r)[0];
+              y.parentNode.insertBefore(t, y);
+            })(window, document, 'clarity', 'script', clarityId);
+          }
+
+          let configured = false;
+          function grantAnalytics() {
+            ensureTrackers();
+            window.gtag('consent', 'update', {
+              ad_storage: 'denied',
+              ad_user_data: 'denied',
+              ad_personalization: 'denied',
+              analytics_storage: 'granted',
+            });
+            window.clarity('consentv2', { ad_Storage: 'denied', analytics_Storage: 'granted' });
+            if (!configured) {
+              configured = true;
+              window.gtag('js', new Date());
+              window.gtag('config', gaId);
+              // Load the GA library only now, after the granted consent update: the queued
+              // default → update → js → config order keeps collect requests at gcs=G101.
+              const gtagScript = document.createElement('script');
+              gtagScript.async = true;
+              gtagScript.src = 'https://www.googletagmanager.com/gtag/js?id=' + gaId;
+              document.head.appendChild(gtagScript);
+            }
+          }
+
+          function revokeAnalytics() {
+            if (window.gtag) {
+              window.gtag('consent', 'update', {
+                ad_storage: 'denied',
+                ad_user_data: 'denied',
+                ad_personalization: 'denied',
+                analytics_storage: 'denied',
+              });
+            }
+            if (window.clarity) {
+              window.clarity('consent', false);
+            }
+            clearTrackingCookies();
+          }
+
+          function accept() {
+            saveChoice('granted');
+            grantAnalytics();
+            banner.hidden = true;
+          }
+
+          function reject() {
+            saveChoice('denied');
+            revokeAnalytics();
+            banner.hidden = true;
+          }
+
+          function openDialog() {
+            // Read the choice at open time so the dialog preselects the latest state.
+            analyticsToggle.checked = readChoice() !== 'denied';
+            dialog.showModal();
+          }
+
+          banner.querySelector('[data-consent-accept]').addEventListener('click', accept);
+          banner.querySelector('[data-consent-reject]').addEventListener('click', reject);
+          banner.querySelector('[data-consent-manage]').addEventListener('click', openDialog);
+          dialog.querySelector('[data-consent-save]').addEventListener('click', () => {
+            (analyticsToggle.checked ? accept : reject)();
+            dialog.close();
+          });
+          dialog.querySelector('[data-consent-close]').addEventListener('click', () => dialog.close());
+          document.addEventListener('click', (event) => {
+            if (!event.target.closest('#cookie-settings-link')) return;
+            event.preventDefault();
+            openDialog();
+          });
+
+          const choice = readChoice();
+          if (choice === 'granted') grantAnalytics();
+          else if (choice === null) banner.hidden = false;
+        })();
+      </script>
+    </>
+  )
+}
